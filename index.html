@@ -701,10 +701,23 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       </div>
     </div>
 
+    <!-- Mode Toggle -->
+    <div style="display:flex;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
+      <div id="z-mode-solo" onclick="switchZMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(14,165,233,.18);border:1px solid rgba(14,165,233,.4);color:rgba(14,165,233,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-stars"></i>运势分析</div>
+      <div id="z-mode-pair" onclick="switchZMode('pair')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-heart"></i>星座配对</div>
+    </div>
+
     <div class="gcard gcard-glow" id="zodiac-input-card">
       <div class="fl-label">选择你的星座</div>
       <div id="zodiac-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px"></div>
-      <button class="big-btn" style="background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:0 4px 20px rgba(14,165,233,.35)" onclick="runZodiac()">
+
+      <!-- pair mode: partner selection -->
+      <div id="z-pair-section" style="display:none">
+        <div class="fl-label" style="margin-top:4px">选择对方星座</div>
+        <div id="zodiac-grid-b" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px"></div>
+      </div>
+
+      <button class="big-btn" id="z-main-btn" style="background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:0 4px 20px rgba(14,165,233,.35)" onclick="runZodiac()">
         <i class="ti ti-stars"></i>查看星座运势
       </button>
     </div>
@@ -780,6 +793,60 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="sh-btn sh-sec" onclick="resetZodiac()"><i class="ti ti-refresh"></i>换星座</div>
       </div>
     </div>
+
+    <!-- ZODIAC PAIR RESULT -->
+    <div id="zodiac-pair-result" style="display:none">
+      <div style="background:rgba(10,8,25,.92);border:1.5px solid rgba(14,165,233,.3);border-radius:20px;overflow:hidden;margin-bottom:12px;position:relative">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.8),rgba(244,114,182,.8),transparent)"></div>
+        <!-- pair header -->
+        <div style="padding:1.1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;gap:16px">
+          <div style="text-align:center">
+            <div id="zp-sym-a" style="font-size:36px;line-height:1;margin-bottom:4px"></div>
+            <div id="zp-name-a" style="font-size:13px;font-weight:600;color:#fff"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <i class="ti ti-heart" style="font-size:20px;color:rgba(244,114,182,.8)"></i>
+            <div id="zp-score-big" style="font-size:28px;font-weight:700;color:#fff"></div>
+            <div style="font-size:9px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.3);text-transform:uppercase">相容指数</div>
+          </div>
+          <div style="text-align:center">
+            <div id="zp-sym-b" style="font-size:36px;line-height:1;margin-bottom:4px"></div>
+            <div id="zp-name-b" style="font-size:13px;font-weight:600;color:#fff"></div>
+          </div>
+        </div>
+        <!-- score bars -->
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div id="zp-bars" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+        <!-- ai text sections -->
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(14,165,233,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-heart" style="font-size:13px"></i>感情契合度</div>
+          <div id="zp-love" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
+        </div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(14,165,233,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-users" style="font-size:13px"></i>相处模式</div>
+          <div id="zp-dynamic" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
+        </div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(14,165,233,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-alert-triangle" style="font-size:13px"></i>潜在摩擦</div>
+          <div id="zp-tension" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
+        </div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(14,165,233,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-bulb" style="font-size:13px"></i>相处建议</div>
+          <div id="zp-advice" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
+        </div>
+        <div style="padding:.8rem 1.2rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap" id="zp-kws"></div>
+        <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">Destiny AI · 星座配对</div>
+          <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(14,165,233,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-stars" style="font-size:14px;color:rgba(14,165,233,.4)"></i></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#0ea5e9,#6366f1);grid-column:span 2" onclick="shareZPair()"><i class="ti ti-share"></i>分享配对结果</div>
+        <div class="sh-btn sh-sec" onclick="copyZPair()"><i class="ti ti-copy"></i>复制</div>
+        <div class="sh-btn sh-sec" onclick="resetZodiac()"><i class="ti ti-refresh"></i>重新配对</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -793,10 +860,23 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       </div>
     </div>
 
+    <!-- Mode Toggle -->
+    <div style="display:flex;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
+      <div id="sx-mode-solo" onclick="switchSXMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.4);color:rgba(245,158,11,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-yin-yang"></i>运势分析</div>
+      <div id="sx-mode-pair" onclick="switchSXMode('pair')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-heart"></i>生肖配对</div>
+    </div>
+
     <div class="gcard gcard-glow" id="sx-input-card">
       <div class="fl-label">选择你的生肖</div>
       <div id="sx-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px"></div>
-      <button class="big-btn" style="background:linear-gradient(135deg,#f59e0b,#ef4444);box-shadow:0 4px 20px rgba(245,158,11,.35)" onclick="runShengxiao()">
+
+      <!-- pair mode: partner selection -->
+      <div id="sx-pair-section" style="display:none">
+        <div class="fl-label" style="margin-top:4px">选择对方生肖</div>
+        <div id="sx-grid-b" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px"></div>
+      </div>
+
+      <button class="big-btn" id="sx-main-btn" style="background:linear-gradient(135deg,#f59e0b,#ef4444);box-shadow:0 4px 20px rgba(245,158,11,.35)" onclick="runShengxiao()">
         <i class="ti ti-yin-yang"></i>查看生肖运势
       </button>
     </div>
@@ -878,6 +958,64 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#f59e0b,#ef4444);box-shadow:0 4px 18px rgba(245,158,11,.3);grid-column:span 2" onclick="shareSX()"><i class="ti ti-share"></i>分享生肖运势</div>
         <div class="sh-btn sh-sec" onclick="copySX()"><i class="ti ti-copy"></i>复制</div>
         <div class="sh-btn sh-sec" onclick="resetSX()"><i class="ti ti-refresh"></i>换生肖</div>
+      </div>
+    </div>
+
+    <!-- SX PAIR RESULT -->
+    <div id="sx-pair-result" style="display:none">
+      <div style="background:rgba(20,10,5,.92);border:1.5px solid rgba(245,158,11,.3);border-radius:20px;overflow:hidden;margin-bottom:12px;position:relative">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.8),rgba(239,68,68,.7),transparent)"></div>
+        <!-- pair header -->
+        <div style="padding:1.1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;gap:16px">
+          <div style="text-align:center">
+            <div id="sxp-em-a" style="font-size:40px;line-height:1;margin-bottom:4px"></div>
+            <div id="sxp-name-a" style="font-size:13px;font-weight:600;color:#fff"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <i class="ti ti-yin-yang" style="font-size:20px;color:rgba(245,158,11,.8)"></i>
+            <div id="sxp-score-big" style="font-size:28px;font-weight:700;color:#fff"></div>
+            <div style="font-size:9px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.3);text-transform:uppercase">缘分指数</div>
+          </div>
+          <div style="text-align:center">
+            <div id="sxp-em-b" style="font-size:40px;line-height:1;margin-bottom:4px"></div>
+            <div id="sxp-name-b" style="font-size:13px;font-weight:600;color:#fff"></div>
+          </div>
+        </div>
+        <!-- compat badge -->
+        <div style="padding:.8rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:center;gap:10px">
+          <div id="sxp-compat-badge" style="font-size:13px;font-weight:600;padding:6px 20px;border-radius:100px"></div>
+        </div>
+        <!-- score bars -->
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div id="sxp-bars" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+        <!-- sections -->
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-heart" style="font-size:13px"></i>感情缘分</div>
+          <div id="sxp-love" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
+        </div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-briefcase" style="font-size:13px"></i>事业合作</div>
+          <div id="sxp-career" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
+        </div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-home" style="font-size:13px"></i>日常相处</div>
+          <div id="sxp-daily" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
+        </div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-bulb" style="font-size:13px"></i>相处秘诀</div>
+          <div id="sxp-tip" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
+        </div>
+        <div style="padding:.8rem 1.2rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap" id="sxp-kws"></div>
+        <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">Destiny AI · 生肖配对</div>
+          <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-yin-yang" style="font-size:14px;color:rgba(245,158,11,.4)"></i></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#f59e0b,#ef4444);grid-column:span 2" onclick="shareSXPair()"><i class="ti ti-share"></i>分享配对结果</div>
+        <div class="sh-btn sh-sec" onclick="copySXPair()"><i class="ti ti-copy"></i>复制</div>
+        <div class="sh-btn sh-sec" onclick="resetSX()"><i class="ti ti-refresh"></i>重新配对</div>
       </div>
     </div>
   </div>
@@ -1278,8 +1416,6 @@ function switchZTab(tab){
 }
 
 function shareZodiac(){var t=zodiacData?zodiacData.today.text:'';var txt='Destiny AI · '+ZODIACS[selZodiac].zh+'今日运势\n\n「'+t+'」\n\n→ destinyai.com';if(navigator.share){navigator.share({title:'星座运势',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
-function copyZodiac(){if(zodiacData&&navigator.clipboard){navigator.clipboard.writeText(zodiacData.today.text).then(function(){showToast('运势已复制','ti-check');});}}
-function resetZodiac(){selZodiac=null;zodiacData=null;document.getElementById('zodiac-result').style.display='none';document.getElementById('zodiac-input-card').style.display='block';document.querySelectorAll('#zodiac-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});}
 
 // ═══════════════════════════════════════════
 //  SHENGXIAO
@@ -1377,9 +1513,240 @@ function renderSX(s){
   document.getElementById('sx-kws').innerHTML=(sxData.keywords||[]).map(function(k){return'<span style="font-size:10px;font-weight:500;color:rgba(245,158,11,.9);background:rgba(245,158,11,.1);padding:4px 12px;border-radius:100px;border:1px solid rgba(245,158,11,.3)">'+k+'</span>';}).join('');
 }
 
-function shareSX(){var t=sxData?sxData.overall:'';var txt='Destiny AI · 属'+SX[selSX].name+'今年运势\n\n「'+t+'」\n\n→ destinyai.com';if(navigator.share){navigator.share({title:'生肖运势',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
-function copySX(){if(sxData&&navigator.clipboard){navigator.clipboard.writeText(sxData.overall).then(function(){showToast('运势已复制','ti-check');});}}
-function resetSX(){selSX=null;sxData=null;document.getElementById('sx-result').style.display='none';document.getElementById('sx-input-card').style.display='block';document.querySelectorAll('#sx-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});}
+// ══════════════════════════════════════════
+//  ZODIAC MODE SWITCH + PAIR
+// ══════════════════════════════════════════
+var zMode='solo', selZodiacB=null, zPairData=null;
+
+function switchZMode(m){
+  zMode=m;
+  var solo=document.getElementById('z-mode-solo');
+  var pair=document.getElementById('z-mode-pair');
+  var pairSec=document.getElementById('z-pair-section');
+  var btn=document.getElementById('z-main-btn');
+  if(m==='solo'){
+    solo.style.background='rgba(14,165,233,.18)';solo.style.border='1px solid rgba(14,165,233,.4)';solo.style.color='rgba(14,165,233,1)';solo.style.fontWeight='600';
+    pair.style.background='transparent';pair.style.border='none';pair.style.color='rgba(255,255,255,.35)';pair.style.fontWeight='500';
+    pairSec.style.display='none';
+    btn.innerHTML='<i class="ti ti-stars"></i>查看星座运势';
+  } else {
+    pair.style.background='rgba(244,114,182,.15)';pair.style.border='1px solid rgba(244,114,182,.4)';pair.style.color='rgba(244,114,182,1)';pair.style.fontWeight='600';
+    solo.style.background='transparent';solo.style.border='none';solo.style.color='rgba(255,255,255,.35)';solo.style.fontWeight='500';
+    pairSec.style.display='block';
+    btn.innerHTML='<i class="ti ti-heart"></i>开始星座配对';
+    // build grid B if not built
+    if(!document.getElementById('zodiac-grid-b').children.length) buildZGridB();
+  }
+}
+
+function buildZGridB(){
+  var g=document.getElementById('zodiac-grid-b');g.innerHTML='';
+  ZODIACS.forEach(function(z,i){
+    var d=document.createElement('div');
+    d.style.cssText='background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;transition:all .2s';
+    d.innerHTML='<div style="font-size:20px;line-height:1;margin-bottom:4px">'+z.sym+'</div><div style="font-size:10px;font-weight:600;color:rgba(255,255,255,.7)">'+z.zh+'</div>';
+    d.onclick=function(){
+      document.querySelectorAll('#zodiac-grid-b > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
+      d.style.background='rgba(244,114,182,.15)';d.style.borderColor='rgba(244,114,182,.55)';
+      selZodiacB=i;
+    };
+    g.appendChild(d);
+  });
+}
+
+function runZodiac(){
+  if(zMode==='pair'){
+    runZodiacPair(); return;
+  }
+  if(selZodiac===null){showToast('请先选择星座','ti-stars');return;}
+  var z=ZODIACS[selZodiac];
+  document.getElementById('zodiac-input-card').style.display='none';
+  document.getElementById('zodiac-loading').style.display='block';
+  callZodiacAI(z);
+}
+
+function runZodiacPair(){
+  if(selZodiac===null){showToast('请选择你的星座','ti-stars');return;}
+  if(selZodiacB===null){showToast('请选择对方星座','ti-stars');return;}
+  var zA=ZODIACS[selZodiac], zB=ZODIACS[selZodiacB];
+  document.getElementById('zodiac-input-card').style.display='none';
+  document.getElementById('zodiac-loading').style.display='block';
+  callZodiacPairAI(zA,zB);
+}
+
+async function callZodiacPairAI(zA,zB){
+  var prompt='你是一位专业的星座配对分析师。请分析'+zA.zh+'（'+zA.elem+'）与'+zB.zh+'（'+zB.elem+'）的配对情况。\n\n请提供：总体相容指数（0-100分整数）、感情契合度分析（约50字）、相处模式（约40字）、潜在摩擦（约40字）、相处建议（约40字）、各维度评分、三个关键词。\n语气神秘温柔，有画面感，让人感觉被理解。\n\n只返回JSON：{"score":85,"love":"…","dynamic":"…","tension":"…","advice":"…","scores":{"love":4,"friendship":4,"career":3,"communication":4},"keywords":["词1","词2","词3"]}';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    var data=await res.json();
+    var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
+    zPairData=JSON.parse(txt);
+  }catch(e){
+    zPairData={score:78,love:'两人之间有一种说不清道不明的吸引力，感情上互相补充，一个感性一个理性，反而形成了一种奇妙的平衡。',dynamic:'相处模式偏向于一人主导一人配合，但配合得十分默契，彼此都能在对方身上找到自己缺少的部分。',tension:'有时候价值观上会有小摩擦，需要多一点耐心倾听，而不是急着说服对方。',advice:'多一点包容，少一点要求，记得欣赏对方和自己不同的地方，那是你们在一起最大的财富。',scores:{love:4,friendship:4,career:3,communication:4},keywords:['互补吸引','默契相处','包容为先']};
+  }
+  document.getElementById('zodiac-loading').style.display='none';
+  renderZodiacPair(zA,zB);
+  document.getElementById('zodiac-pair-result').style.display='block';
+}
+
+function renderZodiacPair(zA,zB){
+  var d=zPairData;
+  document.getElementById('zp-sym-a').textContent=zA.sym;
+  document.getElementById('zp-name-a').textContent=zA.zh;
+  document.getElementById('zp-sym-b').textContent=zB.sym;
+  document.getElementById('zp-name-b').textContent=zB.zh;
+  document.getElementById('zp-score-big').textContent=d.score+'%';
+  // bars
+  var bars=document.getElementById('zp-bars');bars.innerHTML='';
+  var bLabels={love:'感情',friendship:'友情',career:'事业',communication:'沟通'};
+  var bColors={love:'rgba(244,114,182,1)',friendship:'rgba(167,139,250,1)',career:'rgba(96,165,250,1)',communication:'rgba(34,197,94,1)'};
+  Object.keys(d.scores).forEach(function(k){
+    var v=d.scores[k];
+    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:10px';
+    row.innerHTML='<div style="font-size:11px;font-weight:600;width:28px;color:'+bColors[k]+'">'+bLabels[k]+'</div><div style="flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden"><div style="height:100%;border-radius:100px;background:'+bColors[k]+';width:'+(v/5*100)+'%"></div></div><div style="font-size:11px;font-weight:600;color:'+bColors[k]+'">'+v+'/5</div>';
+    bars.appendChild(row);
+  });
+  document.getElementById('zp-love').textContent=d.love;
+  document.getElementById('zp-dynamic').textContent=d.dynamic;
+  document.getElementById('zp-tension').textContent=d.tension;
+  document.getElementById('zp-advice').textContent=d.advice;
+  document.getElementById('zp-kws').innerHTML=(d.keywords||[]).map(function(k){return'<span style="font-size:10px;font-weight:500;color:rgba(14,165,233,.85);background:rgba(14,165,233,.08);padding:4px 11px;border-radius:100px;border:1px solid rgba(14,165,233,.25)">'+k+'</span>';}).join('');
+}
+
+function shareZPair(){
+  var zA=ZODIACS[selZodiac],zB=ZODIACS[selZodiacB];
+  var txt='Destiny AI · 星座配对\n'+zA.zh+' × '+zB.zh+'\n\n相容指数：'+(zPairData?zPairData.score+'%':'')+'「'+(zPairData?zPairData.love:'')+'」\n\n→ destinyai.com';
+  if(navigator.share){navigator.share({title:'星座配对',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}
+}
+function copyZPair(){if(zPairData&&navigator.clipboard){navigator.clipboard.writeText(zPairData.love).then(function(){showToast('已复制','ti-check');});}}
+
+function resetZodiac(){
+  selZodiac=null;selZodiacB=null;zodiacData=null;zPairData=null;
+  document.getElementById('zodiac-result').style.display='none';
+  document.getElementById('zodiac-pair-result').style.display='none';
+  document.getElementById('zodiac-input-card').style.display='block';
+  document.querySelectorAll('#zodiac-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
+  document.querySelectorAll('#zodiac-grid-b > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
+}
+
+// ══════════════════════════════════════════
+//  SHENGXIAO MODE SWITCH + PAIR
+// ══════════════════════════════════════════
+var sxMode='solo', selSXB=null, sxPairData=null;
+
+function switchSXMode(m){
+  sxMode=m;
+  var solo=document.getElementById('sx-mode-solo');
+  var pair=document.getElementById('sx-mode-pair');
+  var pairSec=document.getElementById('sx-pair-section');
+  var btn=document.getElementById('sx-main-btn');
+  if(m==='solo'){
+    solo.style.background='rgba(245,158,11,.18)';solo.style.border='1px solid rgba(245,158,11,.4)';solo.style.color='rgba(245,158,11,1)';solo.style.fontWeight='600';
+    pair.style.background='transparent';pair.style.border='none';pair.style.color='rgba(255,255,255,.35)';pair.style.fontWeight='500';
+    pairSec.style.display='none';
+    btn.innerHTML='<i class="ti ti-yin-yang"></i>查看生肖运势';
+  } else {
+    pair.style.background='rgba(244,114,182,.15)';pair.style.border='1px solid rgba(244,114,182,.4)';pair.style.color='rgba(244,114,182,1)';pair.style.fontWeight='600';
+    solo.style.background='transparent';solo.style.border='none';solo.style.color='rgba(255,255,255,.35)';solo.style.fontWeight='500';
+    pairSec.style.display='block';
+    btn.innerHTML='<i class="ti ti-heart"></i>开始生肖配对';
+    if(!document.getElementById('sx-grid-b').children.length) buildSXGridB();
+  }
+}
+
+function buildSXGridB(){
+  var g=document.getElementById('sx-grid-b');g.innerHTML='';
+  SX.forEach(function(s,i){
+    var d=document.createElement('div');
+    d.style.cssText='background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;transition:all .2s';
+    d.innerHTML='<div style="font-size:22px;line-height:1;margin-bottom:4px">'+s.emoji+'</div><div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.75)">'+s.name+'</div>';
+    d.onclick=function(){
+      document.querySelectorAll('#sx-grid-b > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
+      d.style.background='rgba(244,114,182,.15)';d.style.borderColor='rgba(244,114,182,.55)';
+      selSXB=i;
+    };
+    g.appendChild(d);
+  });
+}
+
+function runShengxiao(){
+  if(sxMode==='pair'){runSXPair();return;}
+  if(selSX===null){showToast('请先选择生肖','ti-yin-yang');return;}
+  var s=SX[selSX];
+  document.getElementById('sx-input-card').style.display='none';
+  document.getElementById('sx-loading').style.display='block';
+  callSXAI(s);
+}
+
+function runSXPair(){
+  if(selSX===null){showToast('请选择你的生肖','ti-yin-yang');return;}
+  if(selSXB===null){showToast('请选择对方生肖','ti-yin-yang');return;}
+  var sA=SX[selSX],sB=SX[selSXB];
+  document.getElementById('sx-input-card').style.display='none';
+  document.getElementById('sx-loading').style.display='block';
+  callSXPairAI(sA,sB);
+}
+
+async function callSXPairAI(sA,sB){
+  var prompt='你是一位专业的中国生肖命理师。请分析属'+sA.name+'（五行：'+sA.elem+'）与属'+sB.name+'（五行：'+sB.elem+'）的配对情况。\n\n请提供：缘分总评（相合/相冲/一般，用一个词）、缘分指数（0-100整数）、感情缘分分析（约50字）、事业合作（约40字）、日常相处（约40字）、相处秘诀（约40字）、各维度评分、三个关键词。\n语气神秘温柔，有画面感。\n\n只返回JSON：{"compat":"相合","score":82,"love":"…","career":"…","daily":"…","tip":"…","scores":{"love":4,"career":3,"daily":4,"trust":4},"keywords":["词1","词2","词3"]}';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    var data=await res.json();
+    var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
+    sxPairData=JSON.parse(txt);
+  }catch(e){
+    sxPairData={compat:'相合',score:80,love:'两个生肖之间有一种天然的亲近感，彼此的气场容易融合，感情上容易产生共鸣，是一段值得认真经营的缘分。',career:'在事业上合作顺畅，一方善于规划，一方善于执行，互相补充，合作效果往往超出预期。',daily:'日常相处轻松自在，不需要刻意维护，自然就能保持一种舒适的节奏，是那种越相处越有感情的组合。',tip:'保持真诚是最好的相处之道，不需要太多的技巧，用心就够了。',scores:{love:4,career:3,daily:4,trust:4},keywords:['天然亲近','互补共进','真诚为本']};
+  }
+  document.getElementById('sx-loading').style.display='none';
+  renderSXPair(sA,sB);
+  document.getElementById('sx-pair-result').style.display='block';
+}
+
+function renderSXPair(sA,sB){
+  var d=sxPairData;
+  document.getElementById('sxp-em-a').textContent=sA.emoji;
+  document.getElementById('sxp-name-a').textContent='属'+sA.name;
+  document.getElementById('sxp-em-b').textContent=sB.emoji;
+  document.getElementById('sxp-name-b').textContent='属'+sB.name;
+  document.getElementById('sxp-score-big').textContent=d.score+'%';
+  // compat badge
+  var badge=document.getElementById('sxp-compat-badge');
+  var compatMap={相合:['rgba(34,197,94,.12)','rgba(34,197,94,.4)','rgba(100,220,120,1)'],相冲:['rgba(239,68,68,.12)','rgba(239,68,68,.4)','rgba(248,113,113,1)'],一般:['rgba(251,191,36,.12)','rgba(251,191,36,.4)','rgba(251,191,36,1)']};
+  var c=compatMap[d.compat]||compatMap['一般'];
+  badge.style.background=c[0];badge.style.border='1.5px solid '+c[1];badge.style.color=c[2];
+  badge.textContent='▶ '+d.compat+' · 缘分指数 '+d.score+'%';
+  // bars
+  var bars=document.getElementById('sxp-bars');bars.innerHTML='';
+  var bLabels={love:'感情',career:'事业',daily:'日常',trust:'信任'};
+  var bColors={love:'rgba(244,114,182,1)',career:'rgba(96,165,250,1)',daily:'rgba(34,197,94,1)',trust:'rgba(167,139,250,1)'};
+  Object.keys(d.scores).forEach(function(k){
+    var v=d.scores[k];
+    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:10px';
+    row.innerHTML='<div style="font-size:11px;font-weight:600;width:28px;color:'+bColors[k]+'">'+bLabels[k]+'</div><div style="flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden"><div style="height:100%;border-radius:100px;background:'+bColors[k]+';width:'+(v/5*100)+'%"></div></div><div style="font-size:11px;font-weight:600;color:'+bColors[k]+'">'+v+'/5</div>';
+    bars.appendChild(row);
+  });
+  document.getElementById('sxp-love').textContent=d.love;
+  document.getElementById('sxp-career').textContent=d.career;
+  document.getElementById('sxp-daily').textContent=d.daily;
+  document.getElementById('sxp-tip').textContent=d.tip;
+  document.getElementById('sxp-kws').innerHTML=(d.keywords||[]).map(function(k){return'<span style="font-size:10px;font-weight:500;color:rgba(245,158,11,.9);background:rgba(245,158,11,.1);padding:4px 12px;border-radius:100px;border:1px solid rgba(245,158,11,.3)">'+k+'</span>';}).join('');
+}
+
+function shareSXPair(){
+  var sA=SX[selSX],sB=SX[selSXB];
+  var txt='Destiny AI · 生肖配对\n属'+sA.name+' × 属'+sB.name+'\n\n缘分指数：'+(sxPairData?sxPairData.score+'%  '+sxPairData.compat:'')+'「'+(sxPairData?sxPairData.love:'')+'」\n\n→ destinyai.com';
+  if(navigator.share){navigator.share({title:'生肖配对',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}
+}
+function copySXPair(){if(sxPairData&&navigator.clipboard){navigator.clipboard.writeText(sxPairData.love).then(function(){showToast('已复制','ti-check');});}}
+
+function resetSX(){
+  selSX=null;selSXB=null;sxData=null;sxPairData=null;
+  document.getElementById('sx-result').style.display='none';
+  document.getElementById('sx-pair-result').style.display='none';
+  document.getElementById('sx-input-card').style.display='block';
+  document.querySelectorAll('#sx-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
+  document.querySelectorAll('#sx-grid-b > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
+}
 </script>
 </body>
 </html>
