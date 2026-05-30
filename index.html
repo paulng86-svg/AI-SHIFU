@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Destiny AI · 命运趋势分析</title>
-<meta name="description" content="AI 命盘推算 · 塔罗占卜 · 每日签语 · 幸运号码">
+<title>命运馆 · 命理推算</title>
+<meta name="description" content="命盘推算 · 塔罗占卜 · 每日签语 · 幸运号码">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;500&display=swap');
@@ -161,7 +161,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 ═══════════════════ */
 .result-card{background:rgba(20,12,40,.8);border:1.5px solid rgba(150,100,255,.25);border-radius:22px;overflow:hidden;margin-bottom:12px;position:relative;box-shadow:0 0 0 1px rgba(150,100,255,.1),0 8px 40px rgba(0,0,0,.6)}
 .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(160,120,255,.8),rgba(100,160,255,.8),transparent)}
-.result-card::after{content:'DESTINY AI  DESTINY AI  DESTINY AI  DESTINY AI';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:14px;font-weight:200;letter-spacing:.3em;color:rgba(255,255,255,.025);white-space:nowrap;pointer-events:none;width:220%;text-align:center}
+.result-card::after{content:'命运馆  命运馆  命运馆  命运馆  命运馆  命运馆';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:14px;font-weight:200;letter-spacing:.3em;color:rgba(255,255,255,.025);white-space:nowrap;pointer-events:none;width:220%;text-align:center}
 .rc-head{padding:1rem 1.3rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between}
 .rc-meta{font-size:10px;color:rgba(255,255,255,.35);text-align:right;line-height:1.6;font-weight:400}
 .rc-user{padding:9px 1.3rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:7px;flex-wrap:wrap}
@@ -255,7 +255,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 .flip-in{animation:cardFlip .5s cubic-bezier(.4,0,.2,1) forwards}
 .reading-card{background:rgba(25,8,45,.85);border:1.5px solid rgba(200,80,150,.3);border-radius:22px;overflow:hidden;margin-bottom:12px;position:relative;box-shadow:0 8px 40px rgba(0,0,0,.6)}
 .reading-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(240,120,170,.7),rgba(180,40,120,.7),transparent)}
-.reading-card::after{content:'TAROT AI  TAROT AI  TAROT AI  TAROT AI';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:14px;letter-spacing:.3em;color:rgba(255,255,255,.02);white-space:nowrap;pointer-events:none;width:220%;text-align:center}
+.reading-card::after{content:'塔罗馆  塔罗馆  塔罗馆  塔罗馆  塔罗馆';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:14px;letter-spacing:.3em;color:rgba(255,255,255,.02);white-space:nowrap;pointer-events:none;width:220%;text-align:center}
 .rc-badge{font-size:10px;font-weight:600;letter-spacing:.16em;color:rgba(240,120,170,.8);text-transform:uppercase;display:flex;align-items:center;gap:7px}
 .rc-badge i{font-size:14px;animation:aidot 2s ease-in-out infinite}
 .drawn-mini{display:flex;gap:7px;justify-content:center;padding:1rem 1.3rem;border-bottom:1px solid rgba(255,255,255,.07)}
@@ -428,7 +428,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
     <div class="top-bar">
       <div class="brand">
         <div class="brand-mark bm-d"><i class="ti ti-sparkles"></i></div>
-        <div><div class="brand-name">Destiny AI</div><div class="brand-sub">命运 · 塔罗 · 签语 · 幸运</div></div>
+        <div><div class="brand-name">命运馆</div><div class="brand-sub">命运 · 塔罗 · 签语 · 幸运</div></div>
       </div>
       <div class="time-block">
         <div class="t-date" id="h-date">—</div>
@@ -436,13 +436,13 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="t-clock" id="h-clock">—</div>
       </div>
     </div>
-    <div class="home-eyebrow">Powered by AI · 多维度命运解读</div>
+    <div class="home-eyebrow">传承命理 · 多维度命运解读</div>
     <div class="orb-wrap">
       <div class="orb-core"><div class="orb-shine"></div></div>
       <div class="orb-ring"></div><div class="orb-ring2"></div>
     </div>
     <div class="home-h1">探索你的<em>命运轨迹</em></div>
-    <div class="home-sub">生辰八字 · 塔罗占卜 · 每日签语<br>幸运号码 · AI 全方位解读</div>
+    <div class="home-sub">生辰八字 · 塔罗占卜 · 每日签语<br>幸运号码 · 师傅全方位推算</div>
     <div class="feat-grid">
       <div class="feat-card dc" onclick="goTo('s-input','s-home')">
         <div class="fiw fiw-p"><i class="ti ti-crystal-ball"></i></div>
@@ -453,7 +453,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       <div class="feat-card tc" onclick="goTo('s-tarot','s-home')">
         <div class="fiw fiw-t"><i class="ti ti-cards"></i></div>
         <div class="feat-title">塔罗占卜</div>
-        <div class="feat-desc">三种牌阵<br>AI 深度解读</div>
+        <div class="feat-desc">三种牌阵<br>师傅深度解读</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
       <div class="feat-card" style="border-color:rgba(14,165,233,.2)" onclick="goTo('s-zodiac','s-home')">
@@ -472,8 +472,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       </div>
       <div class="feat-card fc" onclick="goTo('s-fate','s-home')" style="grid-column:span 2">
         <div class="fiw fiw-a"><i class="ti ti-sun"></i></div>
-        <div class="feat-title">FateLab · 每日签语</div>
-        <div class="feat-desc">Future AI · 今日能量 · 未来3天预测</div>
+        <div class="feat-title">每日签语</div>
+        <div class="feat-desc">师傅推算 · 今日能量 · 未来3天预测</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
     </div>
@@ -486,7 +486,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
   <div class="inner">
     <div class="back-row" onclick="goTo('s-home','s-input')"><i class="ti ti-arrow-left"></i><span>返回</span></div>
     <div class="page-title">命运分析</div>
-    <div class="page-sub">填写信息，AI 结合八字推算30天运势</div>
+    <div class="page-sub">填写信息，师傅结合八字推算30天运势</div>
     <div class="gcard gcard-glow">
       <div class="fl-label">出生日期</div>
       <input type="date" class="fl-input" id="a-bday" style="color-scheme:dark"/>
@@ -512,7 +512,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 <!-- ═══ LOADING ═══ -->
 <div class="screen hidden" id="s-loading">
   <div class="inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:520px">
-    <div class="ai-badge"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>Destiny AI 运算中</div>
+    <div class="ai-badge"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>师傅推算中</div>
     <div class="load-orb"><div class="load-orb-inner"><i class="ti ti-brain"></i></div></div>
     <div class="load-title" id="l-title">正在解析你的生辰八字</div>
     <div class="load-sub" id="l-sub">建立命盘结构…</div>
@@ -532,7 +532,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
   <div class="inner">
     <div class="result-card">
       <div class="rc-head">
-        <div class="brand"><div class="brand-mark bm-d"><i class="ti ti-sparkles"></i></div><div><div class="brand-name">Destiny AI</div><div class="brand-sub">命运趋势分析</div></div></div>
+        <div class="brand"><div class="brand-mark bm-d"><i class="ti ti-sparkles"></i></div><div><div class="brand-name">命运馆</div><div class="brand-sub">命运趋势分析</div></div></div>
         <div class="rc-meta" id="r-range">—</div>
       </div>
       <div class="rc-user">
@@ -560,7 +560,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="lucky-note" id="r-lucky-note">—</div>
       </div>
       <div class="rc-footer">
-        <div><div class="footer-brand">Destiny AI</div><div class="footer-url">destinyai.com</div></div>
+        <div><div class="footer-brand">命运馆</div><div class="footer-url">destinyai.com</div></div>
         <div class="footer-seal"><i class="ti ti-shield-check"></i></div>
       </div>
     </div>
@@ -577,7 +577,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 <div class="screen hidden" id="s-tarot">
   <div class="inner">
     <div class="top-bar">
-      <div class="brand"><div class="brand-mark bm-t"><i class="ti ti-cards"></i></div><div><div class="brand-name">Tarot AI</div><div class="brand-sub">塔罗牌 · AI 占卜解读</div></div></div>
+      <div class="brand"><div class="brand-mark bm-t"><i class="ti ti-cards"></i></div><div><div class="brand-name">塔罗馆</div><div class="brand-sub">塔罗牌 · 师傅占卜解读</div></div></div>
     </div>
     <div id="tarot-step1">
       <div class="page-title">选择占卜方式</div>
@@ -585,7 +585,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       <div class="mode-grid">
         <div class="mode-card selected" id="mode-1" onclick="selectMode(1)">
           <div class="mode-icon"><i class="ti ti-cards"></i></div>
-          <div class="mode-info"><div class="mode-title">单张抽牌</div><div class="mode-desc">随机抽一张，AI 解读今日能量与提示</div></div>
+          <div class="mode-info"><div class="mode-title">单张抽牌</div><div class="mode-desc">随机抽一张，师傅解读今日能量与提示</div></div>
           <i class="ti ti-chevron-right" style="color:rgba(255,255,255,.25)"></i>
         </div>
         <div class="mode-card" id="mode-2" onclick="selectMode(2)">
@@ -595,7 +595,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         </div>
         <div class="mode-card" id="mode-3" onclick="selectMode(3)">
           <div class="mode-icon"><i class="ti ti-message-question"></i></div>
-          <div class="mode-info"><div class="mode-title">问题占卜</div><div class="mode-desc">输入你的问题，AI 选牌并给出针对性解读</div></div>
+          <div class="mode-info"><div class="mode-title">问题占卜</div><div class="mode-desc">输入你的问题，师傅选牌并给出针对性解读</div></div>
           <i class="ti ti-chevron-right" style="color:rgba(255,255,255,.25)"></i>
         </div>
       </div>
@@ -619,19 +619,19 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
           <div class="card-slot" id="slot-2"><i class="ti ti-cards"></i><div class="card-slot-label">未来</div></div>
         </div>
       </div>
-      <button class="big-btn tarot-btn" id="tarot-btn" onclick="interpretCards()" style="display:none;margin-bottom:12px"><i class="ti ti-sparkles"></i>AI 解读塔罗</button>
+      <button class="big-btn tarot-btn" id="tarot-btn" onclick="interpretCards()" style="display:none;margin-bottom:12px"><i class="ti ti-sparkles"></i>师傅解读塔罗</button>
     </div>
     <div class="tarot-loading" id="tarot-loading">
       <div class="tarot-spinner"></div>
       <div class="tl-title">THE CARDS SPEAK</div>
-      <div class="tl-sub">AI 正在解读牌面能量…</div>
+      <div class="tl-sub">师傅正在解读牌面能量…</div>
     </div>
     <div id="tarot-result" style="display:none">
       <div class="reading-card">
-        <div class="rc-head"><div class="rc-badge"><i class="ti ti-cards"></i>Tarot AI · 占卜解读</div><div style="font-size:11px;font-weight:400;color:rgba(255,255,255,.35)" id="r-mode-label">—</div></div>
+        <div class="rc-head"><div class="rc-badge"><i class="ti ti-cards"></i>塔罗馆 · 占卜解读</div><div style="font-size:11px;font-weight:400;color:rgba(255,255,255,.35)" id="r-mode-label">—</div></div>
         <div class="drawn-mini" id="r-drawn-mini"></div>
         <div id="r-interp-sections"></div>
-        <div class="reading-footer"><div><div class="footer-brand">Destiny AI · Tarot</div><div class="footer-url">destinyai.com</div></div><div class="rf-seal"><i class="ti ti-eye"></i></div></div>
+        <div class="reading-footer"><div><div class="footer-brand">命运馆 · 塔罗</div><div class="footer-url">destinyai.com</div></div><div class="rf-seal"><i class="ti ti-eye"></i></div></div>
       </div>
       <div class="share-row">
         <div class="sh-btn sh-tarot" onclick="shareTarot()"><i class="ti ti-share"></i>分享占卜结果</div>
@@ -647,7 +647,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 <div class="screen hidden" id="s-fate">
   <div class="inner">
     <div class="top-bar">
-      <div class="brand"><div class="brand-mark bm-f"><i class="ti ti-sun"></i></div><div><div class="brand-name">FateLab</div><div class="brand-sub">Future AI · 每日命运提示</div></div></div>
+      <div class="brand"><div class="brand-mark bm-f"><i class="ti ti-sun"></i></div><div><div class="brand-name">每日签语馆</div><div class="brand-sub">师傅推算 · 每日命运提示</div></div></div>
       <div class="time-block">
         <div class="t-date" id="f-date">—</div>
         <div class="t-day" id="f-day">—</div>
@@ -662,12 +662,12 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       </div>
       <div class="saved-pill" id="f-savedPill"><i class="ti ti-check"></i><span>生日已记住</span></div>
     </div>
-    <div class="fate-loading" id="fateLoading"><div class="fate-spinner"></div><div class="fate-loading-text">AI 正在解读今日命运…</div></div>
+    <div class="fate-loading" id="fateLoading"><div class="fate-spinner"></div><div class="fate-loading-text">师傅正在推算今日命运…</div></div>
     <div id="fateResults" style="display:none">
       <div class="today-sign-card">
-        <div class="tsc-head"><div class="tsc-badge"><i class="ti ti-sparkles"></i>Future AI · 今日签语</div><div class="tsc-date-label" id="f-today-date">—</div></div>
+        <div class="tsc-head"><div class="tsc-badge"><i class="ti ti-sparkles"></i>师傅 · 今日签语</div><div class="tsc-date-label" id="f-today-date">—</div></div>
         <div class="tsc-sign-wrap">
-          <div class="sign-label">AI Destiny · 今日能量</div>
+          <div class="sign-label">师傅推算 · 今日能量</div>
           <div class="sign-quote" id="f-today-quote">—</div>
           <div class="sign-tags" id="f-today-tags"></div>
         </div>
@@ -684,7 +684,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="ss-btn ss-main" onclick="shareSign()"><i class="ti ti-share"></i>分享今日签语</div>
         <div class="ss-btn ss-sec" onclick="copySign()"><i class="ti ti-copy"></i>复制文字</div>
       </div>
-      <div class="disclaimer"><i class="ti ti-info-circle"></i>签语每天自动更新 · AI 生成仅供参考</div>
+      <div class="disclaimer"><i class="ti ti-info-circle"></i>签语每天自动更新 · 师傅推算仅供参考</div>
     </div>
   </div>
 </div>
@@ -697,7 +697,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
     <div class="top-bar">
       <div class="brand">
         <div class="brand-mark" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)"><i class="ti ti-stars"></i></div>
-        <div><div class="brand-name">星座运势</div><div class="brand-sub">Zodiac AI · 今日 · 本周 · 本月</div></div>
+        <div><div class="brand-name">星座运势</div><div class="brand-sub">星盘推算 · 今日 · 本周 · 本月</div></div>
       </div>
     </div>
 
@@ -724,7 +724,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 
     <div id="zodiac-loading" style="display:none;text-align:center;padding:2rem 0">
       <div style="width:52px;height:52px;border-radius:50%;border:2.5px solid rgba(14,165,233,.15);border-top-color:rgba(14,165,233,.8);animation:spin 1s linear infinite;margin:0 auto 1rem"></div>
-      <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:4px">AI 解读星盘中…</div>
+      <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:4px">师傅解读星盘中…</div>
       <div style="font-size:11px;color:rgba(255,255,255,.3);animation:pulse 1.5s ease-in-out infinite">连接宇宙能量…</div>
     </div>
 
@@ -783,7 +783,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
           <div id="z-character" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.65)"></div>
         </div>
         <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">Destiny AI · Zodiac</div>
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">命运馆 · 星座</div>
           <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(14,165,233,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-stars" style="font-size:14px;color:rgba(14,165,233,.4)"></i></div>
         </div>
       </div>
@@ -837,7 +837,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         </div>
         <div style="padding:.8rem 1.2rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap" id="zp-kws"></div>
         <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">Destiny AI · 星座配对</div>
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">命运馆 · 星座配对</div>
           <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(14,165,233,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-stars" style="font-size:14px;color:rgba(14,165,233,.4)"></i></div>
         </div>
       </div>
@@ -856,7 +856,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
     <div class="top-bar">
       <div class="brand">
         <div class="brand-mark" style="background:linear-gradient(135deg,#f59e0b,#ef4444)"><i class="ti ti-yin-yang"></i></div>
-        <div><div class="brand-name">生肖运势</div><div class="brand-sub">Chinese Zodiac · AI 全面解读</div></div>
+        <div><div class="brand-name">生肖运势</div><div class="brand-sub">生肖命理 · 师傅全面解读</div></div>
       </div>
     </div>
 
@@ -883,7 +883,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 
     <div id="sx-loading" style="display:none;text-align:center;padding:2rem 0">
       <div style="width:52px;height:52px;border-radius:50%;border:2.5px solid rgba(245,158,11,.15);border-top-color:rgba(245,158,11,.8);animation:spin 1s linear infinite;margin:0 auto 1rem"></div>
-      <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:4px">AI 推算生肖运势…</div>
+      <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:4px">师傅推算生肖运势…</div>
       <div style="font-size:11px;color:rgba(255,255,255,.3);animation:pulse 1.5s ease-in-out infinite">感应今年天时地利…</div>
     </div>
 
@@ -950,7 +950,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
           <div id="sx-kws" style="display:flex;gap:5px;margin-top:9px;flex-wrap:wrap"></div>
         </div>
         <div style="padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">Destiny AI · 生肖</div>
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">命运馆 · 生肖</div>
           <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-yin-yang" style="font-size:14px;color:rgba(245,158,11,.4)"></i></div>
         </div>
       </div>
@@ -1008,7 +1008,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         </div>
         <div style="padding:.8rem 1.2rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap" id="sxp-kws"></div>
         <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">Destiny AI · 生肖配对</div>
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">命运馆 · 生肖配对</div>
           <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-yin-yang" style="font-size:14px;color:rgba(245,158,11,.4)"></i></div>
         </div>
       </div>
@@ -1236,13 +1236,13 @@ function fillResult(){
   document.getElementById('r-lucky').innerHTML=String(lucky.number).padStart(4,'0').split('').map(function(d){return'<div class="ld">'+d+'</div>';}).join('');
   setText('r-lucky-note',lucky.reason);
 }
-function doShare(){if(navigator.share){navigator.share({title:'Destiny AI · 未来30天',text:'AI推算了我的运势！快来试试',url:window.location.href}).catch(function(){});}else{showToast('请截图分享给朋友','ti-camera');}}
+function doShare(){if(navigator.share){navigator.share({title:'命运馆 · 未来30天',text:'师傅推算了我的运势！快来试试',url:window.location.href}).catch(function(){});}else{showToast('请截图分享给朋友','ti-camera');}}
 function copyLink(){if(navigator.clipboard){navigator.clipboard.writeText(window.location.href).then(function(){showToast('链接已复制','ti-check');});}}
-function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent('AI推算了我的运势！快来试试 → '+window.location.href),'_blank');}
+function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent('师傅推算了我的运势！快来试试 → '+window.location.href),'_blank');}
 function restartDestiny(){aiDone=false;loadDone=false;aiResult=null;selectedShichen=null;document.getElementById('sc-selected-label').textContent='';document.querySelectorAll('.sc-pill').forEach(function(b){b.classList.remove('on');});document.getElementById('l-prog').style.width='0%';var icons=['ti-loader','ti-chart-line','ti-adjustments-horizontal','ti-hash','ti-file-check'];for(var i=0;i<5;i++){var el=document.getElementById('ls'+i);el.classList.remove('active','done');if(i===0)el.classList.add('active');el.querySelector('i').className='ti '+icons[i];}setText('l-title','正在解析你的生辰八字');setText('l-sub','建立命盘结构…');goTo('s-input','s-result');document.getElementById('nav-destiny').classList.add('active');document.getElementById('nav-home').classList.remove('active');}
 
 // ── TAROT ──
-function selectMode(m){tarotMode=m;drawnCards=[];document.querySelectorAll('.mode-card').forEach(function(c){c.classList.remove('selected');});document.getElementById('mode-'+m).classList.add('selected');document.getElementById('q-input-wrap').classList.toggle('show',m===3);document.getElementById('draw-area-wrap').style.display=m===3?'none':'block';document.getElementById('three-slots').style.display=m===2?'grid':'none';document.getElementById('tarot-btn').style.display='none';var titles=['点击牌堆，抽出今日塔罗','点击牌堆，依次抽出三张牌','输入问题后点击 AI 解读'];setText('draw-title',titles[m-1]);setText('draw-hint',m===3?'':'点击牌堆开始');if(m===2){['slot-0','slot-1','slot-2'].forEach(function(id,i){var s=document.getElementById(id);s.classList.remove('filled');s.innerHTML='<i class="ti ti-cards"></i><div class="card-slot-label">'+['过去','现在','未来'][i]+'</div>';});}var deck=document.querySelector('.deck-card:nth-child(3)');if(deck){deck.style.background='';deck.innerHTML='<div class="deck-pattern"><i class="ti ti-moon-stars"></i></div>';deck.classList.remove('flip-in');}}
+function selectMode(m){tarotMode=m;drawnCards=[];document.querySelectorAll('.mode-card').forEach(function(c){c.classList.remove('selected');});document.getElementById('mode-'+m).classList.add('selected');document.getElementById('q-input-wrap').classList.toggle('show',m===3);document.getElementById('draw-area-wrap').style.display=m===3?'none':'block';document.getElementById('three-slots').style.display=m===2?'grid':'none';document.getElementById('tarot-btn').style.display='none';var titles=['点击牌堆，抽出今日塔罗','点击牌堆，依次抽出三张牌','输入问题后点击师傅解读'];setText('draw-title',titles[m-1]);setText('draw-hint',m===3?'':'点击牌堆开始');if(m===2){['slot-0','slot-1','slot-2'].forEach(function(id,i){var s=document.getElementById(id);s.classList.remove('filled');s.innerHTML='<i class="ti ti-cards"></i><div class="card-slot-label">'+['过去','现在','未来'][i]+'</div>';});}var deck=document.querySelector('.deck-card:nth-child(3)');if(deck){deck.style.background='';deck.innerHTML='<div class="deck-pattern"><i class="ti ti-moon-stars"></i></div>';deck.classList.remove('flip-in');}}
 function randCard(){return{card:DECK[Math.floor(Math.random()*DECK.length)],reversed:Math.random()>0.65};}
 function drawCards(){
   if(tarotMode===1){if(drawnCards.length>0)return;var drawn=randCard();drawnCards=[drawn];var deck=document.querySelector('.deck-card:nth-child(3)');deck.style.background='linear-gradient(160deg,#1a0535,#0d0220)';deck.innerHTML='<div style="text-align:center;padding:12px"><div style="font-size:42px;line-height:1;margin-bottom:8px'+(drawn.reversed?';transform:rotate(180deg)':'')+'"">'+drawn.card.symbol+'</div><div style="font-family:Cinzel,serif;font-size:9px;font-weight:500;color:rgba(255,255,255,.75);letter-spacing:.1em">'+drawn.card.zh+'</div>'+(drawn.reversed?'<div style="font-size:9px;font-weight:500;color:rgba(240,120,170,.8);margin-top:5px">逆位</div>':'')+'</div>';deck.classList.add('flip-in');setText('draw-hint',drawn.card.zh+(drawn.reversed?' · 逆位':' · 正位'));document.getElementById('tarot-btn').style.display='flex';}
@@ -1274,18 +1274,18 @@ function renderTarotResult(){
   else{if(r.question){var qd=document.createElement('div');qd.className='interp-section';qd.innerHTML='<div class="is-head"><div class="is-icon"><i class="ti ti-message-question"></i></div><div class="is-title">你的问题</div></div><div class="is-text" style="font-style:italic;color:rgba(255,255,255,.5)">「'+r.question+'」</div>';secs.appendChild(qd);}(d.cards||[]).forEach(function(c,i){addSec('ti-cards','第'+(i+1)+'张 · '+c.name+' · '+c.position,c.meaning);});addSec('ti-sparkles','综合答案',d.answer,d.keywords);}
 }
 function resetTarot(){drawnCards=[];tarotResult=null;document.getElementById('tarot-result').style.display='none';document.getElementById('tarot-step1').style.display='block';document.getElementById('tarot-btn').style.display='none';document.getElementById('tarot-question').value='';var deck=document.querySelector('.deck-card:nth-child(3)');if(deck){deck.style.background='';deck.innerHTML='<div class="deck-pattern"><i class="ti ti-moon-stars"></i></div>';deck.classList.remove('flip-in');}selectMode(1);}
-function shareTarot(){var text='Destiny AI · 塔罗占卜\n';if(tarotResult&&tarotResult.data){if(tarotResult.mode===1)text+='「'+tarotResult.data.core+'」';else if(tarotResult.mode===2)text+='「'+tarotResult.data.summary+'」';else text+='「'+tarotResult.data.answer+'」';}text+='\n→ destinyai.com';if(navigator.share){navigator.share({title:'Tarot AI 占卜',text:text}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
+function shareTarot(){var text='命运馆 · 塔罗占卜\n';if(tarotResult&&tarotResult.data){if(tarotResult.mode===1)text+='「'+tarotResult.data.core+'」';else if(tarotResult.mode===2)text+='「'+tarotResult.data.summary+'」';else text+='「'+tarotResult.data.answer+'」';}text+='\n→ destinyai.com';if(navigator.share){navigator.share({title:'塔罗馆占卜',text:text}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
 function copyTarot(){var text='';if(tarotResult&&tarotResult.data){if(tarotResult.mode===1)text=tarotResult.data.core;else if(tarotResult.mode===2)text=tarotResult.data.summary;else text=tarotResult.data.answer;}if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){showToast('解读已复制','ti-check');});}}
-function shareWATarot(){window.open('https://wa.me/?text='+encodeURIComponent('我刚用 Tarot AI 占卜了！快来试试 → destinyai.com'),'_blank');}
+function shareWATarot(){window.open('https://wa.me/?text='+encodeURIComponent('我刚用命运馆占卜了！快来试试 → destinyai.com'),'_blank');}
 
 // ── FATELAB ──
 function loadFateSign(){var bday=document.getElementById('f-bday').value;if(!bday){showToast('请先填写出生日期','ti-calendar');return;}try{localStorage.setItem('destiny_bday',bday);}catch(e){}document.getElementById('f-savedPill').classList.add('show');document.getElementById('fateResults').style.display='none';document.getElementById('fateLoading').classList.add('show');callFateAI(bday);}
 async function callFateAI(bday){
   var n=new Date(),todayStr=n.getDate()+' '+MONTHS[n.getMonth()]+' '+n.getFullYear();
   var days=[];for(var i=1;i<=3;i++){var d=new Date(n);d.setDate(d.getDate()+i);days.push(d.getDate()+' '+MONTHS[d.getMonth()]);}
-  var prompt='你是 FateLab，AI 命运系统。根据生日推算今日和未来3天签语。\n生日：'+bday+'\n今天：'+todayStr+'\n每句签语30-40字，神秘有诗意，像来自未来的提醒。\n只返回JSON：{"today":{"quote":"今日签语","tags":["标签1","标签2","标签3"],"money":4,"love":3,"work":4,"luck":3},"days":[{"label":"Tomorrow","date":"'+days[0]+'","energy":"high","quote":"…","tags":["词1","词2"]},{"label":"NextDay","date":"'+days[1]+'","energy":"mid","quote":"…","tags":["词1","词2"]},{"label":"Day 3","date":"'+days[2]+'","energy":"low","quote":"…","tags":["词1","词2"]}]}';
+  var prompt='你是一位神秘的命理师傅。根据生日推算今日和未来3天签语。\n生日：'+bday+'\n今天：'+todayStr+'\n每句签语30-40字，神秘有诗意，像来自未来的提醒。\n只返回JSON：{"today":{"quote":"今日签语","tags":["标签1","标签2","标签3"],"money":4,"love":3,"work":4,"luck":3},"days":[{"label":"Tomorrow","date":"'+days[0]+'","energy":"high","quote":"…","tags":["词1","词2"]},{"label":"NextDay","date":"'+days[1]+'","energy":"mid","quote":"…","tags":["词1","词2"]},{"label":"Day 3","date":"'+days[2]+'","energy":"low","quote":"…","tags":["词1","词2"]}]}';
   try{var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});var data=await res.json();var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();fateData=JSON.parse(txt);}
-  catch(e){fateData={today:{quote:'今日能量流动悄然，有些事情正在背后为你默默排列好位置。保持心静，属于你的不会错过。',tags:['Future AI','命运流动','静待时机'],money:4,love:3,work:4,luck:3},days:[{label:'Tomorrow',date:days[0],energy:'high',quote:'明天有股新的气息，适合主动出击，一个小决定可能带来意想不到的连锁反应。',tags:['行动日','机遇']},{label:'NextDay',date:days[1],energy:'mid',quote:'后天适合沉淀，与其追赶不如等待，某段关系会有微妙的转机出现。',tags:['沉淀','转机']},{label:'Day 3',date:days[2],energy:'low',quote:'大后天能量趋于平稳，适合整理思路，为下一阶段做好内心准备。',tags:['内省','蓄力']}]};}
+  catch(e){fateData={today:{quote:'今日能量流动悄然，有些事情正在背后为你默默排列好位置。保持心静，属于你的不会错过。',tags:['师傅推算','命运流动','静待时机'],money:4,love:3,work:4,luck:3},days:[{label:'Tomorrow',date:days[0],energy:'high',quote:'明天有股新的气息，适合主动出击，一个小决定可能带来意想不到的连锁反应。',tags:['行动日','机遇']},{label:'NextDay',date:days[1],energy:'mid',quote:'后天适合沉淀，与其追赶不如等待，某段关系会有微妙的转机出现。',tags:['沉淀','转机']},{label:'Day 3',date:days[2],energy:'low',quote:'大后天能量趋于平稳，适合整理思路，为下一阶段做好内心准备。',tags:['内省','蓄力']}]};}
   document.getElementById('fateLoading').classList.remove('show');renderFate();document.getElementById('fateResults').style.display='block';
 }
 function scoreDots(s){var h='';for(var i=1;i<=5;i++)h+='<div class="sc-dot '+(i<=s?'sc-dot-on':'sc-dot-off')+'"></div>';return h;}
@@ -1298,8 +1298,8 @@ function renderFate(){
   var wrap=document.getElementById('f-next-days');wrap.innerHTML='';
   (d.days||[]).forEach(function(day,i){var el=day.energy==='high'?['high','高能量']:day.energy==='mid'?['mid','中能量']:['low','平稳'];var card=document.createElement('div');card.className='day-card d'+i;card.innerHTML='<div class="dc-head"><div class="dc-left"><div class="dc-icon d'+i+'"><i class="ti '+DAY_ICONS[i]+'"></i></div><div><div class="dc-day-name">'+day.label+'</div><div class="dc-date">'+day.date+'</div></div></div><div class="dc-energy '+el[0]+'">'+el[1]+'</div></div><div class="dc-quote">'+day.quote+'</div><div class="dc-tags">'+(day.tags||[]).map(function(t){return'<span class="dc-tag">'+t+'</span>';}).join('')+'</div>';wrap.appendChild(card);});
 }
-function shareSign(){var q=fateData&&fateData.today?fateData.today.quote:'';var txt='FateLab · 今日命运签语\n\n「'+q+'」\n\n每天更新 → destinyai.com';if(navigator.share){navigator.share({title:'FateLab 今日签语',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
-function copySign(){var q=fateData&&fateData.today?fateData.today.quote:'';if(navigator.clipboard){navigator.clipboard.writeText('「'+q+'」— FateLab · Destiny AI').then(function(){showToast('签语已复制','ti-check');});}}
+function shareSign(){var q=fateData&&fateData.today?fateData.today.quote:'';var txt='命运馆 · 今日命运签语\n\n「'+q+'」\n\n每天更新 → destinyai.com';if(navigator.share){navigator.share({title:'今日签语',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
+function copySign(){var q=fateData&&fateData.today?fateData.today.quote:'';if(navigator.clipboard){navigator.clipboard.writeText('「'+q+'」— 命运馆').then(function(){showToast('签语已复制','ti-check');});}}
 
 // ── LUCKY ──
 function setLP(type,el){lotteryType=type;document.querySelectorAll('.lp').forEach(function(p){p.classList.remove('on');});el.classList.add('on');}
@@ -1315,7 +1315,7 @@ function generateLucky(){
   else{for(var i=0;i<lotteryCount;i++){var res=genToto(rng);lastNums.push(res.main.join(',')+'+'+res.bonus);var card=document.createElement('div');card.className='toto-card';var balls='';for(var b=0;b<res.main.length;b++)balls+='<div class="tball">'+pad2(res.main[b])+'</div>';balls+='<div class="tball bonus">+'+pad2(res.bonus)+'</div>';card.innerHTML='<div class="toto-set-label"><i class="ti ti-circles"></i>第'+(i+1)+'组</div><div class="toto-balls">'+balls+'</div><div class="toto-reason"><i class="ti ti-sparkles"></i>'+L_REASONS[i%L_REASONS.length]+'</div>';wrap.appendChild(card);}}
   document.getElementById('luckyResults').style.display='block';setTimeout(function(){document.getElementById('luckyResults').scrollIntoView({behavior:'smooth',block:'start'});},100);
 }
-function shareNums(){var txt='Destiny AI 今日幸运号码：'+lastNums.join(' / ')+'\n每天自动更新 → destinyai.com';if(navigator.share){navigator.share({title:'幸运号码',text:txt}).catch(function(){});}else{showToast('请截图保存号码','ti-camera');}}
+function shareNums(){var txt='命运馆 今日幸运号码：'+lastNums.join(' / ')+'\n每天自动更新 → destinyai.com';if(navigator.share){navigator.share({title:'幸运号码',text:txt}).catch(function(){});}else{showToast('请截图保存号码','ti-camera');}}
 function copyNums(){if(navigator.clipboard){navigator.clipboard.writeText(lastNums.join(' / ')).then(function(){showToast('号码已复制','ti-check');});}}
 // ═══════════════════════════════════════════
 //  ZODIAC
@@ -1415,7 +1415,7 @@ function switchZTab(tab){
   }
 }
 
-function shareZodiac(){var t=zodiacData?zodiacData.today.text:'';var txt='Destiny AI · '+ZODIACS[selZodiac].zh+'今日运势\n\n「'+t+'」\n\n→ destinyai.com';if(navigator.share){navigator.share({title:'星座运势',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
+function shareZodiac(){var t=zodiacData?zodiacData.today.text:'';var txt='命运馆 · '+ZODIACS[selZodiac].zh+'今日运势\n\n「'+t+'」\n\n→ destinyai.com';if(navigator.share){navigator.share({title:'星座运势',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
 
 // ═══════════════════════════════════════════
 //  SHENGXIAO
@@ -1615,7 +1615,7 @@ function renderZodiacPair(zA,zB){
 
 function shareZPair(){
   var zA=ZODIACS[selZodiac],zB=ZODIACS[selZodiacB];
-  var txt='Destiny AI · 星座配对\n'+zA.zh+' × '+zB.zh+'\n\n相容指数：'+(zPairData?zPairData.score+'%':'')+'「'+(zPairData?zPairData.love:'')+'」\n\n→ destinyai.com';
+  var txt='命运馆 · 星座配对\n'+zA.zh+' × '+zB.zh+'\n\n相容指数：'+(zPairData?zPairData.score+'%':'')+'「'+(zPairData?zPairData.love:'')+'」\n\n→ destinyai.com';
   if(navigator.share){navigator.share({title:'星座配对',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}
 }
 function copyZPair(){if(zPairData&&navigator.clipboard){navigator.clipboard.writeText(zPairData.love).then(function(){showToast('已复制','ti-check');});}}
@@ -1734,7 +1734,7 @@ function renderSXPair(sA,sB){
 
 function shareSXPair(){
   var sA=SX[selSX],sB=SX[selSXB];
-  var txt='Destiny AI · 生肖配对\n属'+sA.name+' × 属'+sB.name+'\n\n缘分指数：'+(sxPairData?sxPairData.score+'%  '+sxPairData.compat:'')+'「'+(sxPairData?sxPairData.love:'')+'」\n\n→ destinyai.com';
+  var txt='命运馆 · 生肖配对\n属'+sA.name+' × 属'+sB.name+'\n\n缘分指数：'+(sxPairData?sxPairData.score+'%  '+sxPairData.compat:'')+'「'+(sxPairData?sxPairData.love:'')+'」\n\n→ destinyai.com';
   if(navigator.share){navigator.share({title:'生肖配对',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}
 }
 function copySXPair(){if(sxPairData&&navigator.clipboard){navigator.clipboard.writeText(sxPairData.love).then(function(){showToast('已复制','ti-check');});}}
