@@ -406,6 +406,14 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 .toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%) translateY(8px);background:rgba(10,6,20,.98);border:1.5px solid rgba(255,255,255,.14);backdrop-filter:blur(24px);border-radius:100px;padding:10px 20px;font-size:12px;font-weight:500;color:rgba(255,255,255,.8);opacity:0;transition:all .3s;pointer-events:none;z-index:1000;white-space:nowrap;display:flex;align-items:center;gap:7px}
 .toast i{font-size:14px}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* SHICHEN GRID in input */
+.shichen-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.sc-pill{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 4px;text-align:center;cursor:pointer;transition:all .2s}
+.sc-pill.on{background:rgba(140,100,255,.15);border-color:rgba(140,100,255,.55);box-shadow:0 0 10px rgba(140,100,255,.18)}
+.sc-pill-zh{font-size:12px;font-weight:600;color:rgba(255,255,255,.85)}
+.sc-pill-time{font-size:8px;font-weight:400;color:rgba(255,255,255,.3);margin-top:2px}
+.sc-pill.on .sc-pill-zh{color:#fff}
+.sc-pill.on .sc-pill-time{color:rgba(180,140,255,.7)}
 </style>
 </head>
 <body>
@@ -439,7 +447,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       <div class="feat-card dc" onclick="goTo('s-input','s-home')">
         <div class="fiw fiw-p"><i class="ti ti-crystal-ball"></i></div>
         <div class="feat-title">命运分析</div>
-        <div class="feat-desc">30天运势<br>生辰推算</div>
+        <div class="feat-desc">30天运势<br>生辰八字推算</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
       <div class="feat-card tc" onclick="goTo('s-tarot','s-home')">
@@ -448,16 +456,10 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="feat-desc">三种牌阵<br>AI 深度解读</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
-      <div class="feat-card fc" onclick="goTo('s-fate','s-home')">
+      <div class="feat-card fc" onclick="goTo('s-fate','s-home')" style="grid-column:span 2">
         <div class="fiw fiw-a"><i class="ti ti-sun"></i></div>
-        <div class="feat-title">FateLab</div>
-        <div class="feat-desc">每日签语<br>未来3天预测</div>
-        <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
-      </div>
-      <div class="feat-card lc" onclick="goTo('s-lucky','s-home')">
-        <div class="fiw fiw-g"><i class="ti ti-ticket"></i></div>
-        <div class="feat-title">幸运号码</div>
-        <div class="feat-desc">每日4D/3D<br>TOTO</div>
+        <div class="feat-title">FateLab · 每日签语</div>
+        <div class="feat-desc">Future AI · 今日能量 · 未来3天预测</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
     </div>
@@ -470,17 +472,24 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
   <div class="inner">
     <div class="back-row" onclick="goTo('s-home','s-input')"><i class="ti ti-arrow-left"></i><span>返回</span></div>
     <div class="page-title">命运分析</div>
-    <div class="page-sub">填写三项信息，启动30天运势推算</div>
+    <div class="page-sub">填写信息，AI 结合八字推算30天运势</div>
     <div class="gcard gcard-glow">
       <div class="fl-label">出生日期</div>
       <input type="date" class="fl-input" id="a-bday" style="color-scheme:dark"/>
+
+      <div class="fl-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span>出生时辰 <span style="font-size:9px;color:rgba(255,255,255,.3);font-weight:400;letter-spacing:.05em;text-transform:none">（选填 · 更精准）</span></span>
+        <span id="sc-selected-label" style="font-size:10px;color:rgba(160,120,255,.8);font-weight:600"></span>
+      </div>
+      <div class="shichen-grid" id="a-shichenGrid" style="margin-bottom:12px"></div>
+
       <div class="fl-label">性别</div>
       <div class="gender-grid">
         <div class="gender-pill on" onclick="setGender(this,'男')"><i class="ti ti-gender-male"></i>Male</div>
         <div class="gender-pill" onclick="setGender(this,'女')"><i class="ti ti-gender-female"></i>Female</div>
       </div>
       <div class="fl-label">最近的烦恼或期待</div>
-      <textarea class="fl-textarea" id="a-worry" placeholder="例：工作压力大，想知道下个月会不会有转机…" style="height:68px;margin-bottom:12px"></textarea>
+      <textarea class="fl-textarea" id="a-worry" placeholder="例：工作压力大，想知道下个月会不会有转机…" style="height:64px;margin-bottom:12px"></textarea>
       <button class="big-btn" onclick="startAnalysis()"><i class="ti ti-sparkles"></i>开始推算</button>
     </div>
   </div>
@@ -515,7 +524,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       <div class="rc-user">
         <div class="rc-chip"><i class="ti ti-calendar"></i><span id="r-bday">—</span></div>
         <div class="rc-chip"><i class="ti ti-user"></i><span id="r-gender">—</span></div>
-        <div class="rc-chip"><i class="ti ti-clock"></i>未来30天</div>
+        <div class="rc-chip"><i class="ti ti-clock"></i><span id="r-shichen">未来30天</span></div>
       </div>
       <div class="rc-title"><div class="rc-title-main">Future 30 Days</div><div class="rc-title-sub">财运 · 感情 · 工作 · 幸运号码</div></div>
       <div class="rc-section">
@@ -666,55 +675,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
   </div>
 </div>
 
-<!-- ═══ LUCKY ═══ -->
-<div class="screen hidden" id="s-lucky">
-  <div class="inner">
-    <div class="top-bar">
-      <div class="brand"><div class="brand-mark bm-l"><i class="ti ti-ticket"></i></div><div><div class="brand-name">Destiny AI</div><div class="brand-sub">Lucky Numbers</div></div></div>
-      <div class="time-block">
-        <div class="t-date" id="l-date">—</div>
-        <div class="t-day" id="l-day">—</div>
-        <div class="t-clock" id="l-clock">—</div>
-      </div>
-    </div>
-    <div class="gcard gcard-glow">
-      <div class="fl-label">你的出生日期（固定记住）</div>
-      <input type="date" class="fl-input" id="l-bday" style="color-scheme:dark;margin-bottom:7px" onchange="saveLBday()"/>
-      <div class="saved-pill" id="l-savedPill"><i class="ti ti-check"></i><span>生日已记住，明天自动载入</span></div>
-      <div class="fl-label" style="margin-bottom:7px">彩票类型</div>
-      <div class="lottery-pills">
-        <div class="lp on" id="lp-4d" onclick="setLP('4d',this)"><i class="ti ti-number-4"></i><div class="lp-name">万字 4D</div></div>
-        <div class="lp" id="lp-3d" onclick="setLP('3d',this)"><i class="ti ti-number-3"></i><div class="lp-name">3D</div></div>
-        <div class="lp" id="lp-toto" onclick="setLP('toto',this)"><i class="ti ti-circles"></i><div class="lp-name">TOTO</div></div>
-      </div>
-      <div class="fl-label" style="margin-bottom:7px">生成几组（最多5组）</div>
-      <div class="count-row">
-        <div class="cnt on" onclick="setCount(1,this)">1</div>
-        <div class="cnt" onclick="setCount(2,this)">2</div>
-        <div class="cnt" onclick="setCount(3,this)">3</div>
-        <div class="cnt" onclick="setCount(4,this)">4</div>
-        <div class="cnt" onclick="setCount(5,this)">5</div>
-      </div>
-      <button class="big-btn" onclick="generateLucky()"><i class="ti ti-dice-5"></i>生成今日幸运号码</button>
-    </div>
-    <div id="luckyResults" style="display:none">
-      <div class="datestamp">
-        <div><div class="ds-label"><i class="ti ti-calendar-event"></i>今日号码 · 有效期至午夜</div><div class="ds-date" id="l-ds-date">—</div></div>
-        <div class="ds-right"><div class="ds-expires"><i class="ti ti-clock"></i>距离更新</div><div class="ds-countdown" id="l-countdown">—</div></div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
-        <div style="font-size:11px;font-weight:500;letter-spacing:.14em;color:rgba(255,255,255,.4);text-transform:uppercase;display:flex;align-items:center;gap:6px"><i class="ti ti-hash" style="font-size:14px"></i><span id="l-res-label">幸运号码</span></div>
-        <div style="font-size:11px;font-weight:500;color:rgba(180,140,255,.9);background:rgba(150,100,255,.12);border:1.5px solid rgba(150,100,255,.3);border-radius:100px;padding:5px 14px;cursor:pointer;display:flex;align-items:center;gap:5px" onclick="generateLucky()"><i class="ti ti-refresh" style="font-size:12px"></i>重新生成</div>
-      </div>
-      <div id="l-cards"></div>
-      <div class="num-share">
-        <div class="ns-btn ns-main" onclick="shareNums()"><i class="ti ti-share"></i>分享号码</div>
-        <div class="ns-btn ns-sec" onclick="copyNums()"><i class="ti ti-copy"></i>复制号码</div>
-      </div>
-      <div class="disclaimer"><i class="ti ti-info-circle"></i>号码每天自动更新 · 仅供娱乐参考 · 理性购彩 · 18岁以上</div>
-    </div>
-  </div>
-</div>
+<!-- lucky tab removed -->
 
 <!-- NAV -->
 <div class="bottom-nav">
@@ -723,7 +684,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
     <button class="nav-item" id="nav-destiny" onclick="navTo('destiny')"><i class="ti ti-crystal-ball"></i><div class="nav-label">命运</div></button>
     <button class="nav-item" id="nav-tarot" onclick="navTo('tarot')"><i class="ti ti-cards"></i><div class="nav-label">塔罗</div></button>
     <button class="nav-item" id="nav-fate" onclick="navTo('fate')"><i class="ti ti-sun"></i><div class="nav-label">签语</div></button>
-    <button class="nav-item" id="nav-lucky" onclick="navTo('lucky')"><i class="ti ti-ticket"></i><div class="nav-label">号码</div></button>
   </div>
 </div>
 <div class="toast" id="toast"><i class="ti ti-info-circle" id="toast-icon"></i><span id="toast-msg"></span></div>
@@ -765,7 +725,31 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
   window.addEventListener('resize',function(){resize();initStars();});
 })();
 
-// ── GLOBALS ──
+// ── SHICHEN DATA ──
+var SHICHEN_DATA=[
+  {zh:'子时',time:'23-01',dz:'子'},{zh:'丑时',time:'01-03',dz:'丑'},
+  {zh:'寅时',time:'03-05',dz:'寅'},{zh:'卯时',time:'05-07',dz:'卯'},
+  {zh:'辰时',time:'07-09',dz:'辰'},{zh:'巳时',time:'09-11',dz:'巳'},
+  {zh:'午时',time:'11-13',dz:'午'},{zh:'未时',time:'13-15',dz:'未'},
+  {zh:'申时',time:'15-17',dz:'申'},{zh:'酉时',time:'17-19',dz:'酉'},
+  {zh:'戌时',time:'19-21',dz:'戌'},{zh:'亥时',time:'21-23',dz:'亥'}
+];
+var selectedShichen=null;
+
+// Build shichen grid
+(function(){
+  var g=document.getElementById('a-shichenGrid');
+  SHICHEN_DATA.forEach(function(sc,i){
+    var d=document.createElement('div');d.className='sc-pill';
+    d.innerHTML='<div class="sc-pill-zh">'+sc.zh+'</div><div class="sc-pill-time">'+sc.time+'</div>';
+    d.onclick=function(){
+      document.querySelectorAll('.sc-pill').forEach(function(b){b.classList.remove('on');});
+      d.classList.add('on');selectedShichen=i;
+      document.getElementById('sc-selected-label').textContent=sc.zh+'（'+sc.dz+'）';
+    };
+    g.appendChild(d);
+  });
+})();
 var gender='男',aiResult=null,aiDone=false,loadDone=false,userData={};
 var fateData=null,lotteryType='4d',lotteryCount=1,lastNums=[];
 var tarotMode=1,drawnCards=[],tarotResult=null;
@@ -807,8 +791,8 @@ function goTo(to,from){
 function navTo(tab){
   document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');});
   document.getElementById('nav-'+tab).classList.add('active');
-  var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',lucky:'s-lucky'};
-  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-lucky'];
+  var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate'};
+  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate'];
   var cur=null;all.forEach(function(s){if(!document.getElementById(s).classList.contains('hidden'))cur=s;});
   if(cur&&cur!==map[tab])goTo(map[tab],cur);
 }
@@ -843,7 +827,8 @@ function setGender(el,v){gender=v;document.querySelectorAll('.gender-pill').forE
 function startAnalysis(){
   var bday=document.getElementById('a-bday').value;
   if(!bday){showToast('请先填写生日','ti-calendar');return;}
-  userData={bday:bday,gender:gender,worry:document.getElementById('a-worry').value||''};
+  var sc=selectedShichen!==null?SHICHEN_DATA[selectedShichen]:null;
+  userData={bday:bday,gender:gender,worry:document.getElementById('a-worry').value||'',shichen:sc};
   goTo('s-loading','s-input');setTimeout(function(){runLoading();callDestinyAI();},300);
 }
 function runLoading(){
@@ -855,9 +840,10 @@ function runLoading(){
   setTimeout(function(){clearInterval(timer);pf.style.width='100%';var last=document.getElementById('ls4');last.classList.remove('active');last.classList.add('done');last.querySelector('i').className='ti ti-check';loadDone=true;tryShowResult();},10500);
 }
 async function callDestinyAI(){
-  var b=userData.bday,g=userData.gender,w=userData.worry;
+  var b=userData.bday,g=userData.gender,w=userData.worry,sc=userData.shichen;
+  var scText=sc?'，出生时辰：'+sc.zh+'（地支：'+sc.dz+'）':'（时辰未填）';
   try{
-    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:'你是一位神秘而温柔的命理趋势分析师。根据以下信息生成未来30天运势与幸运号码：\n生日：'+b+'\n性别：'+g+'\n烦恼：'+(w||'未填写')+'\n\n要求：神秘感、像真人命理师、让人被理解、不100%说死、每段约50字、有画面感。lucky4d给一组真实4位万字号码，reason给20字内原因。\n只返回JSON：{"money":{"score":4,"text":"…","keywords":["词1","词2"]},"love":{"score":3,"text":"…","keywords":["词1","词2"]},"work":{"score":4,"text":"…","keywords":["词1","词2"]},"remind":"…","lucky4d":{"number":"1234","reason":"天干吉数聚合"}}\nscore为1-5整数。'}]})});
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:'你是一位神秘而温柔的命理趋势分析师，结合生辰八字与现代AI趋势分析。根据以下信息生成未来30天运势与幸运号码：\n生日：'+b+scText+'\n性别：'+g+'\n烦恼：'+(w||'未填写')+'\n\n要求：神秘感、像真人命理师、让人被理解、不100%说死、每段约50字、有画面感。若有时辰请结合八字时柱分析，lucky4d给一组真实4位万字号码，reason给20字内原因。\n只返回JSON：{"money":{"score":4,"text":"…","keywords":["词1","词2"]},"love":{"score":3,"text":"…","keywords":["词1","词2"]},"work":{"score":4,"text":"…","keywords":["词1","词2"]},"remind":"…","lucky4d":{"number":"1234","reason":"天干吉数聚合"}}\nscore为1-5整数。'}]})});
     var data=await res.json();
     var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
     aiResult=JSON.parse(txt);
@@ -873,6 +859,7 @@ function fillResult(){
   var r=aiResult,n=new Date(),end=new Date(n);end.setDate(end.getDate()+30);
   var fmt=function(d){return d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();};
   setText('r-range',fmt(n)+' → '+fmt(end));setText('r-bday',userData.bday);setText('r-gender',userData.gender==='男'?'Male':'Female');
+  setText('r-shichen',userData.shichen?userData.shichen.zh:'未来30天');
   var fill=function(key,d){setText('r-s-'+key,d.score+' / 5');document.getElementById('r-b-'+key).innerHTML=scoreBar(d.score);setText('r-t-'+key,d.text);document.getElementById('r-k-'+key).innerHTML=(d.keywords||[]).map(function(k){return'<span class="rcs-kw">'+k+'</span>';}).join('');};
   fill('money',r.money);fill('love',r.love);fill('work',r.work);setText('r-remind',r.remind);
   var lucky=r.lucky4d||{number:'8888',reason:'吉数推算'};
@@ -882,7 +869,7 @@ function fillResult(){
 function doShare(){if(navigator.share){navigator.share({title:'Destiny AI · 未来30天',text:'AI推算了我的运势！快来试试',url:window.location.href}).catch(function(){});}else{showToast('请截图分享给朋友','ti-camera');}}
 function copyLink(){if(navigator.clipboard){navigator.clipboard.writeText(window.location.href).then(function(){showToast('链接已复制','ti-check');});}}
 function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent('AI推算了我的运势！快来试试 → '+window.location.href),'_blank');}
-function restartDestiny(){aiDone=false;loadDone=false;aiResult=null;document.getElementById('l-prog').style.width='0%';var icons=['ti-loader','ti-chart-line','ti-adjustments-horizontal','ti-hash','ti-file-check'];for(var i=0;i<5;i++){var el=document.getElementById('ls'+i);el.classList.remove('active','done');if(i===0)el.classList.add('active');el.querySelector('i').className='ti '+icons[i];}setText('l-title','正在解析你的生辰八字');setText('l-sub','建立命盘结构…');goTo('s-input','s-result');document.getElementById('nav-destiny').classList.add('active');document.getElementById('nav-home').classList.remove('active');}
+function restartDestiny(){aiDone=false;loadDone=false;aiResult=null;selectedShichen=null;document.getElementById('sc-selected-label').textContent='';document.querySelectorAll('.sc-pill').forEach(function(b){b.classList.remove('on');});document.getElementById('l-prog').style.width='0%';var icons=['ti-loader','ti-chart-line','ti-adjustments-horizontal','ti-hash','ti-file-check'];for(var i=0;i<5;i++){var el=document.getElementById('ls'+i);el.classList.remove('active','done');if(i===0)el.classList.add('active');el.querySelector('i').className='ti '+icons[i];}setText('l-title','正在解析你的生辰八字');setText('l-sub','建立命盘结构…');goTo('s-input','s-result');document.getElementById('nav-destiny').classList.add('active');document.getElementById('nav-home').classList.remove('active');}
 
 // ── TAROT ──
 function selectMode(m){tarotMode=m;drawnCards=[];document.querySelectorAll('.mode-card').forEach(function(c){c.classList.remove('selected');});document.getElementById('mode-'+m).classList.add('selected');document.getElementById('q-input-wrap').classList.toggle('show',m===3);document.getElementById('draw-area-wrap').style.display=m===3?'none':'block';document.getElementById('three-slots').style.display=m===2?'grid':'none';document.getElementById('tarot-btn').style.display='none';var titles=['点击牌堆，抽出今日塔罗','点击牌堆，依次抽出三张牌','输入问题后点击 AI 解读'];setText('draw-title',titles[m-1]);setText('draw-hint',m===3?'':'点击牌堆开始');if(m===2){['slot-0','slot-1','slot-2'].forEach(function(id,i){var s=document.getElementById(id);s.classList.remove('filled');s.innerHTML='<i class="ti ti-cards"></i><div class="card-slot-label">'+['过去','现在','未来'][i]+'</div>';});}var deck=document.querySelector('.deck-card:nth-child(3)');if(deck){deck.style.background='';deck.innerHTML='<div class="deck-pattern"><i class="ti ti-moon-stars"></i></div>';deck.classList.remove('flip-in');}}
