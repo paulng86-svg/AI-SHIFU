@@ -456,6 +456,20 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="feat-desc">三种牌阵<br>AI 深度解读</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
+      <div class="feat-card" style="border-color:rgba(14,165,233,.2)" onclick="goTo('s-zodiac','s-home')">
+        <div style="position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.5),transparent)"></div>
+        <div class="fiw" style="background:rgba(14,165,233,.1);border:1.5px solid rgba(14,165,233,.3)"><i class="ti ti-stars" style="color:rgba(14,165,233,1)"></i></div>
+        <div class="feat-title">星座运势</div>
+        <div class="feat-desc">今日/本周/本月<br>性格配对解读</div>
+        <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
+      </div>
+      <div class="feat-card" style="border-color:rgba(245,158,11,.2)" onclick="goTo('s-shengxiao','s-home')">
+        <div style="position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.5),transparent)"></div>
+        <div class="fiw" style="background:rgba(245,158,11,.1);border:1.5px solid rgba(245,158,11,.3)"><i class="ti ti-yin-yang" style="color:rgba(245,158,11,1)"></i></div>
+        <div class="feat-title">生肖运势</div>
+        <div class="feat-desc">今年运势 · 相合相冲<br>事业感情全分析</div>
+        <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
+      </div>
       <div class="feat-card fc" onclick="goTo('s-fate','s-home')" style="grid-column:span 2">
         <div class="fiw fiw-a"><i class="ti ti-sun"></i></div>
         <div class="feat-title">FateLab · 每日签语</div>
@@ -677,13 +691,206 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 
 <!-- lucky tab removed -->
 
+<!-- ═══ ZODIAC ═══ -->
+<div class="screen hidden" id="s-zodiac">
+  <div class="inner">
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-mark" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)"><i class="ti ti-stars"></i></div>
+        <div><div class="brand-name">星座运势</div><div class="brand-sub">Zodiac AI · 今日 · 本周 · 本月</div></div>
+      </div>
+    </div>
+
+    <div class="gcard gcard-glow" id="zodiac-input-card">
+      <div class="fl-label">选择你的星座</div>
+      <div id="zodiac-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px"></div>
+      <button class="big-btn" style="background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:0 4px 20px rgba(14,165,233,.35)" onclick="runZodiac()">
+        <i class="ti ti-stars"></i>查看星座运势
+      </button>
+    </div>
+
+    <div id="zodiac-loading" style="display:none;text-align:center;padding:2rem 0">
+      <div style="width:52px;height:52px;border-radius:50%;border:2.5px solid rgba(14,165,233,.15);border-top-color:rgba(14,165,233,.8);animation:spin 1s linear infinite;margin:0 auto 1rem"></div>
+      <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:4px">AI 解读星盘中…</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.3);animation:pulse 1.5s ease-in-out infinite">连接宇宙能量…</div>
+    </div>
+
+    <div id="zodiac-result" style="display:none">
+      <!-- header card -->
+      <div style="background:rgba(14,10,30,.9);border:1.5px solid rgba(14,165,233,.3);border-radius:20px;overflow:hidden;margin-bottom:12px;position:relative">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.8),rgba(99,102,241,.8),transparent)"></div>
+        <div style="padding:1.1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div id="z-symbol" style="font-size:40px;line-height:1"></div>
+            <div>
+              <div id="z-name-zh" style="font-size:18px;font-weight:700;color:#fff"></div>
+              <div id="z-name-en" style="font-size:11px;color:rgba(14,165,233,.7);letter-spacing:.08em;margin-top:2px"></div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div id="z-date-range" style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:4px"></div>
+            <div id="z-element-badge" style="font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px;display:inline-block"></div>
+          </div>
+        </div>
+        <!-- lucky today strip -->
+        <div style="padding:.8rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;gap:16px">
+          <div style="flex:1;text-align:center">
+            <div style="font-size:9px;font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:5px">幸运色</div>
+            <div id="z-lucky-color" style="font-size:13px;font-weight:600;color:#fff"></div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,.06)"></div>
+          <div style="flex:1;text-align:center">
+            <div style="font-size:9px;font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:5px">幸运数</div>
+            <div id="z-lucky-num" style="font-size:13px;font-weight:600;color:#fff"></div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,.06)"></div>
+          <div style="flex:1;text-align:center">
+            <div style="font-size:9px;font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:5px">配对</div>
+            <div id="z-match" style="font-size:13px;font-weight:600;color:#fff"></div>
+          </div>
+        </div>
+        <!-- score bars -->
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(14,165,233,.6);text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:6px"><i class="ti ti-chart-bar" style="font-size:13px"></i>今日综合指数</div>
+          <div id="z-scores" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+        <!-- tabs -->
+        <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div class="ztab active" id="ztab-today" onclick="switchZTab('today')" style="flex:1;padding:.7rem;text-align:center;font-size:11px;font-weight:600;cursor:pointer;border-bottom:2px solid rgba(14,165,233,.7);color:rgba(14,165,233,.9)">今日</div>
+          <div class="ztab" id="ztab-week" onclick="switchZTab('week')" style="flex:1;padding:.7rem;text-align:center;font-size:11px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.3);border-bottom:2px solid transparent">本周</div>
+          <div class="ztab" id="ztab-month" onclick="switchZTab('month')" style="flex:1;padding:.7rem;text-align:center;font-size:11px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.3);border-bottom:2px solid transparent">本月</div>
+        </div>
+        <div style="padding:1rem 1.2rem">
+          <div id="z-period-text" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.7)"></div>
+          <div id="z-period-kws" style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap"></div>
+        </div>
+        <!-- character -->
+        <div style="padding:0 1.2rem 1rem;border-top:1px solid rgba(255,255,255,.06);padding-top:.9rem">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(99,102,241,.6);text-transform:uppercase;margin-bottom:.6rem;display:flex;align-items:center;gap:6px"><i class="ti ti-user-heart" style="font-size:13px"></i>性格特质</div>
+          <div id="z-character" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.65)"></div>
+        </div>
+        <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">Destiny AI · Zodiac</div>
+          <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(14,165,233,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-stars" style="font-size:14px;color:rgba(14,165,233,.4)"></i></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:0 4px 18px rgba(14,165,233,.3);grid-column:span 2" onclick="shareZodiac()"><i class="ti ti-share"></i>分享星座运势</div>
+        <div class="sh-btn sh-sec" onclick="copyZodiac()"><i class="ti ti-copy"></i>复制</div>
+        <div class="sh-btn sh-sec" onclick="resetZodiac()"><i class="ti ti-refresh"></i>换星座</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SHENGXIAO ═══ -->
+<div class="screen hidden" id="s-shengxiao">
+  <div class="inner">
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-mark" style="background:linear-gradient(135deg,#f59e0b,#ef4444)"><i class="ti ti-yin-yang"></i></div>
+        <div><div class="brand-name">生肖运势</div><div class="brand-sub">Chinese Zodiac · AI 全面解读</div></div>
+      </div>
+    </div>
+
+    <div class="gcard gcard-glow" id="sx-input-card">
+      <div class="fl-label">选择你的生肖</div>
+      <div id="sx-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px"></div>
+      <button class="big-btn" style="background:linear-gradient(135deg,#f59e0b,#ef4444);box-shadow:0 4px 20px rgba(245,158,11,.35)" onclick="runShengxiao()">
+        <i class="ti ti-yin-yang"></i>查看生肖运势
+      </button>
+    </div>
+
+    <div id="sx-loading" style="display:none;text-align:center;padding:2rem 0">
+      <div style="width:52px;height:52px;border-radius:50%;border:2.5px solid rgba(245,158,11,.15);border-top-color:rgba(245,158,11,.8);animation:spin 1s linear infinite;margin:0 auto 1rem"></div>
+      <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:4px">AI 推算生肖运势…</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.3);animation:pulse 1.5s ease-in-out infinite">感应今年天时地利…</div>
+    </div>
+
+    <div id="sx-result" style="display:none">
+      <div style="background:rgba(20,10,5,.9);border:1.5px solid rgba(245,158,11,.3);border-radius:20px;overflow:hidden;margin-bottom:12px;position:relative">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.8),rgba(239,68,68,.7),transparent)"></div>
+        <!-- header -->
+        <div style="padding:1.1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div id="sx-emoji" style="font-size:44px;line-height:1"></div>
+            <div>
+              <div id="sx-name" style="font-size:20px;font-weight:700;color:#fff"></div>
+              <div id="sx-years" style="font-size:10px;color:rgba(245,158,11,.7);letter-spacing:.06em;margin-top:3px"></div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div id="sx-element-badge" style="font-size:12px;font-weight:600;padding:5px 14px;border-radius:100px;display:inline-block;margin-bottom:5px"></div>
+            <div id="sx-year-badge" style="font-size:10px;color:rgba(255,255,255,.3)"></div>
+          </div>
+        </div>
+        <!-- compat strip -->
+        <div style="padding:.8rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;gap:14px;align-items:center">
+          <div style="flex:1">
+            <div style="font-size:9px;font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:5px">最配生肖</div>
+            <div id="sx-best-match" style="font-size:13px;font-weight:600;color:rgba(245,158,11,1)"></div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,.06)"></div>
+          <div style="flex:1">
+            <div style="font-size:9px;font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:5px">相冲生肖</div>
+            <div id="sx-clash" style="font-size:13px;font-weight:600;color:rgba(239,68,68,.8)"></div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,.06)"></div>
+          <div style="flex:1">
+            <div style="font-size:9px;font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:5px">幸运方位</div>
+            <div id="sx-direction" style="font-size:13px;font-weight:600;color:#fff"></div>
+          </div>
+        </div>
+        <!-- scores -->
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:6px"><i class="ti ti-chart-bar" style="font-size:13px"></i>今年运势指数</div>
+          <div id="sx-scores" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+        <!-- sections -->
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-trending-up" style="font-size:13px"></i>今年整体运势</div>
+          <div id="sx-overall" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.7)"></div>
+        </div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-coin" style="font-size:13px"></i>事业财运</div>
+          <div id="sx-career" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.7)"></div>
+        </div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-heart" style="font-size:13px"></i>性格与感情</div>
+          <div id="sx-love" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.7)"></div>
+        </div>
+        <!-- 相合相冲 -->
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:6px"><i class="ti ti-arrows-exchange" style="font-size:13px"></i>与各生肖相处</div>
+          <div id="sx-compat" style="display:flex;flex-direction:column;gap:7px"></div>
+        </div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-bulb" style="font-size:13px"></i>今年重点提醒</div>
+          <div id="sx-advice" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.7)"></div>
+          <div id="sx-kws" style="display:flex;gap:5px;margin-top:9px;flex-wrap:wrap"></div>
+        </div>
+        <div style="padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2)">Destiny AI · 生肖</div>
+          <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-yin-yang" style="font-size:14px;color:rgba(245,158,11,.4)"></i></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#f59e0b,#ef4444);box-shadow:0 4px 18px rgba(245,158,11,.3);grid-column:span 2" onclick="shareSX()"><i class="ti ti-share"></i>分享生肖运势</div>
+        <div class="sh-btn sh-sec" onclick="copySX()"><i class="ti ti-copy"></i>复制</div>
+        <div class="sh-btn sh-sec" onclick="resetSX()"><i class="ti ti-refresh"></i>换生肖</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- NAV -->
 <div class="bottom-nav">
   <div class="nav-bar">
     <button class="nav-item active" id="nav-home" onclick="navTo('home')"><i class="ti ti-home"></i><div class="nav-label">首页</div></button>
     <button class="nav-item" id="nav-destiny" onclick="navTo('destiny')"><i class="ti ti-crystal-ball"></i><div class="nav-label">命运</div></button>
     <button class="nav-item" id="nav-tarot" onclick="navTo('tarot')"><i class="ti ti-cards"></i><div class="nav-label">塔罗</div></button>
-    <button class="nav-item" id="nav-fate" onclick="navTo('fate')"><i class="ti ti-sun"></i><div class="nav-label">签语</div></button>
+    <button class="nav-item" id="nav-zodiac" onclick="navTo('zodiac')"><i class="ti ti-stars"></i><div class="nav-label">星座</div></button>
+    <button class="nav-item" id="nav-shengxiao" onclick="navTo('shengxiao')"><i class="ti ti-yin-yang"></i><div class="nav-label">生肖</div></button>
   </div>
 </div>
 <div class="toast" id="toast"><i class="ti ti-info-circle" id="toast-icon"></i><span id="toast-msg"></span></div>
@@ -791,8 +998,8 @@ function goTo(to,from){
 function navTo(tab){
   document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');});
   document.getElementById('nav-'+tab).classList.add('active');
-  var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate'};
-  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate'];
+  var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao'};
+  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
   var cur=null;all.forEach(function(s){if(!document.getElementById(s).classList.contains('hidden'))cur=s;});
   if(cur&&cur!==map[tab])goTo(map[tab],cur);
 }
@@ -947,6 +1154,207 @@ function generateLucky(){
 }
 function shareNums(){var txt='Destiny AI 今日幸运号码：'+lastNums.join(' / ')+'\n每天自动更新 → destinyai.com';if(navigator.share){navigator.share({title:'幸运号码',text:txt}).catch(function(){});}else{showToast('请截图保存号码','ti-camera');}}
 function copyNums(){if(navigator.clipboard){navigator.clipboard.writeText(lastNums.join(' / ')).then(function(){showToast('号码已复制','ti-check');});}}
+// ═══════════════════════════════════════════
+//  ZODIAC
+// ═══════════════════════════════════════════
+var ZODIACS=[
+  {zh:'白羊座',en:'Aries',sym:'♈',dates:'3.21-4.19',elem:'火象',color:'rgba(239,68,68,1)',elemCls:'rgba(239,68,68,.12)',elemBdr:'rgba(239,68,68,.35)',lucky:'红色',num:'9',match:'狮子'},
+  {zh:'金牛座',en:'Taurus',sym:'♉',dates:'4.20-5.20',elem:'土象',color:'rgba(34,197,94,1)',elemCls:'rgba(34,197,94,.1)',elemBdr:'rgba(34,197,94,.32)',lucky:'绿色',num:'6',match:'处女'},
+  {zh:'双子座',en:'Gemini',sym:'♊',dates:'5.21-6.20',elem:'风象',color:'rgba(250,204,21,1)',elemCls:'rgba(250,204,21,.1)',elemBdr:'rgba(250,204,21,.32)',lucky:'黄色',num:'5',match:'天秤'},
+  {zh:'巨蟹座',en:'Cancer',sym:'♋',dates:'6.21-7.22',elem:'水象',color:'rgba(96,165,250,1)',elemCls:'rgba(96,165,250,.1)',elemBdr:'rgba(96,165,250,.32)',lucky:'银色',num:'2',match:'天蝎'},
+  {zh:'狮子座',en:'Leo',sym:'♌',dates:'7.23-8.22',elem:'火象',color:'rgba(251,146,60,1)',elemCls:'rgba(251,146,60,.1)',elemBdr:'rgba(251,146,60,.32)',lucky:'金色',num:'1',match:'白羊'},
+  {zh:'处女座',en:'Virgo',sym:'♍',dates:'8.23-9.22',elem:'土象',color:'rgba(167,139,250,1)',elemCls:'rgba(167,139,250,.1)',elemBdr:'rgba(167,139,250,.32)',lucky:'米色',num:'6',match:'金牛'},
+  {zh:'天秤座',en:'Libra',sym:'♎',dates:'9.23-10.22',elem:'风象',color:'rgba(244,114,182,1)',elemCls:'rgba(244,114,182,.1)',elemBdr:'rgba(244,114,182,.32)',lucky:'粉色',num:'7',match:'双子'},
+  {zh:'天蝎座',en:'Scorpio',sym:'♏',dates:'10.23-11.21',elem:'水象',color:'rgba(220,38,38,1)',elemCls:'rgba(220,38,38,.1)',elemBdr:'rgba(220,38,38,.32)',lucky:'深红',num:'8',match:'巨蟹'},
+  {zh:'射手座',en:'Sagittarius',sym:'♐',dates:'11.22-12.21',elem:'火象',color:'rgba(251,191,36,1)',elemCls:'rgba(251,191,36,.1)',elemBdr:'rgba(251,191,36,.32)',lucky:'蓝色',num:'3',match:'白羊'},
+  {zh:'摩羯座',en:'Capricorn',sym:'♑',dates:'12.22-1.19',elem:'土象',color:'rgba(148,163,184,1)',elemCls:'rgba(148,163,184,.1)',elemBdr:'rgba(148,163,184,.32)',lucky:'棕色',num:'8',match:'金牛'},
+  {zh:'水瓶座',en:'Aquarius',sym:'♒',dates:'1.20-2.18',elem:'风象',color:'rgba(14,165,233,1)',elemCls:'rgba(14,165,233,.1)',elemBdr:'rgba(14,165,233,.32)',lucky:'蓝色',num:'4',match:'双子'},
+  {zh:'双鱼座',en:'Pisces',sym:'♓',dates:'2.19-3.20',elem:'水象',color:'rgba(99,102,241,1)',elemCls:'rgba(99,102,241,.1)',elemBdr:'rgba(99,102,241,.32)',lucky:'紫色',num:'7',match:'天蝎'}
+];
+var selZodiac=null, zodiacData=null, curZTab='today';
+
+(function(){
+  var g=document.getElementById('zodiac-grid');
+  ZODIACS.forEach(function(z,i){
+    var d=document.createElement('div');
+    d.style.cssText='background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;transition:all .2s';
+    d.innerHTML='<div style="font-size:20px;line-height:1;margin-bottom:4px">'+z.sym+'</div><div style="font-size:10px;font-weight:600;color:rgba(255,255,255,.7)">'+z.zh+'</div>';
+    d.onclick=function(){
+      document.querySelectorAll('#zodiac-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
+      d.style.background='rgba(14,165,233,.15)';d.style.borderColor='rgba(14,165,233,.55)';
+      selZodiac=i;
+    };
+    g.appendChild(d);
+  });
+})();
+
+function runZodiac(){
+  if(selZodiac===null){showToast('请先选择星座','ti-stars');return;}
+  var z=ZODIACS[selZodiac];
+  document.getElementById('zodiac-input-card').style.display='none';
+  document.getElementById('zodiac-loading').style.display='block';
+  callZodiacAI(z);
+}
+
+async function callZodiacAI(z){
+  var today=new Date();var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var todayStr=today.getDate()+' '+MONTHS[today.getMonth()]+' '+today.getFullYear();
+  var prompt='你是一位专业的星座运势分析师。请为'+z.zh+'（'+z.en+'，'+z.elem+'）提供详细运势解读。\n今天：'+todayStr+'\n\n请提供：今日/本周/本月运势各一段（约50字），性格特质（约50字），各类指数评分，关键词。\n每段语气神秘温柔，有画面感，让人感觉被理解。\n\n只返回JSON：{"today":{"text":"…","keywords":["词1","词2"]},"week":{"text":"…","keywords":["词1","词2"]},"month":{"text":"…","keywords":["词1","词2"]},"character":"性格特质约50字","scores":{"love":4,"career":3,"money":4,"health":4}}\nscore为1-5整数。';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    var data=await res.json();
+    var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
+    zodiacData=JSON.parse(txt);
+  }catch(e){
+    zodiacData={today:{text:'今日星盘能量流动微妙，内心有些想法正在悄悄成形。顺势而为，不必强求，属于你的机缘自然会来敲门。',keywords:['内心流动','顺势而为']},week:{text:'本周有股新的气息涌入，适合主动出击。某个关键对话或决定，可能会在本周内悄悄改变一些事情的走向。',keywords:['主动出击','关键转折']},month:{text:'本月整体运势渐入佳境，前半月宜沉淀观察，后半月适合行动。感情与事业都有值得期待的变化正在酝酿。',keywords:['渐入佳境','静待时机']},character:'个性鲜明，内心世界丰富，对美好事物有独特的感知力。待人真诚，但有时需要一些独处的时间来补充能量。',scores:{love:4,career:3,money:4,health:4}};
+  }
+  document.getElementById('zodiac-loading').style.display='none';
+  renderZodiac(z);
+  document.getElementById('zodiac-result').style.display='block';
+}
+
+function renderZodiac(z){
+  document.getElementById('z-symbol').textContent=z.sym;
+  document.getElementById('z-name-zh').textContent=z.zh;
+  document.getElementById('z-name-en').textContent=z.en;
+  document.getElementById('z-date-range').textContent=z.dates;
+  var eb=document.getElementById('z-element-badge');
+  eb.textContent=z.elem;eb.style.background=z.elemCls;eb.style.border='1.5px solid '+z.elemBdr;eb.style.color=z.color;
+  document.getElementById('z-lucky-color').textContent=z.lucky;
+  document.getElementById('z-lucky-num').textContent=z.num;
+  document.getElementById('z-match').textContent=z.match;
+  // scores
+  var sEl=document.getElementById('z-scores');sEl.innerHTML='';
+  var sLabels={love:'感情',career:'事业',money:'财运',health:'健康'};
+  var sColors={love:'rgba(244,114,182,1)',career:'rgba(96,165,250,1)',money:'rgba(250,204,21,1)',health:'rgba(34,197,94,1)'};
+  Object.keys(zodiacData.scores).forEach(function(k){
+    var v=zodiacData.scores[k];
+    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:10px';
+    row.innerHTML='<div style="font-size:11px;font-weight:600;width:28px;color:'+sColors[k]+'">'+sLabels[k]+'</div>'+
+      '<div style="flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden"><div style="height:100%;border-radius:100px;background:'+sColors[k]+';width:'+(v/5*100)+'%;transition:width .8s"></div></div>'+
+      '<div style="font-size:11px;font-weight:600;color:'+sColors[k]+'">'+v+'/5</div>';
+    sEl.appendChild(row);
+  });
+  document.getElementById('z-character').textContent=zodiacData.character;
+  curZTab='today';switchZTab('today');
+}
+
+function switchZTab(tab){
+  curZTab=tab;
+  ['today','week','month'].forEach(function(t){
+    var el=document.getElementById('ztab-'+t);
+    if(t===tab){el.style.borderBottom='2px solid rgba(14,165,233,.7)';el.style.color='rgba(14,165,233,.9)';el.style.fontWeight='600';}
+    else{el.style.borderBottom='2px solid transparent';el.style.color='rgba(255,255,255,.3)';el.style.fontWeight='500';}
+  });
+  if(zodiacData){
+    document.getElementById('z-period-text').textContent=zodiacData[tab].text;
+    document.getElementById('z-period-kws').innerHTML=(zodiacData[tab].keywords||[]).map(function(k){return'<span style="font-size:10px;font-weight:500;color:rgba(14,165,233,.8);background:rgba(14,165,233,.08);padding:4px 11px;border-radius:100px;border:1px solid rgba(14,165,233,.25)">'+k+'</span>';}).join('');
+  }
+}
+
+function shareZodiac(){var t=zodiacData?zodiacData.today.text:'';var txt='Destiny AI · '+ZODIACS[selZodiac].zh+'今日运势\n\n「'+t+'」\n\n→ destinyai.com';if(navigator.share){navigator.share({title:'星座运势',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
+function copyZodiac(){if(zodiacData&&navigator.clipboard){navigator.clipboard.writeText(zodiacData.today.text).then(function(){showToast('运势已复制','ti-check');});}}
+function resetZodiac(){selZodiac=null;zodiacData=null;document.getElementById('zodiac-result').style.display='none';document.getElementById('zodiac-input-card').style.display='block';document.querySelectorAll('#zodiac-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});}
+
+// ═══════════════════════════════════════════
+//  SHENGXIAO
+// ═══════════════════════════════════════════
+var SX=[
+  {name:'鼠',emoji:'🐭',years:'1960/72/84/96/2008/20',elem:'水',best:'龙、猴',clash:'马',dir:'北方',color:'rgba(96,165,250,1)',cls:'rgba(96,165,250,.1)',bdr:'rgba(96,165,250,.3)'},
+  {name:'牛',emoji:'🐂',years:'1961/73/85/97/2009/21',elem:'土',best:'蛇、鸡',clash:'羊',dir:'东北',color:'rgba(250,204,21,1)',cls:'rgba(250,204,21,.1)',bdr:'rgba(250,204,21,.3)'},
+  {name:'虎',emoji:'🐯',years:'1962/74/86/98/2010/22',elem:'木',best:'马、狗',clash:'猴',dir:'东方',color:'rgba(251,146,60,1)',cls:'rgba(251,146,60,.1)',bdr:'rgba(251,146,60,.3)'},
+  {name:'兔',emoji:'🐰',years:'1963/75/87/99/2011/23',elem:'木',best:'羊、猪',clash:'鸡',dir:'东方',color:'rgba(34,197,94,1)',cls:'rgba(34,197,94,.1)',bdr:'rgba(34,197,94,.3)'},
+  {name:'龙',emoji:'🐲',years:'1964/76/88/2000/12/24',elem:'土',best:'鼠、猴',clash:'狗',dir:'东南',color:'rgba(239,68,68,1)',cls:'rgba(239,68,68,.1)',bdr:'rgba(239,68,68,.3)'},
+  {name:'蛇',emoji:'🐍',years:'1965/77/89/2001/13/25',elem:'火',best:'牛、鸡',clash:'猪',dir:'南方',color:'rgba(167,139,250,1)',cls:'rgba(167,139,250,.1)',bdr:'rgba(167,139,250,.3)'},
+  {name:'马',emoji:'🐴',years:'1966/78/90/2002/14/26',elem:'火',best:'虎、狗',clash:'鼠',dir:'南方',color:'rgba(244,114,182,1)',cls:'rgba(244,114,182,.1)',bdr:'rgba(244,114,182,.3)'},
+  {name:'羊',emoji:'🐑',years:'1967/79/91/2003/15/27',elem:'土',best:'兔、猪',clash:'牛',dir:'西南',color:'rgba(110,231,183,1)',cls:'rgba(110,231,183,.1)',bdr:'rgba(110,231,183,.3)'},
+  {name:'猴',emoji:'🐵',years:'1968/80/92/2004/16/28',elem:'金',best:'鼠、龙',clash:'虎',dir:'西方',color:'rgba(251,191,36,1)',cls:'rgba(251,191,36,.1)',bdr:'rgba(251,191,36,.3)'},
+  {name:'鸡',emoji:'🐔',years:'1969/81/93/2005/17/29',elem:'金',best:'牛、蛇',clash:'兔',dir:'西方',color:'rgba(253,186,116,1)',cls:'rgba(253,186,116,.1)',bdr:'rgba(253,186,116,.3)'},
+  {name:'狗',emoji:'🐶',years:'1970/82/94/2006/18/30',elem:'土',best:'虎、马',clash:'龙',dir:'西北',color:'rgba(180,140,100,1)',cls:'rgba(180,140,100,.1)',bdr:'rgba(180,140,100,.3)'},
+  {name:'猪',emoji:'🐷',years:'1971/83/95/2007/19/31',elem:'水',best:'兔、羊',clash:'蛇',dir:'北方',color:'rgba(249,168,212,1)',cls:'rgba(249,168,212,.1)',bdr:'rgba(249,168,212,.3)'}
+];
+var selSX=null, sxData=null;
+
+(function(){
+  var g=document.getElementById('sx-grid');
+  SX.forEach(function(s,i){
+    var d=document.createElement('div');
+    d.style.cssText='background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;transition:all .2s';
+    d.innerHTML='<div style="font-size:22px;line-height:1;margin-bottom:4px">'+s.emoji+'</div><div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.75)">'+s.name+'</div>';
+    d.onclick=function(){
+      document.querySelectorAll('#sx-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
+      d.style.background='rgba(245,158,11,.15)';d.style.borderColor='rgba(245,158,11,.55)';
+      selSX=i;
+    };
+    g.appendChild(d);
+  });
+})();
+
+function runShengxiao(){
+  if(selSX===null){showToast('请先选择生肖','ti-yin-yang');return;}
+  var s=SX[selSX];
+  document.getElementById('sx-input-card').style.display='none';
+  document.getElementById('sx-loading').style.display='block';
+  callSXAI(s);
+}
+
+async function callSXAI(s){
+  var yr=new Date().getFullYear();
+  var prompt='你是一位专业的中国生肖命理师。请为属'+s.name+'（五行：'+s.elem+'，'+yr+'年运势）提供全面解读。\n\n请提供：今年整体运势（60字）、事业财运（50字）、性格与感情（50字）、今年重点提醒（40字）、与其他生肖的相处建议（选3个生肖简评，每个20字内）、五项指数评分、三个关键词。\n语气神秘温柔，有画面感。\n\n只返回JSON：{"overall":"…","career":"…","love":"…","advice":"…","compat":[{"name":"龙","text":"…"},{"name":"蛇","text":"…"},{"name":"马","text":"…"}],"scores":{"overall":4,"career":3,"money":4,"love":3,"health":4},"keywords":["词1","词2","词3"]}';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    var data=await res.json();
+    var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
+    sxData=JSON.parse(txt);
+  }catch(e){
+    sxData={overall:'今年整体运势平中带稳，上半年蓄力积累，下半年逐渐迎来收获期。贵人缘较旺，把握身边出现的机遇，不宜冲动行事，稳中求进是今年的核心策略。',career:'事业上有稳步上升的态势，财运在中后期明显改善。投资需谨慎，正财胜于偏财，踏实工作比冒险更容易有所收获。',love:'感情方面温水煮青蛙式地升温，单身者有机会遇到志同道合的人，已有伴侣者宜多沟通增进感情，避免因琐事产生摩擦。',advice:'今年宜低调行事，切忌张扬。注意身体健康，定期休息。贵人就在身边，用心珍惜真实的人际关系。',compat:[{name:'龙',text:'相辅相成，合作愉快'},{name:'蛇',text:'互补默契，值得深交'},{name:'马',text:'略有摩擦，需多包容'}],scores:{overall:4,career:3,money:4,love:3,health:4},keywords:['稳中求进','贵人相助','蓄力待发']};
+  }
+  document.getElementById('sx-loading').style.display='none';
+  renderSX(s);
+  document.getElementById('sx-result').style.display='block';
+}
+
+function renderSX(s){
+  var yr=new Date().getFullYear();
+  document.getElementById('sx-emoji').textContent=s.emoji;
+  document.getElementById('sx-name').textContent='属'+s.name;
+  document.getElementById('sx-years').textContent=s.years;
+  var eb=document.getElementById('sx-element-badge');
+  eb.textContent='五行：'+s.elem;eb.style.background=s.cls;eb.style.border='1.5px solid '+s.bdr;eb.style.color=s.color;
+  document.getElementById('sx-year-badge').textContent=yr+'年运势';
+  document.getElementById('sx-best-match').textContent=s.best;
+  document.getElementById('sx-clash').textContent=s.clash;
+  document.getElementById('sx-direction').textContent=s.dir;
+  // scores
+  var sc=document.getElementById('sx-scores');sc.innerHTML='';
+  var sLabels={overall:'总运',career:'事业',money:'财运',love:'感情',health:'健康'};
+  var sColors={overall:'rgba(245,158,11,1)',career:'rgba(96,165,250,1)',money:'rgba(250,204,21,1)',love:'rgba(244,114,182,1)',health:'rgba(34,197,94,1)'};
+  Object.keys(sxData.scores).forEach(function(k){
+    var v=sxData.scores[k];
+    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:10px';
+    row.innerHTML='<div style="font-size:11px;font-weight:600;width:28px;color:'+sColors[k]+'">'+sLabels[k]+'</div>'+
+      '<div style="flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden"><div style="height:100%;border-radius:100px;background:'+sColors[k]+';width:'+(v/5*100)+'%"></div></div>'+
+      '<div style="font-size:11px;font-weight:600;color:'+sColors[k]+'">'+v+'/5</div>';
+    sc.appendChild(row);
+  });
+  document.getElementById('sx-overall').textContent=sxData.overall;
+  document.getElementById('sx-career').textContent=sxData.career;
+  document.getElementById('sx-love').textContent=sxData.love;
+  document.getElementById('sx-advice').textContent=sxData.advice;
+  // compat
+  var cp=document.getElementById('sx-compat');cp.innerHTML='';
+  (sxData.compat||[]).forEach(function(c){
+    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:10px;padding:7px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px';
+    var sxObj=SX.find(function(x){return x.name===c.name;})||{emoji:'🐾'};
+    row.innerHTML='<span style="font-size:18px">'+sxObj.emoji+'</span><span style="font-size:11px;font-weight:600;color:rgba(255,255,255,.7);min-width:20px">'+c.name+'</span><span style="font-size:11px;color:rgba(255,255,255,.45);flex:1">'+c.text+'</span>';
+    cp.appendChild(row);
+  });
+  document.getElementById('sx-kws').innerHTML=(sxData.keywords||[]).map(function(k){return'<span style="font-size:10px;font-weight:500;color:rgba(245,158,11,.9);background:rgba(245,158,11,.1);padding:4px 12px;border-radius:100px;border:1px solid rgba(245,158,11,.3)">'+k+'</span>';}).join('');
+}
+
+function shareSX(){var t=sxData?sxData.overall:'';var txt='Destiny AI · 属'+SX[selSX].name+'今年运势\n\n「'+t+'」\n\n→ destinyai.com';if(navigator.share){navigator.share({title:'生肖运势',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
+function copySX(){if(sxData&&navigator.clipboard){navigator.clipboard.writeText(sxData.overall).then(function(){showToast('运势已复制','ti-check');});}}
+function resetSX(){selSX=null;sxData=null;document.getElementById('sx-result').style.display='none';document.getElementById('sx-input-card').style.display='block';document.querySelectorAll('#sx-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});}
 </script>
 </body>
 </html>
