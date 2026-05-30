@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Destiny AI · 命运趋势分析</title>
+<meta name="description" content="AI 命盘推算 · 塔罗占卜 · 每日签语 · 幸运号码">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Cinzel:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html{height:100%}
+body{font-family:'Inter',sans-serif;background:#060608;color:#fff;height:100%;overflow-x:hidden;overflow-y:hidden;position:relative}
+
+/* ── AMBIENT ── */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(120,80,255,0.16) 0%,transparent 65%),
+             radial-gradient(ellipse 40% 40% at 85% 85%,rgba(0,180,255,0.08) 0%,transparent 55%),
+             radial-gradient(ellipse 40% 40% at 10% 80%,rgba(180,60,120,0.06) 0%,transparent 55%),#060608}
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size:40px 40px;mask-image:radial-gradient(ellipse 100% 80% at 50% 0%,black 10%,transparent 75%)}
+
+/* ── SCREENS ── */
+.screen{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;overflow-y:auto;overflow-x:hidden;padding:1.25rem 1.25rem 5.5rem;transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1)}
+.screen.hidden{opacity:0;pointer-events:none;transform:translateY(20px)}
+.screen.exit{opacity:0;pointer-events:none;transform:translateY(-16px)}
+.inner{width:100%;max-width:400px}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;padding:0 1rem .85rem;display:flex;justify-content:center}
+.nav-bar{display:flex;background:rgba(10,8,16,.96);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:4px;gap:2px;backdrop-filter:blur(24px);width:100%;max-width:400px}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-radius:16px;cursor:pointer;transition:all .2s;border:none;background:transparent}
+.nav-item.active{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2)}
+.nav-item i{font-size:17px;color:rgba(255,255,255,.28)}
+.nav-item.active i{color:rgba(167,139,250,.85)}
+.nav-label{font-size:9px;font-weight:300;color:rgba(255,255,255,.28);letter-spacing:.06em}
+.nav-item.active .nav-label{color:rgba(167,139,250,.75)}
+
+/* ── SHARED COMPONENTS ── */
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem;padding-top:.2rem}
+.brand{display:flex;align-items:center;gap:9px}
+.brand-mark{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.brand-mark i{font-size:16px;color:#fff}
+.bm-d{background:linear-gradient(135deg,rgba(167,139,250,.85),rgba(96,165,250,.75))}
+.bm-t{background:linear-gradient(135deg,rgba(180,60,120,.85),rgba(120,40,180,.75))}
+.bm-f{background:linear-gradient(135deg,rgba(251,191,36,.8),rgba(245,158,11,.7))}
+.bm-l{background:linear-gradient(135deg,rgba(45,212,191,.75),rgba(16,185,129,.65))}
+.brand-name{font-size:14px;font-weight:400;color:rgba(255,255,255,.82)}
+.brand-sub{font-size:9px;color:rgba(255,255,255,.24);letter-spacing:.06em;margin-top:1px}
+.time-block{text-align:right}
+.t-date{font-size:12px;font-weight:300;color:rgba(255,255,255,.58)}
+.t-day{font-size:9px;color:rgba(255,255,255,.24);letter-spacing:.05em;margin-top:2px}
+.t-clock{font-size:11px;color:rgba(167,139,250,.5);margin-top:2px;font-variant-numeric:tabular-nums}
+.back-row{display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:1.4rem}
+.back-row i{font-size:16px;color:rgba(255,255,255,.28)}
+.back-row span{font-size:12px;color:rgba(255,255,255,.28);letter-spacing:.04em}
+.page-title{font-size:22px;font-weight:200;letter-spacing:-.01em;margin-bottom:4px;background:linear-gradient(135deg,#fff,rgba(255,255,255,.5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,.28);margin-bottom:1.4rem;line-height:1.6}
+.gcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:1.2rem;margin-bottom:12px;position:relative;overflow:hidden}
+.gcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.28),transparent)}
+.fl-label{font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.26);text-transform:uppercase;margin-bottom:6px}
+.fl-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:11px 14px;font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:#fff;outline:none;transition:border-color .2s;margin-bottom:10px}
+.fl-input:focus{border-color:rgba(167,139,250,.45)}
+.fl-textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:11px 14px;font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:#fff;outline:none;resize:none;line-height:1.6;transition:border-color .2s}
+.fl-textarea:focus{border-color:rgba(167,139,250,.45)}
+.gender-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.gender-pill{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px;text-align:center;font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,.36);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.gender-pill i{font-size:15px}
+.gender-pill.on{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.38);color:rgba(167,139,250,.85)}
+.big-btn{width:100%;background:linear-gradient(135deg,rgba(167,139,250,.88),rgba(96,165,250,.78));border:none;border-radius:12px;padding:14px;font-family:'Inter',sans-serif;font-size:14px;font-weight:400;color:#fff;cursor:pointer;letter-spacing:.03em;transition:opacity .2s,transform .15s;box-shadow:0 4px 24px rgba(120,80,255,.25);display:flex;align-items:center;justify-content:center;gap:8px}
+.big-btn i{font-size:16px}
+.big-btn:hover{opacity:.9;transform:translateY(-1px)}
+.big-btn:active{transform:scale(.99)}
+.big-btn.tarot-btn{background:linear-gradient(135deg,rgba(180,60,120,.88),rgba(120,40,180,.85));box-shadow:0 4px 24px rgba(150,40,120,.3)}
+.saved-pill{display:none;align-items:center;gap:6px;font-size:10px;color:rgba(167,139,250,.48);margin-bottom:10px}
+.saved-pill.show{display:flex}
+.saved-pill i{font-size:12px;color:rgba(167,139,250,.55)}
+@keyframes aidot{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+@keyframes orbspin{to{filter:blur(1px) hue-rotate(360deg)}}
+@keyframes pring{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes cardFlip{0%{transform:rotateY(90deg);opacity:0}100%{transform:rotateY(0);opacity:1}}
+
+/* ═══════════════════
+   HOME
+═══════════════════ */
+.orb-wrap{width:90px;height:90px;margin:0 auto 1.3rem;position:relative}
+.orb-core{width:100%;height:100%;border-radius:50%;background:conic-gradient(from 180deg,rgba(120,80,255,.82),rgba(0,180,255,.62),rgba(180,80,255,.72),rgba(120,80,255,.82));filter:blur(1px);animation:orbspin 8s linear infinite}
+.orb-shine{position:absolute;inset:6px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.2),transparent 60%)}
+.orb-ring{position:absolute;inset:-10px;border-radius:50%;border:1px solid rgba(255,255,255,.07);animation:pring 3s ease-in-out infinite}
+.orb-ring2{position:absolute;inset:-20px;border-radius:50%;border:1px solid rgba(255,255,255,.03);animation:pring 3s ease-in-out infinite 1s}
+.home-eyebrow{font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.2);text-transform:uppercase;text-align:center;margin-bottom:1.2rem}
+.home-h1{font-size:24px;font-weight:200;letter-spacing:-.02em;line-height:1.35;text-align:center;margin-bottom:.5rem;background:linear-gradient(135deg,#fff 30%,rgba(255,255,255,.5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.home-h1 em{font-style:normal;font-weight:400;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.home-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,.28);text-align:center;line-height:1.7;margin-bottom:1.5rem}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.feat-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:1rem;cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
+.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.18),transparent)}
+.feat-card.tc::before{background:linear-gradient(90deg,transparent,rgba(180,60,120,.3),transparent)}
+.feat-card.fc::before{background:linear-gradient(90deg,transparent,rgba(251,191,36,.2),transparent)}
+.feat-card.lc::before{background:linear-gradient(90deg,transparent,rgba(45,212,191,.2),transparent)}
+.feat-card:hover{transform:translateY(-1px)}
+.fiw{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:9px}
+.fiw i{font-size:17px}
+.fiw-p{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.18)}.fiw-p i{color:rgba(167,139,250,.8)}
+.fiw-t{background:rgba(180,60,120,.12);border:1px solid rgba(180,60,120,.25)}.fiw-t i{color:rgba(220,100,160,.85)}
+.fiw-a{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2)}.fiw-a i{color:rgba(251,191,36,.75)}
+.fiw-g{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.2)}.fiw-g i{color:rgba(45,212,191,.75)}
+.feat-title{font-size:12px;font-weight:400;color:rgba(255,255,255,.72);margin-bottom:2px}
+.feat-desc{font-size:10px;font-weight:300;color:rgba(255,255,255,.26);line-height:1.5}
+.feat-arrow{position:absolute;bottom:.9rem;right:.9rem}
+.feat-arrow i{font-size:12px;color:rgba(255,255,255,.14)}
+.home-note{font-size:10px;color:rgba(255,255,255,.14);text-align:center;display:flex;align-items:center;justify-content:center;gap:5px;margin-top:4px}
+.home-note i{font-size:11px}
+
+/* ═══════════════════
+   LOADING (DESTINY)
+═══════════════════ */
+.ai-badge{display:flex;align-items:center;justify-content:center;gap:7px;font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.22);text-transform:uppercase;margin-bottom:2rem}
+.ai-dot{width:5px;height:5px;border-radius:50%;background:rgba(167,139,250,.65);animation:aidot 1.4s ease-in-out infinite}
+.ai-dot:nth-child(2){animation-delay:.2s}.ai-dot:nth-child(3){animation-delay:.4s}
+.load-orb{width:70px;height:70px;border-radius:50%;margin:0 auto 1.8rem;background:conic-gradient(from 0deg,rgba(120,80,255,.9),rgba(0,180,255,.7),rgba(180,80,255,.6),rgba(120,80,255,.9));animation:orbspin 2s linear infinite;position:relative;box-shadow:0 0 30px rgba(120,80,255,.32)}
+.load-orb-inner{position:absolute;inset:7px;border-radius:50%;background:#060608;display:flex;align-items:center;justify-content:center}
+.load-orb-inner i{font-size:17px;color:rgba(255,255,255,.35)}
+.load-title{font-size:15px;font-weight:200;color:rgba(255,255,255,.8);text-align:center;margin-bottom:4px;min-height:22px}
+.load-sub{font-size:11px;font-weight:300;color:rgba(255,255,255,.24);text-align:center;margin-bottom:1.6rem}
+.prog-track{background:rgba(255,255,255,.06);border-radius:100px;height:2px;margin-bottom:1.6rem;overflow:hidden;width:100%}
+.prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,rgba(167,139,250,.9),rgba(96,165,250,.7));width:0%;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.load-steps{display:flex;flex-direction:column;gap:8px;width:100%}
+.ls{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:300;color:rgba(255,255,255,.2);transition:color .4s}
+.ls.active{color:rgba(255,255,255,.72)}.ls.done{color:rgba(167,139,250,.5)}
+.ls i{font-size:13px;width:16px;flex-shrink:0;color:rgba(255,255,255,.18);transition:color .4s}
+.ls.active i{color:rgba(167,139,250,.8)}.ls.done i{color:rgba(167,139,250,.55)}
+
+/* ═══════════════════
+   DESTINY RESULT
+═══════════════════ */
+.result-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;margin-bottom:10px;position:relative}
+.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.28),rgba(96,165,250,.28),transparent)}
+.result-card::after{content:'DESTINY AI  DESTINY AI  DESTINY AI  DESTINY AI';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:14px;font-weight:200;letter-spacing:.3em;color:rgba(255,255,255,.018);white-space:nowrap;pointer-events:none;width:220%;text-align:center}
+.rc-head{padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between}
+.rc-meta{font-size:10px;color:rgba(255,255,255,.2);text-align:right;line-height:1.6}
+.rc-user{padding:8px 1.2rem;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.rc-chip{font-size:10px;color:rgba(255,255,255,.32);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:100px;border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:4px}
+.rc-chip i{font-size:11px}
+.rc-title{text-align:center;padding:.9rem 1.2rem .5rem}
+.rc-title-main{font-size:21px;font-weight:200;letter-spacing:-.02em;background:linear-gradient(135deg,#fff 30%,rgba(255,255,255,.48));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:3px}
+.rc-title-sub{font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.18em;text-transform:uppercase}
+.rc-section{padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.rcs-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.rcs-left{display:flex;align-items:center;gap:8px}
+.rcs-icon{width:26px;height:26px;border-radius:7px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.18);display:flex;align-items:center;justify-content:center}
+.rcs-icon i{font-size:13px;color:rgba(167,139,250,.78)}
+.rcs-title{font-size:11px;font-weight:400;color:rgba(255,255,255,.62)}
+.rcs-score{font-size:10px;color:rgba(255,255,255,.2);display:flex;align-items:center;gap:4px}
+.rcs-score i{font-size:11px;color:rgba(167,139,250,.5)}
+.score-bar{display:flex;gap:3px;margin-bottom:8px}
+.sb{flex:1;height:3px;border-radius:100px}
+.sb-on{background:linear-gradient(90deg,rgba(167,139,250,.9),rgba(96,165,250,.7))}.sb-off{background:rgba(255,255,255,.06)}
+.rcs-text{font-size:12px;font-weight:300;line-height:1.85;color:rgba(255,255,255,.46);letter-spacing:.01em}
+.rcs-kws{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.rcs-kw{font-size:9px;color:rgba(167,139,250,.58);background:rgba(167,139,250,.07);padding:3px 9px;border-radius:100px;border:1px solid rgba(167,139,250,.14)}
+.remind-box{background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.12);border-radius:12px;padding:.9rem;position:relative;overflow:hidden}
+.remind-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.35),transparent)}
+.remind-tag{font-size:9px;letter-spacing:.15em;color:rgba(167,139,250,.52);text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.remind-tag i{font-size:12px;color:rgba(167,139,250,.6);animation:aidot 2s ease-in-out infinite}
+.remind-text{font-size:12px;font-weight:300;line-height:1.85;color:rgba(255,255,255,.44)}
+.lucky-strip{padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.lucky-head{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.lucky-head i{font-size:13px;color:rgba(251,191,36,.55);animation:aidot 2s ease-in-out infinite}
+.lucky-head-label{font-size:9px;letter-spacing:.15em;color:rgba(251,191,36,.52);text-transform:uppercase}
+.lucky-digits{display:flex;gap:5px;justify-content:center;margin-bottom:7px}
+.ld{width:46px;height:56px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:200;color:rgba(251,191,36,.9)}
+.lucky-note{font-size:11px;font-weight:300;color:rgba(255,255,255,.26);text-align:center;line-height:1.6}
+.rc-footer{padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between}
+.footer-brand{font-size:11px;font-weight:300;color:rgba(255,255,255,.18);letter-spacing:.08em}
+.footer-url{font-size:9px;color:rgba(255,255,255,.1);margin-top:2px}
+.footer-seal{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center}
+.footer-seal i{font-size:14px;color:rgba(255,255,255,.16)}
+.share-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px}
+.sh-btn{padding:11px;border-radius:10px;border:none;font-family:'Inter',sans-serif;font-size:11px;font-weight:300;cursor:pointer;letter-spacing:.03em;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.sh-btn i{font-size:14px}
+.sh-main{background:linear-gradient(135deg,rgba(167,139,250,.82),rgba(96,165,250,.72));color:#fff;grid-column:span 2;box-shadow:0 4px 18px rgba(120,80,255,.2)}
+.sh-main:hover{opacity:.9;transform:translateY(-1px)}
+.sh-sec{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.36)}
+.sh-sec:hover{border-color:rgba(255,255,255,.16);color:rgba(255,255,255,.62)}
+.redo-link{text-align:center;font-size:11px;color:rgba(255,255,255,.18);cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;gap:5px}
+.redo-link i{font-size:13px}
+.redo-link:hover{color:rgba(255,255,255,.48)}
+
+/* ═══════════════════
+   TAROT
+═══════════════════ */
+.mode-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.mode-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1rem 1.2rem;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
+.mode-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(180,60,120,.2),transparent)}
+.mode-card:hover{border-color:rgba(180,60,120,.35);background:rgba(180,60,120,.05)}
+.mode-card.selected{border-color:rgba(180,60,120,.55);background:rgba(180,60,120,.08)}
+.mode-icon{width:38px;height:38px;border-radius:10px;background:rgba(180,60,120,.1);border:1px solid rgba(180,60,120,.22);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mode-icon i{font-size:18px;color:rgba(220,100,160,.82)}
+.mode-info{flex:1}
+.mode-title{font-size:13px;font-weight:400;color:rgba(255,255,255,.78);margin-bottom:3px}
+.mode-desc{font-size:10px;font-weight:300;color:rgba(255,255,255,.32);line-height:1.5}
+.q-input-wrap{display:none;margin-bottom:10px}
+.q-input-wrap.show{display:block}
+.draw-area{text-align:center;padding:1rem 0;margin-bottom:14px}
+.draw-title{font-family:'Cinzel',serif;font-size:13px;letter-spacing:.15em;color:rgba(255,255,255,.5);margin-bottom:1.2rem}
+.deck-wrap{position:relative;width:120px;height:190px;margin:0 auto 1.2rem;cursor:pointer}
+.deck-card{position:absolute;width:110px;height:175px;border-radius:12px;background:linear-gradient(160deg,#1a0a2e,#0d0618);border:1px solid rgba(180,60,120,.3);display:flex;align-items:center;justify-content:center}
+.deck-card:nth-child(1){top:8px;left:8px;transform:rotate(-3deg);opacity:.4}
+.deck-card:nth-child(2){top:4px;left:4px;transform:rotate(-1.5deg);opacity:.65}
+.deck-card:nth-child(3){top:0;left:0;transform:rotate(0);transition:transform .3s,box-shadow .3s}
+.deck-card:nth-child(3):hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(180,60,120,.35)}
+.deck-pattern{width:78px;height:118px;border-radius:6px;border:1px solid rgba(180,60,120,.25);background:repeating-linear-gradient(45deg,rgba(180,60,120,.06),rgba(180,60,120,.06) 4px,transparent 4px,transparent 12px);display:flex;align-items:center;justify-content:center}
+.deck-pattern i{font-size:28px;color:rgba(180,60,120,.4)}
+.draw-hint{font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.06em;animation:aidot 2s ease-in-out infinite}
+.three-slots{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.card-slot{background:rgba(255,255,255,.02);border:1px dashed rgba(255,255,255,.1);border-radius:12px;aspect-ratio:.63;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:all .3s;position:relative;overflow:hidden}
+.card-slot.filled{border-style:solid;border-color:rgba(180,60,120,.3)}
+.card-slot-label{font-size:9px;letter-spacing:.1em;color:rgba(255,255,255,.22);text-transform:uppercase}
+.card-slot i{font-size:20px;color:rgba(255,255,255,.12)}
+.tarot-card-face{width:100%;height:100%;position:absolute;inset:0;border-radius:11px;display:flex;flex-direction:column;overflow:hidden}
+.tcf-top{background:linear-gradient(160deg,rgba(30,10,60,.95),rgba(20,5,40,.98));flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 6px}
+.tcf-symbol{font-size:26px;margin-bottom:4px;line-height:1}
+.tcf-name{font-family:'Cinzel',serif;font-size:7px;color:rgba(255,255,255,.6);letter-spacing:.1em;text-align:center;line-height:1.4}
+.tcf-reversed{font-size:7px;color:rgba(220,100,160,.6);margin-top:2px}
+.tcf-bottom{background:rgba(180,60,120,.12);border-top:1px solid rgba(180,60,120,.2);padding:4px 6px;text-align:center}
+.tcf-pos{font-size:8px;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase}
+.flip-in{animation:cardFlip .5s cubic-bezier(.4,0,.2,1) forwards}
+.reading-card{background:rgba(255,255,255,.03);border:1px solid rgba(180,60,120,.2);border-radius:18px;overflow:hidden;margin-bottom:12px;position:relative}
+.reading-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(220,100,160,.5),rgba(180,60,120,.5),transparent)}
+.reading-card::after{content:'TAROT AI  TAROT AI  TAROT AI  TAROT AI  TAROT AI';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:14px;font-weight:200;letter-spacing:.3em;color:rgba(255,255,255,.018);white-space:nowrap;pointer-events:none;width:220%;text-align:center}
+.rc-badge{font-size:9px;letter-spacing:.16em;color:rgba(220,100,160,.65);text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.rc-badge i{font-size:13px;animation:aidot 2s ease-in-out infinite}
+.drawn-mini{display:flex;gap:6px;justify-content:center;padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.dm-card{background:linear-gradient(160deg,#1a0a2e,#0d0618);border:1px solid rgba(180,60,120,.3);border-radius:8px;padding:6px 8px;text-align:center;flex:1}
+.dm-symbol{font-size:18px;line-height:1;margin-bottom:3px}
+.dm-name{font-family:'Cinzel',serif;font-size:7px;color:rgba(255,255,255,.5);letter-spacing:.08em;line-height:1.3}
+.dm-pos{font-size:7px;color:rgba(220,100,160,.5);margin-top:2px}
+.interp-section{padding:.85rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.is-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.is-icon{width:26px;height:26px;border-radius:7px;background:rgba(180,60,120,.1);border:1px solid rgba(180,60,120,.22);display:flex;align-items:center;justify-content:center}
+.is-icon i{font-size:13px;color:rgba(220,100,160,.78)}
+.is-title{font-size:11px;font-weight:400;color:rgba(255,255,255,.62)}
+.is-text{font-size:12px;font-weight:300;line-height:1.88;color:rgba(255,255,255,.46)}
+.is-kws{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.is-kw{font-size:9px;color:rgba(220,100,160,.65);background:rgba(180,60,120,.08);padding:3px 10px;border-radius:100px;border:1px solid rgba(180,60,120,.2)}
+.reading-footer{padding:.85rem 1.2rem;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between}
+.rf-seal{width:30px;height:30px;border-radius:50%;border:1px solid rgba(180,60,120,.2);display:flex;align-items:center;justify-content:center}
+.rf-seal i{font-size:14px;color:rgba(220,100,160,.3)}
+.sh-tarot{background:linear-gradient(135deg,rgba(180,60,120,.82),rgba(120,40,180,.75));color:#fff;grid-column:span 2;box-shadow:0 4px 18px rgba(150,40,120,.22)}
+.sh-tarot:hover{opacity:.9;transform:translateY(-1px)}
+.tarot-loading{display:none;flex-direction:column;align-items:center;gap:12px;padding:2.5rem 0;text-align:center}
+.tarot-loading.show{display:flex}
+.tarot-spinner{width:48px;height:48px;border-radius:50%;border:2px solid rgba(180,60,120,.15);border-top-color:rgba(220,100,160,.7);animation:orbspin 1s linear infinite}
+.tl-title{font-family:'Cinzel',serif;font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.12em}
+.tl-sub{font-size:11px;color:rgba(255,255,255,.22);animation:aidot 1.8s ease-in-out infinite}
+
+/* ═══════════════════
+   FATELAB
+═══════════════════ */
+.today-sign-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;margin-bottom:12px;position:relative}
+.today-sign-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.5),rgba(96,165,250,.5),transparent)}
+.tsc-head{padding:1rem 1.2rem .8rem;display:flex;align-items:center;justify-content:space-between}
+.tsc-badge{display:flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(167,139,250,.7)}
+.tsc-badge i{font-size:14px}
+.tsc-date-label{font-size:10px;color:rgba(255,255,255,.22)}
+.tsc-sign-wrap{padding:0 1.2rem 1rem;text-align:center}
+.sign-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px;color:rgba(167,139,250,.45)}
+.sign-quote{font-size:15px;font-weight:300;line-height:1.85;letter-spacing:.02em;margin-bottom:12px;font-style:italic;color:rgba(255,255,255,.72)}
+.sign-tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.sign-tag{font-size:10px;padding:4px 12px;border-radius:100px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:rgba(167,139,250,.7)}
+.sign-score-row{display:flex;align-items:center;justify-content:center;gap:14px;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.sc-item{text-align:center}
+.sc-item-label{font-size:9px;letter-spacing:.1em;color:rgba(255,255,255,.22);margin-bottom:5px;text-transform:uppercase}
+.sc-bar{display:flex;gap:2px;justify-content:center}
+.sc-dot{width:14px;height:4px;border-radius:100px}
+.sc-dot-on{background:rgba(167,139,250,.8)}.sc-dot-off{background:rgba(255,255,255,.08)}
+.next-days-title{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.24);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.next-days-title i{font-size:13px}
+.day-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1rem;margin-bottom:8px;position:relative;overflow:hidden}
+.day-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px}
+.day-card.d0::before{background:linear-gradient(90deg,transparent,rgba(96,165,250,.35),transparent)}
+.day-card.d1::before{background:linear-gradient(90deg,transparent,rgba(45,212,191,.3),transparent)}
+.day-card.d2::before{background:linear-gradient(90deg,transparent,rgba(167,139,250,.28),transparent)}
+.dc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.dc-left{display:flex;align-items:center;gap:8px}
+.dc-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:1px solid}
+.dc-icon.d0{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.22)}.dc-icon.d0 i{font-size:14px;color:rgba(96,165,250,.75)}
+.dc-icon.d1{background:rgba(45,212,191,.08);border-color:rgba(45,212,191,.22)}.dc-icon.d1 i{font-size:14px;color:rgba(45,212,191,.75)}
+.dc-icon.d2{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.22)}.dc-icon.d2 i{font-size:14px;color:rgba(167,139,250,.75)}
+.dc-day-name{font-size:12px;font-weight:400;color:rgba(255,255,255,.65)}
+.dc-date{font-size:10px;color:rgba(255,255,255,.25);margin-top:1px}
+.dc-energy{font-size:10px;padding:3px 10px;border-radius:100px}
+.dc-energy.high{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.22);color:rgba(45,212,191,.72)}
+.dc-energy.mid{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);color:rgba(251,191,36,.72)}
+.dc-energy.low{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.22);color:rgba(167,139,250,.72)}
+.dc-quote{font-size:12px;font-weight:300;line-height:1.8;color:rgba(255,255,255,.44);margin-bottom:8px}
+.dc-tags{display:flex;gap:5px;flex-wrap:wrap}
+.dc-tag{font-size:9px;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.3)}
+.fate-loading{display:none;flex-direction:column;align-items:center;gap:10px;padding:2rem 0}
+.fate-loading.show{display:flex}
+.fate-spinner{width:28px;height:28px;border-radius:50%;border:2px solid rgba(167,139,250,.15);border-top-color:rgba(167,139,250,.7);animation:orbspin .8s linear infinite}
+.fate-loading-text{font-size:11px;color:rgba(255,255,255,.3);animation:aidot 1.5s ease-in-out infinite}
+.fl-bday-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:6px}
+.fl-bday-row .fl-input{margin-bottom:0;flex:1}
+.mini-btn{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);border-radius:10px;padding:11px 14px;font-family:'Inter',sans-serif;font-size:12px;font-weight:300;color:rgba(167,139,250,.85);cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;display:flex;align-items:center;gap:5px}
+.mini-btn i{font-size:13px}
+.mini-btn:hover{background:rgba(167,139,250,.18)}
+.sign-share{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px}
+.ss-btn{padding:10px;border-radius:10px;border:none;font-family:'Inter',sans-serif;font-size:11px;font-weight:300;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.ss-btn i{font-size:14px}
+.ss-main{background:rgba(167,139,250,.09);border:1px solid rgba(167,139,250,.24);color:rgba(167,139,250,.75)}
+.ss-main:hover{background:rgba(167,139,250,.16)}
+.ss-sec{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.34)}
+.ss-sec:hover{border-color:rgba(255,255,255,.16);color:rgba(255,255,255,.62)}
+
+/* ═══════════════════
+   LUCKY
+═══════════════════ */
+.lottery-pills{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.lp{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s}
+.lp.on{background:rgba(167,139,250,.09);border-color:rgba(167,139,250,.38)}
+.lp i{font-size:19px;color:rgba(255,255,255,.28);display:block;margin-bottom:5px;transition:color .2s}
+.lp.on i{color:rgba(167,139,250,.82)}
+.lp-name{font-size:10px;font-weight:300;color:rgba(255,255,255,.32)}
+.lp.on .lp-name{color:rgba(167,139,250,.78)}
+.count-row{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:14px}
+.cnt{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:9px 4px;text-align:center;font-family:'Inter',sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,.3);cursor:pointer;transition:all .2s}
+.cnt.on{background:rgba(96,165,250,.09);border-color:rgba(96,165,250,.38);color:rgba(96,165,250,.82)}
+.datestamp{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:.8rem 1rem;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.ds-label{font-size:9px;letter-spacing:.14em;color:rgba(255,255,255,.18);text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:4px}
+.ds-label i{font-size:11px}
+.ds-date{font-size:13px;font-weight:300;color:rgba(255,255,255,.68)}
+.ds-right{text-align:right}
+.ds-expires{font-size:9px;color:rgba(255,255,255,.18);margin-bottom:3px;display:flex;align-items:center;gap:4px;justify-content:flex-end}
+.ds-expires i{font-size:11px}
+.ds-countdown{font-size:12px;color:rgba(167,139,250,.52);font-variant-numeric:tabular-nums}
+.num-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1rem;margin-bottom:8px;position:relative;overflow:hidden}
+.num-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.2),transparent)}
+.nc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.nc-type{font-size:10px;letter-spacing:.1em;color:rgba(255,255,255,.2);text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.nc-type i{font-size:12px}
+.nc-conf{font-size:10px;color:rgba(167,139,250,.58);background:rgba(167,139,250,.07);padding:3px 10px;border-radius:100px;border:1px solid rgba(167,139,250,.16)}
+.digits{display:flex;gap:6px;justify-content:center;margin-bottom:8px}
+.dg{width:52px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:200;position:relative;overflow:hidden}
+.dg-std{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff}
+.dg-gold{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.28);color:rgba(251,191,36,.94)}
+.dg-purple{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.28);color:rgba(167,139,250,.94)}
+.dg-shine{position:absolute;top:0;left:0;right:0;height:38%;background:linear-gradient(180deg,rgba(255,255,255,.07),transparent);pointer-events:none}
+.nc-reason{font-size:11px;font-weight:300;color:rgba(255,255,255,.24);text-align:center;line-height:1.6;display:flex;align-items:center;justify-content:center;gap:5px}
+.nc-reason i{font-size:12px;color:rgba(167,139,250,.4)}
+.grid-3d{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.card-3d{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:.9rem;text-align:center}
+.c3-label{font-size:9px;letter-spacing:.12em;color:rgba(255,255,255,.18);text-transform:uppercase;margin-bottom:7px}
+.c3-digits{display:flex;gap:5px;justify-content:center}
+.c3d{width:40px;height:50px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:200}
+.c3d-n{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#fff}
+.c3d-m{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.26);color:rgba(167,139,250,.9)}
+.toto-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1rem;margin-bottom:8px;position:relative;overflow:hidden}
+.toto-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(96,165,250,.2),transparent)}
+.toto-set-label{font-size:9px;letter-spacing:.12em;color:rgba(255,255,255,.18);text-transform:uppercase;margin-bottom:8px;text-align:center;display:flex;align-items:center;justify-content:center;gap:5px}
+.toto-set-label i{font-size:11px;color:rgba(96,165,250,.45)}
+.toto-balls{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.tball{width:36px;height:36px;border-radius:50%;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.24);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:400;color:rgba(167,139,250,.85)}
+.tball.bonus{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3);color:rgba(251,191,36,.88)}
+.toto-reason{font-size:11px;font-weight:300;color:rgba(255,255,255,.22);text-align:center;line-height:1.6;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:5px}
+.toto-reason i{font-size:12px;color:rgba(96,165,250,.38)}
+.num-share{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.ns-btn{padding:11px;border-radius:10px;border:none;font-family:'Inter',sans-serif;font-size:11px;font-weight:300;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.ns-btn i{font-size:14px}
+.ns-main{background:rgba(167,139,250,.09);border:1px solid rgba(167,139,250,.24);color:rgba(167,139,250,.75)}
+.ns-main:hover{background:rgba(167,139,250,.16)}
+.ns-sec{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.34)}
+.ns-sec:hover{border-color:rgba(255,255,255,.16);color:rgba(255,255,255,.62)}
+.disclaimer{font-size:10px;color:rgba(255,255,255,.13);text-align:center;margin-top:10px;line-height:1.6;display:flex;align-items:center;justify-content:center;gap:5px}
+.disclaimer i{font-size:11px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(8px);background:rgba(14,10,24,.97);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(20px);border-radius:100px;padding:9px 18px;font-size:11px;color:rgba(255,255,255,.68);opacity:0;transition:all .3s;pointer-events:none;z-index:1000;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.toast i{font-size:13px}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="grid-bg"></div>
+
+<!-- ═══ HOME ═══ -->
+<div class="screen" id="s-home">
+  <div class="inner">
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-mark bm-d"><i class="ti ti-sparkles"></i></div>
+        <div><div class="brand-name">Destiny AI</div><div class="brand-sub">命运 · 塔罗 · 签语 · 幸运</div></div>
+      </div>
+      <div class="time-block">
+        <div class="t-date" id="h-date">—</div>
+        <div class="t-day" id="h-day">—</div>
+        <div class="t-clock" id="h-clock">—</div>
+      </div>
+    </div>
+    <div class="home-eyebrow">Powered by AI · 多维度命运解读</div>
+    <div class="orb-wrap">
+      <div class="orb-core"><div class="orb-shine"></div></div>
+      <div class="orb-ring"></div><div class="orb-ring2"></div>
+    </div>
+    <div class="home-h1">探索你的<em>命运轨迹</em></div>
+    <div class="home-sub">生辰八字 · 塔罗占卜 · 每日签语<br>幸运号码 · AI 全方位解读</div>
+    <div class="feat-grid">
+      <div class="feat-card" onclick="goTo('s-input','s-home')">
+        <div class="fiw fiw-p"><i class="ti ti-crystal-ball"></i></div>
+        <div class="feat-title">命运分析</div>
+        <div class="feat-desc">30天运势<br>生辰推算</div>
+        <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
+      </div>
+      <div class="feat-card tc" onclick="goTo('s-tarot','s-home')">
+        <div class="fiw fiw-t"><i class="ti ti-cards"></i></div>
+        <div class="feat-title">塔罗占卜</div>
+        <div class="feat-desc">三种牌阵<br>AI 深度解读</div>
+        <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
+      </div>
+      <div class="feat-card fc" onclick="goTo('s-fate','s-home')">
+        <div class="fiw fiw-a"><i class="ti ti-sun"></i></div>
+        <div class="feat-title">FateLab</div>
+        <div class="feat-desc">每日签语<br>未来3天预测</div>
+        <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
+      </div>
+      <div class="feat-card lc" onclick="goTo('s-lucky','s-home')">
+        <div class="fiw fiw-g"><i class="ti ti-ticket"></i></div>
+        <div class="feat-title">幸运号码</div>
+        <div class="feat-desc">每日4D/3D<br>TOTO</div>
+        <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
+      </div>
+    </div>
+    <div class="home-note"><i class="ti ti-info-circle"></i>仅供参考 · 以好奇心体验 · 理性娱乐</div>
+  </div>
+</div>
+
+<!-- ═══ DESTINY INPUT ═══ -->
+<div class="screen hidden" id="s-input">
+  <div class="inner">
+    <div class="back-row" onclick="goTo('s-home','s-input')"><i class="ti ti-arrow-left"></i><span>返回</span></div>
+    <div class="page-title">命运分析</div>
+    <div class="page-sub">填写三项信息，启动30天运势推算</div>
+    <div class="gcard">
+      <div class="fl-label">出生日期</div>
+      <input type="date" class="fl-input" id="a-bday" style="color-scheme:dark"/>
+      <div class="fl-label">性别</div>
+      <div class="gender-grid">
+        <div class="gender-pill on" onclick="setGender(this,'男')"><i class="ti ti-gender-male"></i>Male</div>
+        <div class="gender-pill" onclick="setGender(this,'女')"><i class="ti ti-gender-female"></i>Female</div>
+      </div>
+      <div class="fl-label">最近的烦恼或期待</div>
+      <textarea class="fl-textarea" id="a-worry" placeholder="例：工作压力大，想知道下个月会不会有转机…" style="height:64px;margin-bottom:10px"></textarea>
+      <button class="big-btn" onclick="startAnalysis()"><i class="ti ti-sparkles"></i>开始推算</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LOADING ═══ -->
+<div class="screen hidden" id="s-loading">
+  <div class="inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:500px">
+    <div class="ai-badge"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>Destiny AI 运算中</div>
+    <div class="load-orb"><div class="load-orb-inner"><i class="ti ti-brain"></i></div></div>
+    <div class="load-title" id="l-title">正在解析你的生辰八字</div>
+    <div class="load-sub" id="l-sub">建立命盘结构…</div>
+    <div class="prog-track"><div class="prog-fill" id="l-prog"></div></div>
+    <div class="load-steps">
+      <div class="ls active" id="ls0"><i class="ti ti-loader"></i>解析生辰，排布八字命盘</div>
+      <div class="ls" id="ls1"><i class="ti ti-chart-line"></i>推算近期大运流年走势</div>
+      <div class="ls" id="ls2"><i class="ti ti-adjustments-horizontal"></i>分析五行格局与运势强弱</div>
+      <div class="ls" id="ls3"><i class="ti ti-hash"></i>推算本期幸运数字组合</div>
+      <div class="ls" id="ls4"><i class="ti ti-file-check"></i>整理报告，即将完成</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DESTINY RESULT ═══ -->
+<div class="screen hidden" id="s-result">
+  <div class="inner">
+    <div class="result-card">
+      <div class="rc-head">
+        <div class="brand"><div class="brand-mark bm-d"><i class="ti ti-sparkles"></i></div><div><div class="brand-name">Destiny AI</div><div class="brand-sub">命运趋势分析</div></div></div>
+        <div class="rc-meta" id="r-range">—</div>
+      </div>
+      <div class="rc-user">
+        <div class="rc-chip"><i class="ti ti-calendar"></i><span id="r-bday">—</span></div>
+        <div class="rc-chip"><i class="ti ti-user"></i><span id="r-gender">—</span></div>
+        <div class="rc-chip"><i class="ti ti-clock"></i>未来30天</div>
+      </div>
+      <div class="rc-title"><div class="rc-title-main">Future 30 Days</div><div class="rc-title-sub">财运 · 感情 · 工作 · 幸运号码</div></div>
+      <div class="rc-section">
+        <div class="rcs-head"><div class="rcs-left"><div class="rcs-icon"><i class="ti ti-coin"></i></div><div class="rcs-title">财运</div></div><div class="rcs-score"><i class="ti ti-star-filled"></i><span id="r-s-money">—</span></div></div>
+        <div class="score-bar" id="r-b-money"></div><div class="rcs-text" id="r-t-money">—</div><div class="rcs-kws" id="r-k-money"></div>
+      </div>
+      <div class="rc-section">
+        <div class="rcs-head"><div class="rcs-left"><div class="rcs-icon"><i class="ti ti-heart"></i></div><div class="rcs-title">感情</div></div><div class="rcs-score"><i class="ti ti-star-filled"></i><span id="r-s-love">—</span></div></div>
+        <div class="score-bar" id="r-b-love"></div><div class="rcs-text" id="r-t-love">—</div><div class="rcs-kws" id="r-k-love"></div>
+      </div>
+      <div class="rc-section">
+        <div class="rcs-head"><div class="rcs-left"><div class="rcs-icon"><i class="ti ti-briefcase"></i></div><div class="rcs-title">工作</div></div><div class="rcs-score"><i class="ti ti-star-filled"></i><span id="r-s-work">—</span></div></div>
+        <div class="score-bar" id="r-b-work"></div><div class="rcs-text" id="r-t-work">—</div><div class="rcs-kws" id="r-k-work"></div>
+      </div>
+      <div class="rc-section"><div class="remind-box"><div class="remind-tag"><i class="ti ti-alert-circle"></i>近期特别提醒</div><div class="remind-text" id="r-remind">—</div></div></div>
+      <div class="lucky-strip">
+        <div class="lucky-head"><i class="ti ti-number"></i><div class="lucky-head-label">本期幸运号码 · 万字 4D</div></div>
+        <div class="lucky-digits" id="r-lucky"></div>
+        <div class="lucky-note" id="r-lucky-note">—</div>
+      </div>
+      <div class="rc-footer">
+        <div><div class="footer-brand">Destiny AI</div><div class="footer-url">destinyai.com</div></div>
+        <div class="footer-seal"><i class="ti ti-shield-check"></i></div>
+      </div>
+    </div>
+    <div class="share-row">
+      <div class="sh-btn sh-main" onclick="doShare()"><i class="ti ti-share"></i>截图分享给朋友</div>
+      <div class="sh-btn sh-sec" onclick="copyLink()"><i class="ti ti-link"></i>复制链接</div>
+      <div class="sh-btn sh-sec" onclick="shareWA()"><i class="ti ti-brand-whatsapp"></i>WhatsApp</div>
+    </div>
+    <div class="redo-link" onclick="restartDestiny()"><i class="ti ti-refresh"></i>重新推算</div>
+  </div>
+</div>
+
+<!-- ═══ TAROT ═══ -->
+<div class="screen hidden" id="s-tarot">
+  <div class="inner">
+    <div class="top-bar">
+      <div class="brand"><div class="brand-mark bm-t"><i class="ti ti-cards"></i></div><div><div class="brand-name">Tarot AI</div><div class="brand-sub">塔罗牌 · AI 占卜解读</div></div></div>
+    </div>
+    <div id="tarot-step1">
+      <div class="page-title">选择占卜方式</div>
+      <div class="page-sub">三种牌阵，每种体验不同</div>
+      <div class="mode-grid">
+        <div class="mode-card selected" id="mode-1" onclick="selectMode(1)">
+          <div class="mode-icon"><i class="ti ti-cards"></i></div>
+          <div class="mode-info"><div class="mode-title">单张抽牌</div><div class="mode-desc">随机抽一张，AI 解读今日能量与提示</div></div>
+          <i class="ti ti-chevron-right" style="color:rgba(255,255,255,.18)"></i>
+        </div>
+        <div class="mode-card" id="mode-2" onclick="selectMode(2)">
+          <div class="mode-icon"><i class="ti ti-layout-columns"></i></div>
+          <div class="mode-info"><div class="mode-title">三张牌阵</div><div class="mode-desc">过去 · 现在 · 未来，全方位解读</div></div>
+          <i class="ti ti-chevron-right" style="color:rgba(255,255,255,.18)"></i>
+        </div>
+        <div class="mode-card" id="mode-3" onclick="selectMode(3)">
+          <div class="mode-icon"><i class="ti ti-message-question"></i></div>
+          <div class="mode-info"><div class="mode-title">问题占卜</div><div class="mode-desc">输入你的问题，AI 选牌并给出针对性解读</div></div>
+          <i class="ti ti-chevron-right" style="color:rgba(255,255,255,.18)"></i>
+        </div>
+      </div>
+      <div class="gcard q-input-wrap" id="q-input-wrap">
+        <div class="fl-label">你想问塔罗什么？</div>
+        <textarea class="fl-textarea" id="tarot-question" placeholder="例：我的感情近期会有什么变化？工作上的困境会解决吗？" style="height:72px;margin-bottom:0"></textarea>
+      </div>
+      <div class="gcard" id="draw-area-wrap">
+        <div class="draw-area">
+          <div class="draw-title" id="draw-title">点击牌堆，抽出今日塔罗</div>
+          <div class="deck-wrap" onclick="drawCards()">
+            <div class="deck-card"><div class="deck-pattern"><i class="ti ti-moon-stars"></i></div></div>
+            <div class="deck-card"><div class="deck-pattern"><i class="ti ti-moon-stars"></i></div></div>
+            <div class="deck-card"><div class="deck-pattern"><i class="ti ti-moon-stars"></i></div></div>
+          </div>
+          <div class="draw-hint" id="draw-hint">点击牌堆开始</div>
+        </div>
+        <div class="three-slots" id="three-slots" style="display:none">
+          <div class="card-slot" id="slot-0"><i class="ti ti-cards"></i><div class="card-slot-label">过去</div></div>
+          <div class="card-slot" id="slot-1"><i class="ti ti-cards"></i><div class="card-slot-label">现在</div></div>
+          <div class="card-slot" id="slot-2"><i class="ti ti-cards"></i><div class="card-slot-label">未来</div></div>
+        </div>
+      </div>
+      <button class="big-btn tarot-btn" id="tarot-btn" onclick="interpretCards()" style="display:none;margin-bottom:12px"><i class="ti ti-sparkles"></i>AI 解读塔罗</button>
+    </div>
+    <div class="tarot-loading" id="tarot-loading">
+      <div class="tarot-spinner"></div>
+      <div class="tl-title">THE CARDS SPEAK</div>
+      <div class="tl-sub">AI 正在解读牌面能量…</div>
+    </div>
+    <div id="tarot-result" style="display:none">
+      <div class="reading-card">
+        <div class="rc-head"><div class="rc-badge"><i class="ti ti-cards"></i>Tarot AI · 占卜解读</div><div style="font-size:10px;color:rgba(255,255,255,.22)" id="r-mode-label">—</div></div>
+        <div class="drawn-mini" id="r-drawn-mini"></div>
+        <div id="r-interp-sections"></div>
+        <div class="reading-footer"><div><div class="footer-brand">Destiny AI · Tarot</div><div class="footer-url">destinyai.com</div></div><div class="rf-seal"><i class="ti ti-eye"></i></div></div>
+      </div>
+      <div class="share-row">
+        <div class="sh-btn sh-tarot" onclick="shareTarot()"><i class="ti ti-share"></i>分享占卜结果</div>
+        <div class="sh-btn sh-sec" onclick="copyTarot()"><i class="ti ti-copy"></i>复制解读</div>
+        <div class="sh-btn sh-sec" onclick="shareWATarot()"><i class="ti ti-brand-whatsapp"></i>WhatsApp</div>
+      </div>
+      <div class="redo-link" onclick="resetTarot()"><i class="ti ti-refresh"></i>重新占卜</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FATELAB ═══ -->
+<div class="screen hidden" id="s-fate">
+  <div class="inner">
+    <div class="top-bar">
+      <div class="brand"><div class="brand-mark bm-f"><i class="ti ti-sun"></i></div><div><div class="brand-name">FateLab</div><div class="brand-sub">Future AI · 每日命运提示</div></div></div>
+      <div class="time-block">
+        <div class="t-date" id="f-date">—</div>
+        <div class="t-day" id="f-day">—</div>
+        <div class="t-clock" id="f-clock">—</div>
+      </div>
+    </div>
+    <div class="gcard">
+      <div class="fl-label">出生日期（固定记住）</div>
+      <div class="fl-bday-row">
+        <input type="date" class="fl-input" id="f-bday" style="color-scheme:dark"/>
+        <div class="mini-btn" onclick="loadFateSign()"><i class="ti ti-wand"></i>生成</div>
+      </div>
+      <div class="saved-pill" id="f-savedPill"><i class="ti ti-check"></i><span>生日已记住</span></div>
+    </div>
+    <div class="fate-loading" id="fateLoading"><div class="fate-spinner"></div><div class="fate-loading-text">AI 正在解读今日命运…</div></div>
+    <div id="fateResults" style="display:none">
+      <div class="today-sign-card">
+        <div class="tsc-head"><div class="tsc-badge"><i class="ti ti-sparkles"></i>Future AI · 今日签语</div><div class="tsc-date-label" id="f-today-date">—</div></div>
+        <div class="tsc-sign-wrap">
+          <div class="sign-label">AI Destiny · 今日能量</div>
+          <div class="sign-quote" id="f-today-quote">—</div>
+          <div class="sign-tags" id="f-today-tags"></div>
+        </div>
+        <div class="sign-score-row">
+          <div class="sc-item"><div class="sc-item-label">财</div><div class="sc-bar" id="f-sc-money"></div></div>
+          <div class="sc-item"><div class="sc-item-label">情</div><div class="sc-bar" id="f-sc-love"></div></div>
+          <div class="sc-item"><div class="sc-item-label">事</div><div class="sc-bar" id="f-sc-work"></div></div>
+          <div class="sc-item"><div class="sc-item-label">运</div><div class="sc-bar" id="f-sc-luck"></div></div>
+        </div>
+      </div>
+      <div class="next-days-title"><i class="ti ti-calendar-stats"></i>Tomorrow · NextDay · 未来提醒系统</div>
+      <div id="f-next-days"></div>
+      <div class="sign-share">
+        <div class="ss-btn ss-main" onclick="shareSign()"><i class="ti ti-share"></i>分享今日签语</div>
+        <div class="ss-btn ss-sec" onclick="copySign()"><i class="ti ti-copy"></i>复制文字</div>
+      </div>
+      <div class="disclaimer"><i class="ti ti-info-circle"></i>签语每天自动更新 · AI 生成仅供参考</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LUCKY ═══ -->
+<div class="screen hidden" id="s-lucky">
+  <div class="inner">
+    <div class="top-bar">
+      <div class="brand"><div class="brand-mark bm-l"><i class="ti ti-ticket"></i></div><div><div class="brand-name">Destiny AI</div><div class="brand-sub">Lucky Numbers</div></div></div>
+      <div class="time-block">
+        <div class="t-date" id="l-date">—</div>
+        <div class="t-day" id="l-day">—</div>
+        <div class="t-clock" id="l-clock">—</div>
+      </div>
+    </div>
+    <div class="gcard">
+      <div class="fl-label">你的出生日期（固定记住）</div>
+      <input type="date" class="fl-input" id="l-bday" style="color-scheme:dark;margin-bottom:6px" onchange="saveLBday()"/>
+      <div class="saved-pill" id="l-savedPill"><i class="ti ti-check"></i><span>生日已记住，明天自动载入</span></div>
+      <div class="fl-label" style="margin-bottom:6px">彩票类型</div>
+      <div class="lottery-pills">
+        <div class="lp on" id="lp-4d" onclick="setLP('4d',this)"><i class="ti ti-number-4"></i><div class="lp-name">万字 4D</div></div>
+        <div class="lp" id="lp-3d" onclick="setLP('3d',this)"><i class="ti ti-number-3"></i><div class="lp-name">3D</div></div>
+        <div class="lp" id="lp-toto" onclick="setLP('toto',this)"><i class="ti ti-circles"></i><div class="lp-name">TOTO</div></div>
+      </div>
+      <div class="fl-label" style="margin-bottom:6px">生成几组（最多5组）</div>
+      <div class="count-row">
+        <div class="cnt on" onclick="setCount(1,this)">1</div>
+        <div class="cnt" onclick="setCount(2,this)">2</div>
+        <div class="cnt" onclick="setCount(3,this)">3</div>
+        <div class="cnt" onclick="setCount(4,this)">4</div>
+        <div class="cnt" onclick="setCount(5,this)">5</div>
+      </div>
+      <button class="big-btn" onclick="generateLucky()"><i class="ti ti-dice-5"></i>生成今日幸运号码</button>
+    </div>
+    <div id="luckyResults" style="display:none">
+      <div class="datestamp">
+        <div><div class="ds-label"><i class="ti ti-calendar-event"></i>今日号码 · 有效期至午夜</div><div class="ds-date" id="l-ds-date">—</div></div>
+        <div class="ds-right"><div class="ds-expires"><i class="ti ti-clock"></i>距离更新</div><div class="ds-countdown" id="l-countdown">—</div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.24);text-transform:uppercase;display:flex;align-items:center;gap:5px"><i class="ti ti-hash" style="font-size:13px"></i><span id="l-res-label">幸运号码</span></div>
+        <div style="font-size:10px;color:rgba(167,139,250,.58);background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.18);border-radius:100px;padding:4px 12px;cursor:pointer;display:flex;align-items:center;gap:4px" onclick="generateLucky()"><i class="ti ti-refresh" style="font-size:11px"></i>重新生成</div>
+      </div>
+      <div id="l-cards"></div>
+      <div class="num-share">
+        <div class="ns-btn ns-main" onclick="shareNums()"><i class="ti ti-share"></i>分享号码</div>
+        <div class="ns-btn ns-sec" onclick="copyNums()"><i class="ti ti-copy"></i>复制号码</div>
+      </div>
+      <div class="disclaimer"><i class="ti ti-info-circle"></i>号码每天自动更新 · 仅供娱乐参考 · 理性购彩 · 18岁以上</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="bottom-nav">
+  <div class="nav-bar">
+    <button class="nav-item active" id="nav-home" onclick="navTo('home')"><i class="ti ti-home"></i><div class="nav-label">首页</div></button>
+    <button class="nav-item" id="nav-destiny" onclick="navTo('destiny')"><i class="ti ti-crystal-ball"></i><div class="nav-label">命运</div></button>
+    <button class="nav-item" id="nav-tarot" onclick="navTo('tarot')"><i class="ti ti-cards"></i><div class="nav-label">塔罗</div></button>
+    <button class="nav-item" id="nav-fate" onclick="navTo('fate')"><i class="ti ti-sun"></i><div class="nav-label">签语</div></button>
+    <button class="nav-item" id="nav-lucky" onclick="navTo('lucky')"><i class="ti ti-ticket"></i><div class="nav-label">号码</div></button>
+  </div>
+</div>
+<div class="toast" id="toast"><i class="ti ti-info-circle" id="toast-icon"></i><span id="toast-msg"></span></div>
+
+<script>
+// ═══════════════════════════════════════════
+//  GLOBALS
+// ═══════════════════════════════════════════
+var gender='男', aiResult=null, aiDone=false, loadDone=false, userData={};
+var fateData=null;
+var lotteryType='4d', lotteryCount=1, lastNums=[];
+var tarotMode=1, drawnCards=[], tarotResult=null;
+
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var DAYS_EN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var DAYS_ZH=['周日','周一','周二','周三','周四','周五','周六'];
+var L_REASONS=['天干地支吉数，今日能量聚合','五行木火相生，数字共鸣强烈','日柱与流年交汇，吉数浮现','命主旺财之数，今期宜注','紫微斗数吉宫数字，今期佳'];
+var L_CONFS=['中等','较强','强','极强','最强'];
+var DAY_ICONS=['ti-sunrise','ti-sun','ti-moon'];
+
+var DECK=[
+  {name:'The Fool',zh:'愚者',symbol:'🌟'},{name:'The Magician',zh:'魔术师',symbol:'⚡'},
+  {name:'The High Priestess',zh:'女祭司',symbol:'🌙'},{name:'The Empress',zh:'女皇',symbol:'🌿'},
+  {name:'The Emperor',zh:'皇帝',symbol:'🔱'},{name:'The Hierophant',zh:'教皇',symbol:'⚜'},
+  {name:'The Lovers',zh:'恋人',symbol:'♾'},{name:'The Chariot',zh:'战车',symbol:'⚔'},
+  {name:'Strength',zh:'力量',symbol:'🦁'},{name:'The Hermit',zh:'隐者',symbol:'🕯'},
+  {name:'Wheel of Fortune',zh:'命运之轮',symbol:'☸'},{name:'Justice',zh:'正义',symbol:'⚖'},
+  {name:'The Hanged Man',zh:'倒吊人',symbol:'🔄'},{name:'Death',zh:'死神',symbol:'🌒'},
+  {name:'Temperance',zh:'节制',symbol:'🌊'},{name:'The Devil',zh:'恶魔',symbol:'🔒'},
+  {name:'The Tower',zh:'塔',symbol:'⚡'},{name:'The Star',zh:'星星',symbol:'✦'},
+  {name:'The Moon',zh:'月亮',symbol:'🌕'},{name:'The Sun',zh:'太阳',symbol:'☀'},
+  {name:'Judgement',zh:'审判',symbol:'🎺'},{name:'The World',zh:'世界',symbol:'🌍'}
+];
+
+// ═══════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════
+function pad2(n){return n<10?'0'+n:''+n}
+function setText(id,v){var e=document.getElementById(id);if(e)e.textContent=v}
+function showToast(msg,icon){
+  icon=icon||'ti-info-circle';
+  document.getElementById('toast-icon').className='ti '+icon;
+  setText('toast-msg',msg);
+  var t=document.getElementById('toast');t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2600);
+}
+function goTo(to,from){
+  var f=document.getElementById(from),t=document.getElementById(to);
+  f.classList.add('exit');
+  setTimeout(function(){f.classList.add('hidden');f.classList.remove('exit');t.classList.remove('hidden');t.scrollTop=0;},500);
+}
+function navTo(tab){
+  document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('nav-'+tab).classList.add('active');
+  var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',lucky:'s-lucky'};
+  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-lucky'];
+  var cur=null;all.forEach(function(s){if(!document.getElementById(s).classList.contains('hidden'))cur=s;});
+  if(cur&&cur!==map[tab])goTo(map[tab],cur);
+}
+
+// ═══════════════════════════════════════════
+//  CLOCK
+// ═══════════════════════════════════════════
+function fmtClock(){
+  var n=new Date();
+  var ds=n.getDate()+' '+MONTHS[n.getMonth()]+' '+n.getFullYear();
+  var dy=DAYS_EN[n.getDay()]+' · '+DAYS_ZH[n.getDay()];
+  var ck=pad2(n.getHours())+':'+pad2(n.getMinutes())+':'+pad2(n.getSeconds());
+  ['h-','f-','l-'].forEach(function(p){setText(p+'date',ds);setText(p+'day',dy);setText(p+'clock',ck);});
+  var mid=new Date(n);mid.setHours(24,0,0,0);var diff=mid-n;
+  setText('l-countdown',pad2(Math.floor(diff/3600000))+':'+pad2(Math.floor((diff%3600000)/60000))+':'+pad2(Math.floor((diff%60000)/1000)));
+}
+fmtClock();setInterval(fmtClock,1000);
+
+// ═══════════════════════════════════════════
+//  SAVED BDAY
+// ═══════════════════════════════════════════
+(function(){
+  try{
+    var sb=localStorage.getItem('destiny_bday');
+    if(sb){
+      var inputs=['l-bday','f-bday'];
+      inputs.forEach(function(id){var e=document.getElementById(id);if(e)e.value=sb;});
+      ['l-savedPill','f-savedPill'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.add('show');});
+    }
+  }catch(e){}
+})();
+function saveLBday(){
+  var v=document.getElementById('l-bday').value;
+  if(v){try{localStorage.setItem('destiny_bday',v);}catch(e){}document.getElementById('l-savedPill').classList.add('show');}
+}
+
+// ═══════════════════════════════════════════
+//  SHARED SEED / RNG
+// ═══════════════════════════════════════════
+function makeDailySeed(bday,offset){
+  offset=offset||0;var n=new Date();n.setDate(n.getDate()+offset);
+  var s=bday.replace(/-/g,'')+n.getFullYear()+(n.getMonth()+1)+n.getDate();
+  var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h;
+}
+function seededRng(seed){
+  var s=seed>>>0;
+  return function(){s^=s<<13;s^=s>>17;s^=s<<5;s=s>>>0;return s/0xffffffff;};
+}
+function gen4D(rng){var s='';for(var i=0;i<4;i++)s+=Math.floor(rng()*10);return s;}
+function gen3D(rng){var s='';for(var i=0;i<3;i++)s+=Math.floor(rng()*10);return s;}
+function genToto(rng){
+  var nums=[],used={};
+  while(nums.length<6){var n=Math.floor(rng()*49)+1;if(!used[n]){used[n]=true;nums.push(n);}}
+  nums.sort(function(a,b){return a-b;});
+  var b;do{b=Math.floor(rng()*49)+1;}while(used[b]);
+  return{main:nums,bonus:b};
+}
+
+// ═══════════════════════════════════════════
+//  DESTINY ANALYSIS
+// ═══════════════════════════════════════════
+function setGender(el,v){gender=v;document.querySelectorAll('.gender-pill').forEach(function(p){p.classList.remove('on');});el.classList.add('on');}
+
+function startAnalysis(){
+  var bday=document.getElementById('a-bday').value;
+  if(!bday){showToast('请先填写生日','ti-calendar');return;}
+  userData={bday:bday,gender:gender,worry:document.getElementById('a-worry').value||''};
+  goTo('s-loading','s-input');
+  setTimeout(function(){runLoading();callDestinyAI();},300);
+}
+
+function runLoading(){
+  aiDone=false;loadDone=false;aiResult=null;
+  var stats=[['正在解析你的生辰八字','建立命盘结构…'],['推算流年大运走势','五行相生相克分析…'],['分析运势强弱格局','财运 · 感情 · 工作…'],['推算本期幸运数字','吉数能量匹配中…'],['报告即将完成','最后整合…']];
+  var pf=document.getElementById('l-prog'),prog=0,si=0;
+  var timer=setInterval(function(){var t=[15,35,57,78,93][Math.min(si,4)];if(prog<t){prog+=1.1;pf.style.width=Math.min(prog,100)+'%';}},80);
+  [0,2000,4200,6500,8500].forEach(function(t,i){
+    setTimeout(function(){
+      si=i;
+      if(i>0){var p=document.getElementById('ls'+(i-1));p.classList.remove('active');p.classList.add('done');p.querySelector('i').className='ti ti-check';}
+      document.getElementById('ls'+i).classList.add('active');
+      var s=stats[i];var lt=document.getElementById('l-title'),ls=document.getElementById('l-sub');
+      lt.style.opacity='0';ls.style.opacity='0';
+      setTimeout(function(){lt.textContent=s[0];ls.textContent=s[1];lt.style.opacity='1';ls.style.opacity='1';lt.style.transition='opacity .4s';ls.style.transition='opacity .4s';},340);
+    },t);
+  });
+  setTimeout(function(){
+    clearInterval(timer);pf.style.width='100%';
+    var last=document.getElementById('ls4');last.classList.remove('active');last.classList.add('done');last.querySelector('i').className='ti ti-check';
+    loadDone=true;tryShowResult();
+  },10500);
+}
+
+async function callDestinyAI(){
+  var b=userData.bday,g=userData.gender,w=userData.worry;
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:'你是一位神秘而温柔的命理趋势分析师。根据以下信息生成未来30天运势与幸运号码：\n生日：'+b+'\n性别：'+g+'\n烦恼：'+(w||'未填写')+'\n\n要求：神秘感、像真人命理师、让人被理解、不100%说死、每段约50字、有画面感。lucky4d给一组真实4位万字号码，reason给20字内原因。\n只返回JSON：{"money":{"score":4,"text":"…","keywords":["词1","词2"]},"love":{"score":3,"text":"…","keywords":["词1","词2"]},"work":{"score":4,"text":"…","keywords":["词1","词2"]},"remind":"…","lucky4d":{"number":"1234","reason":"天干吉数聚合"}}\nscore为1-5整数。'}]})});
+    var data=await res.json();
+    var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
+    aiResult=JSON.parse(txt);
+  }catch(e){
+    var seed=makeDailySeed(userData.bday,0),rng=seededRng(seed),num=gen4D(rng);
+    aiResult={money:{score:4,text:'财气在这段时间里像涨潮一样缓缓聚集，有些默默埋下的种子，可能在月中悄悄发芽。保持耐心，别让小钱漏了大缘分。',keywords:['贵人相助','细水长流']},love:{score:3,text:'感情上有一段微妙的沉默期，沉默有时比解释更有力量。若是单身，某个不起眼的场合或许藏着意想不到的缘分。',keywords:['内心波动','缘起于微']},work:{score:4,text:'工作上有颗种子已经埋下，只是还没到发芽的时机。这个月适合专注打磨细节，有人在暗处注意着你的表现。',keywords:['暗中有人','厚积薄发']},remind:'近期情绪起伏时，先沉住气再行动。月中前后有个关键节点，留意身边一句不经意的话。',lucky4d:{number:num,reason:'天干地支吉数，本期能量聚合'}};
+  }
+  aiDone=true;tryShowResult();
+}
+
+function tryShowResult(){
+  if(!aiDone||!loadDone)return;
+  fillResult();
+  setTimeout(function(){goTo('s-result','s-loading');document.getElementById('nav-destiny').classList.add('active');document.getElementById('nav-home').classList.remove('active');},600);
+}
+
+function scoreBar(s){var h='';for(var i=1;i<=5;i++)h+='<div class="sb '+(i<=s?'sb-on':'sb-off')+'"></div>';return h;}
+
+function fillResult(){
+  var r=aiResult,n=new Date(),end=new Date(n);end.setDate(end.getDate()+30);
+  var fmt=function(d){return d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();};
+  setText('r-range',fmt(n)+' → '+fmt(end));setText('r-bday',userData.bday);setText('r-gender',userData.gender==='男'?'Male':'Female');
+  var fill=function(key,d){
+    setText('r-s-'+key,d.score+' / 5');document.getElementById('r-b-'+key).innerHTML=scoreBar(d.score);
+    setText('r-t-'+key,d.text);document.getElementById('r-k-'+key).innerHTML=(d.keywords||[]).map(function(k){return'<span class="rcs-kw">'+k+'</span>';}).join('');
+  };
+  fill('money',r.money);fill('love',r.love);fill('work',r.work);setText('r-remind',r.remind);
+  var lucky=r.lucky4d||{number:'8888',reason:'吉数推算'};
+  document.getElementById('r-lucky').innerHTML=String(lucky.number).padStart(4,'0').split('').map(function(d){return'<div class="ld">'+d+'</div>';}).join('');
+  setText('r-lucky-note',lucky.reason);
+}
+
+function doShare(){if(navigator.share){navigator.share({title:'Destiny AI · 未来30天',text:'AI推算了我的运势和幸运号码！快来试试',url:window.location.href}).catch(function(){});}else{showToast('请截图分享给朋友','ti-camera');}}
+function copyLink(){if(navigator.clipboard){navigator.clipboard.writeText(window.location.href).then(function(){showToast('链接已复制','ti-check');});}}
+function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent('AI推算了我的运势！快来试试 → '+window.location.href),'_blank');}
+function restartDestiny(){
+  aiDone=false;loadDone=false;aiResult=null;
+  document.getElementById('l-prog').style.width='0%';
+  var icons=['ti-loader','ti-chart-line','ti-adjustments-horizontal','ti-hash','ti-file-check'];
+  for(var i=0;i<5;i++){var el=document.getElementById('ls'+i);el.classList.remove('active','done');if(i===0)el.classList.add('active');el.querySelector('i').className='ti '+icons[i];}
+  setText('l-title','正在解析你的生辰八字');setText('l-sub','建立命盘结构…');
+  goTo('s-input','s-result');document.getElementById('nav-destiny').classList.add('active');document.getElementById('nav-home').classList.remove('active');
+}
+
+// ═══════════════════════════════════════════
+//  TAROT
+// ═══════════════════════════════════════════
+function selectMode(m){
+  tarotMode=m;drawnCards=[];
+  document.querySelectorAll('.mode-card').forEach(function(c){c.classList.remove('selected');});
+  document.getElementById('mode-'+m).classList.add('selected');
+  document.getElementById('q-input-wrap').classList.toggle('show',m===3);
+  document.getElementById('draw-area-wrap').style.display=m===3?'none':'block';
+  document.getElementById('three-slots').style.display=m===2?'grid':'none';
+  document.getElementById('tarot-btn').style.display='none';
+  var titles=['点击牌堆，抽出今日塔罗','点击牌堆，依次抽出三张牌','输入问题后点击 AI 解读'];
+  setText('draw-title',titles[m-1]);setText('draw-hint',m===3?'':'点击牌堆开始');
+  if(m===2){['slot-0','slot-1','slot-2'].forEach(function(id,i){var s=document.getElementById(id);s.classList.remove('filled');s.innerHTML='<i class="ti ti-cards"></i><div class="card-slot-label">'+['过去','现在','未来'][i]+'</div>';});}
+  // reset deck
+  var deck=document.querySelector('.deck-card:nth-child(3)');
+  if(deck){deck.style.background='';deck.innerHTML='<div class="deck-pattern"><i class="ti ti-moon-stars"></i></div>';deck.classList.remove('flip-in');}
+}
+
+function randCard(){return{card:DECK[Math.floor(Math.random()*DECK.length)],reversed:Math.random()>0.65};}
+
+function drawCards(){
+  if(tarotMode===1){
+    if(drawnCards.length>0)return;
+    var drawn=randCard();drawnCards=[drawn];
+    var deck=document.querySelector('.deck-card:nth-child(3)');
+    deck.style.background='linear-gradient(160deg,#1a0a2e,#0d0618)';
+    deck.innerHTML='<div style="text-align:center;padding:10px"><div style="font-size:38px;line-height:1;margin-bottom:8px'+(drawn.reversed?';transform:rotate(180deg)':'')+'"">'+drawn.card.symbol+'</div><div style="font-family:Cinzel,serif;font-size:8px;color:rgba(255,255,255,.6);letter-spacing:.1em">'+drawn.card.zh+'</div>'+(drawn.reversed?'<div style="font-size:8px;color:rgba(220,100,160,.6);margin-top:4px">逆位</div>':'')+'</div>';
+    deck.classList.add('flip-in');
+    setText('draw-hint',drawn.card.zh+(drawn.reversed?' · 逆位':' · 正位'));
+    document.getElementById('tarot-btn').style.display='flex';
+  }else if(tarotMode===2){
+    if(drawnCards.length>=3)return;
+    var drawn=randCard();var idx=drawnCards.length;drawnCards.push(drawn);
+    var slot=document.getElementById('slot-'+idx);slot.classList.add('filled');slot.innerHTML='';
+    var face=document.createElement('div');face.className='tarot-card-face flip-in';
+    face.innerHTML='<div class="tcf-top"><div class="tcf-symbol'+(drawn.reversed?' style="transform:rotate(180deg)"':'')+'"">'+drawn.card.symbol+'</div><div class="tcf-name">'+drawn.card.zh+'</div>'+(drawn.reversed?'<div class="tcf-reversed">逆位</div>':'')+'</div><div class="tcf-bottom"><div class="tcf-pos">'+['过去','现在','未来'][idx]+'</div></div>';
+    slot.appendChild(face);
+    if(drawnCards.length===3){document.getElementById('tarot-btn').style.display='flex';}
+    setText('draw-hint',drawnCards.length<3?'再抽 '+(3-drawnCards.length)+' 张':'三张已抽齐，点击解读');
+  }
+}
+
+async function interpretCards(){
+  var question=document.getElementById('tarot-question').value||'';
+  if(tarotMode===3&&!question.trim()){showToast('请先输入你的问题','ti-message-question');return;}
+  document.getElementById('tarot-step1').style.display='none';
+  document.getElementById('tarot-loading').classList.add('show');
+  var prompt='';
+  if(tarotMode===1){
+    var c=drawnCards[0];
+    prompt='你是一位神秘而智慧的塔罗牌解读师。用户抽到了「'+c.card.zh+'」('+c.card.name+')'+(c.reversed?'逆位':'正位')+'。\n请提供：1.核心含义（约50字）2.今日建议（约40字）3.需注意（约40字）4.三个关键词。\n只返回JSON：{"core":"…","advice":"…","warning":"…","keywords":["词1","词2","词3"]}';
+  }else if(tarotMode===2){
+    var cs=drawnCards.map(function(d,i){return['过去','现在','未来'][i]+'：'+d.card.zh+(d.reversed?'逆位':'正位');}).join('，');
+    prompt='你是一位神秘而智慧的塔罗牌解读师。三张牌：'+cs+'。分别解读三张牌并综合总结，每段约40-50字。\n只返回JSON：{"past":"…","present":"…","future":"…","summary":"约50字","keywords":["词1","词2","词3"]}';
+  }else{
+    prompt='你是一位神秘而智慧的塔罗牌解读师。用户问题：「'+question+'」\n请选三张大阿卡那牌针对性解读，每段约50字。\n只返回JSON：{"cards":[{"name":"中文牌名","position":"正位或逆位","meaning":"…"},{"name":"…","position":"…","meaning":"…"},{"name":"…","position":"…","meaning":"…"}],"answer":"综合回答约60字","keywords":["词1","词2","词3"]}';
+  }
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    var data=await res.json();
+    var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
+    tarotResult={mode:tarotMode,data:JSON.parse(txt),cards:drawnCards,question:question};
+  }catch(e){
+    if(tarotMode===1)tarotResult={mode:1,cards:drawnCards,question:'',data:{core:'这张牌带来了一股微妙的转变能量。某些你长期忽视的事情，正在以另一种方式回到你的视野中。',advice:'今日适合内观与沉淀，不急于做决定，让直觉引导你向前一步。',warning:'避免在情绪高涨时做出冲动的判断，给自己一点缓冲的空间。',keywords:['转变','直觉','沉淀']}};
+    else if(tarotMode===2)tarotResult={mode:2,cards:drawnCards,question:'',data:{past:'过去的那段经历带来了重量，但也给了你难得的智慧与韧性。',present:'此刻你正处于一个微妙的交叉点，需要做出内心真正认同的选择。',future:'未来有光在等待，只要你愿意继续走，属于你的那份不会消失。',summary:'从过去的积累，到当下的抉择，再到未来的可能，你的路比你想象的更宽广。',keywords:['智慧','选择','可能性']}};
+    else tarotResult={mode:3,cards:[],question:question,data:{cards:[{name:'命运之轮',position:'正位',meaning:'这个问题的答案正在流动中，天时正在向有利于你的方向转变。'},{name:'女祭司',position:'正位',meaning:'你内心深处已经有了答案，需要的不是更多信息，而是信任直觉。'},{name:'星星',position:'正位',meaning:'希望就在前方，即使现在看不见，那道光正在等待你。'}],answer:'宇宙给出的答案是：时机正在成熟，而你已经比你想象的更准备好了。',keywords:['时机','直觉','希望']}};
+  }
+  document.getElementById('tarot-loading').classList.remove('show');
+  renderTarotResult();
+  document.getElementById('tarot-result').style.display='block';
+}
+
+function renderTarotResult(){
+  var r=tarotResult,d=r.data;
+  var modeLabels=['单张抽牌','三张牌阵 · 过去·现在·未来','问题占卜'];
+  setText('r-mode-label',modeLabels[r.mode-1]);
+  var mini=document.getElementById('r-drawn-mini');mini.innerHTML='';
+  if(r.mode===1||r.mode===2){
+    r.cards.forEach(function(dc){
+      var dm=document.createElement('div');dm.className='dm-card';
+      dm.innerHTML='<div class="dm-symbol">'+dc.card.symbol+'</div><div class="dm-name">'+dc.card.zh+'</div><div class="dm-pos">'+(dc.reversed?'逆位':'正位')+'</div>';
+      mini.appendChild(dm);
+    });
+  }else{
+    (d.cards||[]).forEach(function(c){
+      var dm=document.createElement('div');dm.className='dm-card';
+      dm.innerHTML='<div class="dm-symbol">✦</div><div class="dm-name">'+c.name+'</div><div class="dm-pos">'+c.position+'</div>';
+      mini.appendChild(dm);
+    });
+  }
+  var secs=document.getElementById('r-interp-sections');secs.innerHTML='';
+  function addSec(icon,title,text,kws){
+    var s=document.createElement('div');s.className='interp-section';
+    var kh=(kws||[]).map(function(k){return'<span class="is-kw">'+k+'</span>';}).join('');
+    s.innerHTML='<div class="is-head"><div class="is-icon"><i class="ti '+icon+'"></i></div><div class="is-title">'+title+'</div></div><div class="is-text">'+text+'</div>'+(kh?'<div class="is-kws">'+kh+'</div>':'');
+    secs.appendChild(s);
+  }
+  if(r.mode===1){addSec('ti-eye','牌面核心含义',d.core);addSec('ti-route','今日行动建议',d.advice);addSec('ti-alert-triangle','需要注意',d.warning,d.keywords);}
+  else if(r.mode===2){addSec('ti-clock-hour-4','过去',d.past);addSec('ti-current-location','现在',d.present);addSec('ti-telescope','未来',d.future);addSec('ti-sparkles','综合解读',d.summary,d.keywords);}
+  else{
+    if(r.question){var qd=document.createElement('div');qd.className='interp-section';qd.innerHTML='<div class="is-head"><div class="is-icon"><i class="ti ti-message-question"></i></div><div class="is-title">你的问题</div></div><div class="is-text" style="font-style:italic;color:rgba(255,255,255,.35)">「'+r.question+'」</div>';secs.appendChild(qd);}
+    (d.cards||[]).forEach(function(c,i){addSec('ti-cards','第'+(i+1)+'张 · '+c.name+' · '+c.position,c.meaning);});
+    addSec('ti-sparkles','综合答案',d.answer,d.keywords);
+  }
+}
+
+function resetTarot(){
+  drawnCards=[];tarotResult=null;
+  document.getElementById('tarot-result').style.display='none';
+  document.getElementById('tarot-step1').style.display='block';
+  document.getElementById('tarot-btn').style.display='none';
+  document.getElementById('tarot-question').value='';
+  var deck=document.querySelector('.deck-card:nth-child(3)');
+  if(deck){deck.style.background='';deck.innerHTML='<div class="deck-pattern"><i class="ti ti-moon-stars"></i></div>';deck.classList.remove('flip-in');}
+  selectMode(1);
+}
+
+function shareTarot(){
+  var text='Destiny AI · 塔罗占卜\n';
+  if(tarotResult&&tarotResult.data){if(tarotResult.mode===1)text+='「'+tarotResult.data.core+'」';else if(tarotResult.mode===2)text+='「'+tarotResult.data.summary+'」';else text+='「'+tarotResult.data.answer+'」';}
+  text+='\n→ destinyai.com';
+  if(navigator.share){navigator.share({title:'Tarot AI 占卜',text:text}).catch(function(){});}else{showToast('请截图分享','ti-camera');}
+}
+function copyTarot(){
+  var text='';
+  if(tarotResult&&tarotResult.data){if(tarotResult.mode===1)text=tarotResult.data.core;else if(tarotResult.mode===2)text=tarotResult.data.summary;else text=tarotResult.data.answer;}
+  if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){showToast('解读已复制','ti-check');});}
+}
+function shareWATarot(){window.open('https://wa.me/?text='+encodeURIComponent('我刚用 Tarot AI 占卜了！快来试试 → destinyai.com'),'_blank');}
+
+// ═══════════════════════════════════════════
+//  FATELAB
+// ═══════════════════════════════════════════
+function loadFateSign(){
+  var bday=document.getElementById('f-bday').value;
+  if(!bday){showToast('请先填写出生日期','ti-calendar');return;}
+  try{localStorage.setItem('destiny_bday',bday);}catch(e){}
+  document.getElementById('f-savedPill').classList.add('show');
+  document.getElementById('fateResults').style.display='none';
+  document.getElementById('fateLoading').classList.add('show');
+  callFateAI(bday);
+}
+
+async function callFateAI(bday){
+  var n=new Date();
+  var todayStr=n.getDate()+' '+MONTHS[n.getMonth()]+' '+n.getFullYear();
+  var days=[];for(var i=1;i<=3;i++){var d=new Date(n);d.setDate(d.getDate()+i);days.push(d.getDate()+' '+MONTHS[d.getMonth()]);}
+  var prompt='你是 FateLab，AI 命运系统。根据生日推算今日和未来3天签语。\n生日：'+bday+'\n今天：'+todayStr+'\n每句签语30-40字，神秘有诗意，像来自未来的提醒。\n只返回JSON：{"today":{"quote":"今日签语","tags":["标签1","标签2","标签3"],"money":4,"love":3,"work":4,"luck":3},"days":[{"label":"Tomorrow","date":"'+days[0]+'","energy":"high","quote":"…","tags":["词1","词2"]},{"label":"NextDay","date":"'+days[1]+'","energy":"mid","quote":"…","tags":["词1","词2"]},{"label":"Day 3","date":"'+days[2]+'","energy":"low","quote":"…","tags":["词1","词2"]}]}';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    var data=await res.json();
+    var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
+    fateData=JSON.parse(txt);
+  }catch(e){
+    fateData={today:{quote:'今日能量流动悄然，有些事情正在背后为你默默排列好位置。保持心静，属于你的不会错过。',tags:['Future AI','命运流动','静待时机'],money:4,love:3,work:4,luck:3},days:[{label:'Tomorrow',date:days[0],energy:'high',quote:'明天有股新的气息，适合主动出击，一个小决定可能带来意想不到的连锁反应。',tags:['行动日','机遇']},{label:'NextDay',date:days[1],energy:'mid',quote:'后天适合沉淀，与其追赶不如等待。某段关系会有微妙的转机出现。',tags:['沉淀','转机']},{label:'Day 3',date:days[2],energy:'low',quote:'大后天能量趋于平稳，适合整理思路，为下一阶段做好内心准备。',tags:['内省','蓄力']}]};
+  }
+  document.getElementById('fateLoading').classList.remove('show');
+  renderFate();
+  document.getElementById('fateResults').style.display='block';
+}
+
+function scoreDots(s){var h='';for(var i=1;i<=5;i++)h+='<div class="sc-dot '+(i<=s?'sc-dot-on':'sc-dot-off')+'"></div>';return h;}
+
+function renderFate(){
+  var d=fateData,n=new Date();
+  setText('f-today-date',DAYS_EN[n.getDay()]+' · '+n.getDate()+' '+MONTHS[n.getMonth()]);
+  setText('f-today-quote',d.today.quote);
+  document.getElementById('f-today-tags').innerHTML=(d.today.tags||[]).map(function(t){return'<span class="sign-tag">'+t+'</span>';}).join('');
+  document.getElementById('f-sc-money').innerHTML=scoreDots(d.today.money);
+  document.getElementById('f-sc-love').innerHTML=scoreDots(d.today.love);
+  document.getElementById('f-sc-work').innerHTML=scoreDots(d.today.work);
+  document.getElementById('f-sc-luck').innerHTML=scoreDots(d.today.luck);
+  var wrap=document.getElementById('f-next-days');wrap.innerHTML='';
+  (d.days||[]).forEach(function(day,i){
+    var el=day.energy==='high'?['high','高能量']:day.energy==='mid'?['mid','中能量']:['low','平稳'];
+    var card=document.createElement('div');card.className='day-card d'+i;
+    card.innerHTML='<div class="dc-head"><div class="dc-left"><div class="dc-icon d'+i+'"><i class="ti '+DAY_ICONS[i]+'"></i></div><div><div class="dc-day-name">'+day.label+'</div><div class="dc-date">'+day.date+'</div></div></div><div class="dc-energy '+el[0]+'">'+el[1]+'</div></div><div class="dc-quote">'+day.quote+'</div><div class="dc-tags">'+(day.tags||[]).map(function(t){return'<span class="dc-tag">'+t+'</span>';}).join('')+'</div>';
+    wrap.appendChild(card);
+  });
+}
+
+function shareSign(){var q=fateData&&fateData.today?fateData.today.quote:'';var txt='FateLab · 今日命运签语\n\n「'+q+'」\n\n每天更新 → destinyai.com';if(navigator.share){navigator.share({title:'FateLab 今日签语',text:txt}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
+function copySign(){var q=fateData&&fateData.today?fateData.today.quote:'';if(navigator.clipboard){navigator.clipboard.writeText('「'+q+'」— FateLab · Destiny AI').then(function(){showToast('签语已复制','ti-check');});}}
+
+// ═══════════════════════════════════════════
+//  LUCKY NUMBERS
+// ═══════════════════════════════════════════
+function setLP(type,el){lotteryType=type;document.querySelectorAll('.lp').forEach(function(p){p.classList.remove('on');});el.classList.add('on');}
+function setCount(n,el){lotteryCount=n;document.querySelectorAll('.cnt').forEach(function(b){b.classList.remove('on');});el.classList.add('on');}
+
+function generateLucky(){
+  var bday=document.getElementById('l-bday').value;
+  if(!bday){showToast('请先填写你的出生日期','ti-calendar');return;}
+  try{localStorage.setItem('destiny_bday',bday);}catch(e){}
+  document.getElementById('l-savedPill').classList.add('show');
+  var seed=makeDailySeed(bday,0),rng=seededRng(seed);
+  lastNums=[];var wrap=document.getElementById('l-cards');wrap.innerHTML='';
+  var n=new Date();
+  setText('l-ds-date',n.getDate()+' '+MONTHS[n.getMonth()]+' '+n.getFullYear()+' · '+DAYS_ZH[n.getDay()]);
+  var typeLabel=lotteryType==='4d'?'万字 4D':lotteryType==='3d'?'3D':'TOTO';
+  setText('l-res-label',typeLabel+' · '+lotteryCount+' 组');
+  if(lotteryType==='4d'){
+    for(var i=0;i<lotteryCount;i++){
+      var num=gen4D(rng);lastNums.push(num);
+      var card=document.createElement('div');card.className='num-card';
+      var digs='';for(var d=0;d<4;d++){var cls=(d===0||d===3)?'dg dg-gold':'dg dg-purple';digs+='<div class="'+cls+'"><div class="dg-shine"></div>'+num[d]+'</div>';}
+      card.innerHTML='<div class="nc-top"><div class="nc-type"><i class="ti ti-number-4"></i>第'+(i+1)+'组</div><div class="nc-conf">'+L_CONFS[i%L_CONFS.length]+'</div></div><div class="digits">'+digs+'</div><div class="nc-reason"><i class="ti ti-sparkles"></i>'+L_REASONS[i%L_REASONS.length]+'</div>';
+      wrap.appendChild(card);
+    }
+  }else if(lotteryType==='3d'){
+    var grid=document.createElement('div');grid.className='grid-3d';
+    for(var i=0;i<lotteryCount;i++){
+      var num=gen3D(rng);lastNums.push(num);
+      var c=document.createElement('div');c.className='card-3d';
+      var digs='';for(var d=0;d<3;d++)digs+='<div class="'+(d===1?'c3d c3d-m':'c3d c3d-n')+'">'+num[d]+'</div>';
+      c.innerHTML='<div class="c3-label">第'+(i+1)+'组</div><div class="c3-digits">'+digs+'</div>';
+      grid.appendChild(c);
+    }
+    wrap.appendChild(grid);
+  }else{
+    for(var i=0;i<lotteryCount;i++){
+      var res=genToto(rng);lastNums.push(res.main.join(',')+'+'+res.bonus);
+      var card=document.createElement('div');card.className='toto-card';
+      var balls='';for(var b=0;b<res.main.length;b++)balls+='<div class="tball">'+pad2(res.main[b])+'</div>';
+      balls+='<div class="tball bonus">+'+pad2(res.bonus)+'</div>';
+      card.innerHTML='<div class="toto-set-label"><i class="ti ti-circles"></i>第'+(i+1)+'组</div><div class="toto-balls">'+balls+'</div><div class="toto-reason"><i class="ti ti-sparkles"></i>'+L_REASONS[i%L_REASONS.length]+'</div>';
+      wrap.appendChild(card);
+    }
+  }
+  document.getElementById('luckyResults').style.display='block';
+  setTimeout(function(){document.getElementById('luckyResults').scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+
+function shareNums(){var txt='Destiny AI 今日幸运号码：'+lastNums.join(' / ')+'\n每天自动更新 → destinyai.com';if(navigator.share){navigator.share({title:'幸运号码',text:txt}).catch(function(){});}else{showToast('请截图保存号码','ti-camera');}}
+function copyNums(){if(navigator.clipboard){navigator.clipboard.writeText(lastNums.join(' / ')).then(function(){showToast('号码已复制','ti-check');});}}
+</script>
+</body>
+</html>
