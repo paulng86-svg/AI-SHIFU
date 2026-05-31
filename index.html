@@ -1049,6 +1049,16 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       </div>
     </div>
 
+    <!-- Profile linked banner (shown when profile exists) -->
+    <div id="z-profile-banner" style="display:none;background:rgba(14,165,233,.08);border:1.5px solid rgba(14,165,233,.25);border-radius:14px;padding:.85rem 1.1rem;margin-bottom:12px;display:none;align-items:center;gap:10px">
+      <i class="ti ti-link" style="font-size:16px;color:rgba(14,165,233,.7);flex-shrink:0"></i>
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:600;color:rgba(14,165,233,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">已连接你的命盘</div>
+        <div id="z-profile-info" style="font-size:13px;font-weight:500;color:#fff"></div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.3);cursor:pointer;text-decoration:underline" onclick="zShowManual()">换一个</div>
+    </div>
+
     <!-- Mode Toggle -->
     <div style="display:flex;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
       <div id="z-mode-solo" onclick="switchZMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(14,165,233,.18);border:1px solid rgba(14,165,233,.4);color:rgba(14,165,233,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-stars"></i>运势分析</div>
@@ -1208,9 +1218,18 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       </div>
     </div>
 
+    <!-- Profile linked banner -->
+    <div id="sx-profile-banner" style="display:none;background:rgba(245,158,11,.08);border:1.5px solid rgba(245,158,11,.25);border-radius:14px;padding:.85rem 1.1rem;margin-bottom:12px;align-items:center;gap:10px">
+      <i class="ti ti-link" style="font-size:16px;color:rgba(245,158,11,.7);flex-shrink:0"></i>
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:600;color:rgba(245,158,11,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">已连接你的命盘</div>
+        <div id="sx-profile-info" style="font-size:13px;font-weight:500;color:#fff"></div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.3);cursor:pointer;text-decoration:underline" onclick="sxShowManual()">换一个</div>
+    </div>
+
     <!-- Mode Toggle -->
-    <div style="display:flex;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
-      <div id="sx-mode-solo" onclick="switchSXMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.4);color:rgba(245,158,11,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-yin-yang"></i>运势分析</div>
+    <div style="display:flex;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px"> onclick="switchSXMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.4);color:rgba(245,158,11,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-yin-yang"></i>运势分析</div>
       <div id="sx-mode-pair" onclick="switchSXMode('pair')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-heart"></i>生肖配对</div>
     </div>
 
@@ -1487,7 +1506,27 @@ function navTo(tab){
   var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao'};
   var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
   var cur=null;all.forEach(function(s){if(!document.getElementById(s).classList.contains('hidden'))cur=s;});
-  if(cur&&cur!==map[tab])goTo(map[tab],cur);
+  if(cur&&cur!==map[tab]){
+    goTo(map[tab],cur);
+    // Auto-run zodiac if profile linked and not already showing result
+    if(tab==='zodiac'&&selZodiac!==null&&!zodiacData&&zMode==='solo'){
+      setTimeout(function(){
+        var card=document.getElementById('zodiac-input-card');
+        if(card&&card.style.display==='none'){
+          runZodiac();
+        }
+      },600);
+    }
+    // Auto-run shengxiao if profile linked
+    if(tab==='shengxiao'&&selSX!==null&&!sxData&&sxMode==='solo'){
+      setTimeout(function(){
+        var card=document.getElementById('sx-input-card');
+        if(card&&card.style.display==='none'){
+          runShengxiao();
+        }
+      },600);
+    }
+  }
 }
 
 // ── CLOCK ──
@@ -1708,9 +1747,12 @@ function runZodiac(){
 }
 
 async function callZodiacAI(z){
-  var today=new Date();var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var todayStr=today.getDate()+' '+MONTHS[today.getMonth()]+' '+today.getFullYear();
-  var prompt='你是一位专业的星座运势分析师。请为'+z.zh+'（'+z.en+'，'+z.elem+'）提供详细运势解读。\n今天：'+todayStr+'\n\n请提供：今日/本周/本月运势各一段（约50字），性格特质（约50字），各类指数评分，关键词。\n每段语气神秘温柔，有画面感，让人感觉被理解。\n\n只返回JSON：{"today":{"text":"…","keywords":["词1","词2"]},"week":{"text":"…","keywords":["词1","词2"]},"month":{"text":"…","keywords":["词1","词2"]},"character":"性格特质约50字","scores":{"love":4,"career":3,"money":4,"health":4}}\nscore为1-5整数。';
+  var today=new Date();var MONTHS_E=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var todayStr=today.getDate()+' '+MONTHS_E[today.getMonth()]+' '+today.getFullYear();
+  // Get birthday from profile if available
+  var bdayInfo='';
+  try{var sp=localStorage.getItem('destiny_profile');if(sp){var pp=JSON.parse(sp);if(pp.year)bdayInfo='\n出生日期：'+pp.year+'年'+pp.month+'月'+pp.day+'日（用于更精准的星盘推算）';}}catch(e){}
+  var prompt='你是一位专业的星座运势分析师。请为'+z.zh+'（'+z.en+'，'+z.elem+'）提供详细运势解读。\n今天：'+todayStr+bdayInfo+'\n\n请提供：今日/本周/本月运势各一段（约50字），性格特质（约50字），各类指数评分，关键词。\n每段语气神秘温柔，有画面感，让人感觉被理解。结合生日推算更精准的能量走势。\n\n只返回JSON：{"today":{"text":"…","keywords":["词1","词2"]},"week":{"text":"…","keywords":["词1","词2"]},"month":{"text":"…","keywords":["词1","词2"]},"character":"性格特质约50字","scores":{"love":4,"career":3,"money":4,"health":4}}\nscore为1-5整数。';
   try{
     var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:apiHeaders(),body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
     var data=await res.json();
@@ -1809,7 +1851,10 @@ function runShengxiao(){
 
 async function callSXAI(s){
   var yr=new Date().getFullYear();
-  var prompt='你是一位专业的中国生肖命理师。请为属'+s.name+'（五行：'+s.elem+'，'+yr+'年运势）提供全面解读。\n\n请提供：今年整体运势（60字）、事业财运（50字）、性格与感情（50字）、今年重点提醒（40字）、与其他生肖的相处建议（选3个生肖简评，每个20字内）、五项指数评分、三个关键词。\n语气神秘温柔，有画面感。\n\n只返回JSON：{"overall":"…","career":"…","love":"…","advice":"…","compat":[{"name":"龙","text":"…"},{"name":"蛇","text":"…"},{"name":"马","text":"…"}],"scores":{"overall":4,"career":3,"money":4,"love":3,"health":4},"keywords":["词1","词2","词3"]}';
+  // Get birthday from profile
+  var bdayInfo='';
+  try{var sp=localStorage.getItem('destiny_profile');if(sp){var pp=JSON.parse(sp);if(pp.year){bdayInfo='\n出生年份：'+pp.year+'年（'+pp.year+'年属'+s.name+'，用于精准推算）';yr=new Date().getFullYear();}}}catch(e){}
+  var prompt='你是一位专业的中国生肖命理师。请为属'+s.name+'（五行：'+s.elem+'，'+yr+'年运势）提供全面解读。'+bdayInfo+'\n\n请提供：今年整体运势（60字）、事业财运（50字）、性格与感情（50字）、今年重点提醒（40字）、与其他生肖的相处建议（选3个生肖简评，每个20字内）、五项指数评分、三个关键词。\n语气神秘温柔，有画面感。\n\n只返回JSON：{"overall":"…","career":"…","love":"…","advice":"…","compat":[{"name":"龙","text":"…"},{"name":"蛇","text":"…"},{"name":"马","text":"…"}],"scores":{"overall":4,"career":3,"money":4,"love":3,"health":4},"keywords":["词1","词2","词3"]}';
   try{
     var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:apiHeaders(),body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
     var data=await res.json();
@@ -2449,9 +2494,7 @@ function obApplyProfileToApp(p){
     var bdayStr=p.year+'-'+pad2(p.month)+'-'+pad2(p.day);
     var bdayEl=document.getElementById('a-bday');
     if(bdayEl)bdayEl.value=bdayStr;
-    // Save to localStorage for lucky/fate tabs
     try{localStorage.setItem('destiny_bday',bdayStr);}catch(e){}
-    // Pre-fill fate tab
     var fEl=document.getElementById('f-bday');if(fEl)fEl.value=bdayStr;
     var lEl=document.getElementById('l-bday');if(lEl)lEl.value=bdayStr;
   }
@@ -2459,51 +2502,94 @@ function obApplyProfileToApp(p){
   if(p.gender){
     gender=p.gender;
     document.querySelectorAll('.gender-pill').forEach(function(el){el.classList.remove('on');});
-    var gpills=document.querySelectorAll('.gender-pill');
-    gpills.forEach(function(el){
-      if((p.gender==='男'&&el.textContent.includes('Male'))||(p.gender==='女'&&el.textContent.includes('Female'))){
-        el.classList.add('on');
-      }
+    document.querySelectorAll('.gender-pill').forEach(function(el){
+      if((p.gender==='男'&&el.textContent.includes('Male'))||(p.gender==='女'&&el.textContent.includes('Female'))){el.classList.add('on');}
     });
   }
-  // Pre-fill concern
   if(p.concern){var wEl=document.getElementById('a-worry');if(wEl)wEl.value=p.concern;}
   // Pre-fill shichen in destiny tab
   if(p.shichenIdx!==null&&p.shichenIdx!==undefined){
     selectedShichen=p.shichenIdx;
     var scpills=document.querySelectorAll('#a-shichenGrid .sc-pill');
-    scpills.forEach(function(el,i){
-      el.classList.toggle('on',i===p.shichenIdx);
-    });
+    scpills.forEach(function(el,i){el.classList.toggle('on',i===p.shichenIdx);});
     if(p.shichen){setText('sc-selected-label',p.shichen.zh+'（'+p.shichen.dz+'）');}
   }
-  // Auto-select zodiac in zodiac tab
+
+  // ── LINK ZODIAC FROM BIRTHDAY ──
   if(p.zodiac&&typeof ZODIACS!=='undefined'){
     var zIdx=ZODIACS.findIndex(function(z){return z.zh===p.zodiac.zh;});
     if(zIdx>=0){
       selZodiac=zIdx;
-      var zgridItems=document.querySelectorAll('#zodiac-grid > div');
-      if(zgridItems[zIdx]){
-        zgridItems[zIdx].style.background='rgba(14,165,233,.15)';
-        zgridItems[zIdx].style.borderColor='rgba(14,165,233,.55)';
+      // Highlight in grid
+      setTimeout(function(){
+        var zgridItems=document.querySelectorAll('#zodiac-grid > div');
+        zgridItems.forEach(function(el,i){
+          el.style.background=i===zIdx?'rgba(14,165,233,.15)':'rgba(255,255,255,.05)';
+          el.style.borderColor=i===zIdx?'rgba(14,165,233,.55)':'rgba(255,255,255,.1)';
+        });
+      },200);
+      // Show profile banner
+      var zb=document.getElementById('z-profile-banner');
+      if(zb){
+        zb.style.display='flex';
+        var zi=document.getElementById('z-profile-info');
+        if(zi){
+          var bdayLabel=p.year+'年'+pad2(p.month)+'月'+pad2(p.day)+'日 · 生辰推算';
+          zi.textContent=p.zodiac.sym+' '+p.zodiac.zh+'（'+p.zodiac.dates+'）· '+bdayLabel;
+        }
       }
+      // Hide input card, auto-run if solo mode
+      var zCard=document.getElementById('zodiac-input-card');
+      if(zCard)zCard.style.display='none';
     }
   }
-  // Auto-select shengxiao in shengxiao tab
+
+  // ── LINK SHENGXIAO FROM BIRTHDAY ──
   if(p.sx&&typeof SX!=='undefined'){
     var sxIdx=SX.findIndex(function(s){return s.name===p.sx.name;});
     if(sxIdx>=0){
       selSX=sxIdx;
-      var sxgridItems=document.querySelectorAll('#sx-grid > div');
-      if(sxgridItems[sxIdx]){
-        sxgridItems[sxIdx].style.background='rgba(245,158,11,.15)';
-        sxgridItems[sxIdx].style.borderColor='rgba(245,158,11,.55)';
+      // Highlight in grid
+      setTimeout(function(){
+        var sxgridItems=document.querySelectorAll('#sx-grid > div');
+        sxgridItems.forEach(function(el,i){
+          el.style.background=i===sxIdx?'rgba(245,158,11,.15)':'rgba(255,255,255,.05)';
+          el.style.borderColor=i===sxIdx?'rgba(245,158,11,.55)':'rgba(255,255,255,.1)';
+        });
+      },200);
+      // Show profile banner
+      var sxb=document.getElementById('sx-profile-banner');
+      if(sxb){
+        sxb.style.display='flex';
+        var sxi=document.getElementById('sx-profile-info');
+        if(sxi){
+          sxi.textContent=p.sx.emoji+' 属'+p.sx.name+'（五行·'+p.sx.elem+'）· '+p.year+'年生辰推算';
+        }
       }
+      // Hide input card
+      var sxCard=document.getElementById('sx-input-card');
+      if(sxCard)sxCard.style.display='none';
     }
   }
-  // Update home top bar name if present
+
   var bn=document.getElementById('brand-user-name');
   if(bn&&p.name)bn.textContent=p.name;
+}
+
+// Allow user to manually choose a different zodiac/sx
+function zShowManual(){
+  document.getElementById('zodiac-input-card').style.display='block';
+  document.getElementById('z-profile-banner').style.display='none';
+  zodiacData=null;
+  document.getElementById('zodiac-result').style.display='none';
+  document.getElementById('zodiac-pair-result').style.display='none';
+}
+function sxShowManual(){
+  document.getElementById('sx-input-card').style.display='block';
+  document.getElementById('sx-profile-banner').style.display='none';
+  sxData=null;
+  document.getElementById('sx-result').style.display='none';
+  document.getElementById('sx-pair-result').style.display='none';
 }
 </script>
 </body>
