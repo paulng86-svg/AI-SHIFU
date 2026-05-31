@@ -2873,11 +2873,16 @@ function runBaziPair(prefix){
   // Validate my profile
   var myProfile=null;
   try{var sp=localStorage.getItem('destiny_profile');if(sp)myProfile=JSON.parse(sp);}catch(e){}
-  if(!myProfile||!myProfile.year){showToast('请先完成登入建立你的命盘','ti-user');return;}
+  if(!myProfile||!myProfile.year){showToast('请先完成登入建立你的命盘','ti-user');alert('NO PROFILE: '+JSON.stringify(myProfile));return;}
   // Validate partner
-  var by=parseInt(document.getElementById(prefix+'-bazi-year').value);
-  var bm=parseInt(document.getElementById(prefix+'-bazi-month').value);
-  var bd=parseInt(document.getElementById(prefix+'-bazi-day').value);
+  var byEl=document.getElementById(prefix+'-bazi-year');
+  var bmEl=document.getElementById(prefix+'-bazi-month');
+  var bdEl=document.getElementById(prefix+'-bazi-day');
+  if(!byEl||!bmEl||!bdEl){alert('INPUT ELEMENTS NOT FOUND: '+prefix+'-bazi-year etc');return;}
+  var by=parseInt(byEl.value);
+  var bm=parseInt(bmEl.value);
+  var bd=parseInt(bdEl.value);
+  alert('DEBUG: prefix='+prefix+' by='+by+' bm='+bm+' bd='+bd+' profile='+myProfile.year);
   if(!by||!bm||!bd){showToast('请填写对方的出生日期','ti-calendar');return;}
   if(by<1920||by>2010){showToast('请填写正确的年份（1920-2010）','ti-calendar');return;}
   // Build both profiles
