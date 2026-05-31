@@ -1623,23 +1623,26 @@ function navTo(tab){
   var cur=null;all.forEach(function(s){if(!document.getElementById(s).classList.contains('hidden'))cur=s;});
   if(cur&&cur!==map[tab]){
     goTo(map[tab],cur);
-    // Auto-run zodiac if profile linked and not already showing result
-    if(tab==='zodiac'&&selZodiac!==null&&!zodiacData&&zMode==='solo'){
+    // 有命盘资料时，进入星座/生肖 tab 自动运行运势
+    if(tab==='zodiac'){
       setTimeout(function(){
-        var card=document.getElementById('zodiac-input-card');
-        if(card&&card.style.display==='none'){
+        if(selZodiac!==null&&zMode==='solo'&&!zodiacData){
+          // 隐藏选择卡，直接运行
+          var card=document.getElementById('zodiac-input-card');
+          if(card)card.style.display='none';
           runZodiac();
         }
-      },600);
+      },400);
     }
-    // Auto-run shengxiao if profile linked
-    if(tab==='shengxiao'&&selSX!==null&&!sxData&&sxMode==='solo'){
+    if(tab==='shengxiao'){
       setTimeout(function(){
-        var card=document.getElementById('sx-input-card');
-        if(card&&card.style.display==='none'){
+        if(selSX!==null&&sxMode==='solo'&&!sxData){
+          // 隐藏选择卡，直接运行
+          var card=document.getElementById('sx-input-card');
+          if(card)card.style.display='none';
           runShengxiao();
         }
-      },600);
+      },400);
     }
   }
 }
@@ -2663,112 +2666,60 @@ function obEnterApp(){
 // Apply saved profile data to all app tabs
 function obApplyProfileToApp(p){
   if(!p)return;
-  // Pre-fill destiny input
   if(p.year&&p.month&&p.day){
     var bdayStr=p.year+'-'+pad2(p.month)+'-'+pad2(p.day);
-    var bdayEl=document.getElementById('a-bday');
-    if(bdayEl)bdayEl.value=bdayStr;
+    var bdayEl=document.getElementById('a-bday');if(bdayEl)bdayEl.value=bdayStr;
     try{localStorage.setItem('destiny_bday',bdayStr);}catch(e){}
     var fEl=document.getElementById('f-bday');if(fEl)fEl.value=bdayStr;
     var lEl=document.getElementById('l-bday');if(lEl)lEl.value=bdayStr;
   }
-  // Pre-fill gender
   if(p.gender){
     gender=p.gender;
     document.querySelectorAll('.gender-pill').forEach(function(el){el.classList.remove('on');});
-    document.querySelectorAll('.gender-pill').forEach(function(el){
-      if((p.gender==='男'&&el.textContent.includes('Male'))||(p.gender==='女'&&el.textContent.includes('Female'))){el.classList.add('on');}
-    });
+    document.querySelectorAll('.gender-pill').forEach(function(el){if((p.gender==='男'&&el.textContent.includes('Male'))||(p.gender==='女'&&el.textContent.includes('Female'))){el.classList.add('on');}});
   }
   if(p.concern){var wEl=document.getElementById('a-worry');if(wEl)wEl.value=p.concern;}
-  // Pre-fill shichen in destiny tab
   if(p.shichenIdx!==null&&p.shichenIdx!==undefined){
     selectedShichen=p.shichenIdx;
-    var scpills=document.querySelectorAll('#a-shichenGrid .sc-pill');
-    scpills.forEach(function(el,i){el.classList.toggle('on',i===p.shichenIdx);});
+    document.querySelectorAll('#a-shichenGrid .sc-pill').forEach(function(el,i){el.classList.toggle('on',i===p.shichenIdx);});
     if(p.shichen){setText('sc-selected-label',p.shichen.zh+'（'+p.shichen.dz+'）');}
   }
-
-  // ── LINK ZODIAC FROM BIRTHDAY ──
+  // Link zodiac
   if(p.zodiac&&typeof ZODIACS!=='undefined'){
     var zIdx=ZODIACS.findIndex(function(z){return z.zh===p.zodiac.zh;});
     if(zIdx>=0){
       selZodiac=zIdx;
-      // Highlight in grid
-      setTimeout(function(){
-        var zgridItems=document.querySelectorAll('#zodiac-grid > div');
-        zgridItems.forEach(function(el,i){
-          el.style.background=i===zIdx?'rgba(14,165,233,.15)':'rgba(255,255,255,.05)';
-          el.style.borderColor=i===zIdx?'rgba(14,165,233,.55)':'rgba(255,255,255,.1)';
-        });
-      },200);
-      // Show profile banner
       var zb=document.getElementById('z-profile-banner');
-      if(zb){
-        zb.style.display='flex';
-        var zi=document.getElementById('z-profile-info');
-        if(zi){
-          var bdayLabel=p.year+'年'+pad2(p.month)+'月'+pad2(p.day)+'日 · 生辰推算';
-          zi.textContent=p.zodiac.sym+' '+p.zodiac.zh+'（'+p.zodiac.dates+'）· '+bdayLabel;
-        }
-      }
-      // 只在 solo 模式隐藏选择卡，配对模式保留
-      if(zMode==='solo'){var zCard=document.getElementById('zodiac-input-card');if(zCard)zCard.style.display='none';}
+      if(zb){zb.style.display='flex';var zi=document.getElementById('z-profile-info');if(zi)zi.textContent=p.zodiac.sym+' '+p.zodiac.zh+'（'+p.zodiac.dates+'）· '+p.year+'年'+pad2(p.month)+'月'+pad2(p.day)+'日';}
+      setTimeout(function(){document.querySelectorAll('#zodiac-grid > div').forEach(function(el,i){el.style.background=i===zIdx?'rgba(14,165,233,.15)':'rgba(255,255,255,.05)';el.style.borderColor=i===zIdx?'rgba(14,165,233,.55)':'rgba(255,255,255,.1)';});},300);
     }
   }
-
-  // ── LINK SHENGXIAO FROM BIRTHDAY ──
+  // Link shengxiao
   if(p.sx&&typeof SX!=='undefined'){
     var sxIdx=SX.findIndex(function(s){return s.name===p.sx.name;});
     if(sxIdx>=0){
       selSX=sxIdx;
-      // Highlight in grid
-      setTimeout(function(){
-        var sxgridItems=document.querySelectorAll('#sx-grid > div');
-        sxgridItems.forEach(function(el,i){
-          el.style.background=i===sxIdx?'rgba(245,158,11,.15)':'rgba(255,255,255,.05)';
-          el.style.borderColor=i===sxIdx?'rgba(245,158,11,.55)':'rgba(255,255,255,.1)';
-        });
-      },200);
-      // Show profile banner
       var sxb=document.getElementById('sx-profile-banner');
-      if(sxb){
-        sxb.style.display='flex';
-        var sxi=document.getElementById('sx-profile-info');
-        if(sxi){
-          sxi.textContent=p.sx.emoji+' 属'+p.sx.name+'（五行·'+p.sx.elem+'）· '+p.year+'年生辰推算';
-        }
-      }
-      // 只在 solo 模式隐藏选择卡
-      if(sxMode==='solo'){var sxCard=document.getElementById('sx-input-card');if(sxCard)sxCard.style.display='none';}
+      if(sxb){sxb.style.display='flex';var sxi=document.getElementById('sx-profile-info');if(sxi)sxi.textContent=p.sx.emoji+' 属'+p.sx.name+'（五行·'+p.sx.elem+'）· '+p.year+'年生辰推算';}
+      setTimeout(function(){document.querySelectorAll('#sx-grid > div').forEach(function(el,i){el.style.background=i===sxIdx?'rgba(245,158,11,.15)':'rgba(255,255,255,.05)';el.style.borderColor=i===sxIdx?'rgba(245,158,11,.55)':'rgba(255,255,255,.1)';});},300);
     }
   }
-
-  var bn=document.getElementById('brand-user-name');
-  if(bn&&p.name)bn.textContent=p.name;
+  var bn=document.getElementById('brand-user-name');if(bn&&p.name)bn.textContent=p.name;
 }
 
-// Allow user to manually choose a different zodiac/sx
 function zShowManual(){
-  document.getElementById('zodiac-input-card').style.display='block';
-  document.getElementById('z-profile-banner').style.display='none';
-  zodiacData=null;
-  document.getElementById('zodiac-result').style.display='none';
-  document.getElementById('zodiac-pair-result').style.display='none';
+  selZodiac=null;zodiacData=null;
+  var card=document.getElementById('zodiac-input-card');if(card)card.style.display='block';
+  var b=document.getElementById('z-profile-banner');if(b)b.style.display='none';
+  ['zodiac-result','zodiac-pair-result','bazi-pair-result'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
 }
 function sxShowManual(){
-  document.getElementById('sx-input-card').style.display='block';
-  document.getElementById('sx-profile-banner').style.display='none';
-  sxData=null;
-  document.getElementById('sx-result').style.display='none';
-  document.getElementById('sx-pair-result').style.display='none';
+  selSX=null;sxData=null;
+  var card=document.getElementById('sx-input-card');if(card)card.style.display='block';
+  var b=document.getElementById('sx-profile-banner');if(b)b.style.display='none';
+  ['sx-result','sx-pair-result','bazi-pair-result'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
 }
-// ══════════════════════════════════════════
-//  命盘配对 BAZI PAIR
-// ══════════════════════════════════════════
-var baziPairData=null, baziSelSC={z:null,sx:null};
 
-// Build shichen mini-grid for bazi input
 function initBaziScGrid(gridId, prefix){
   var g=document.getElementById(gridId);
   if(!g||g.children.length)return;
