@@ -1063,7 +1063,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
     <div style="display:flex;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
       <div id="z-mode-solo" onclick="switchZMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(14,165,233,.18);border:1px solid rgba(14,165,233,.4);color:rgba(14,165,233,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-stars"></i>运势分析</div>
       <div id="z-mode-pair" onclick="switchZMode('pair')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-heart"></i>星座配对</div>
-      <div id="z-mode-bazi" onclick="switchZMode('bazi')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-yin-yang"></i>命盘配对</div>
     </div>
 
     <div class="gcard gcard-glow" id="zodiac-input-card">
@@ -1076,27 +1075,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div id="zodiac-grid-b" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px"></div>
       </div>
 
-      <!-- bazi pair input -->
-      <div id="z-bazi-section" style="display:none">
-        <div class="fl-label" style="margin-top:4px"><i class="ti ti-calendar" style="font-size:13px;color:rgba(140,100,255,.65)"></i> 对方出生日期<span style="color:rgba(240,100,100,.7)">*</span></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
-          <input class="fl-input" id="z-bazi-year" type="number" placeholder="年份" min="1920" max="2010" style="text-align:center;margin-bottom:0"/>
-          <input class="fl-input" id="z-bazi-month" type="number" placeholder="月" min="1" max="12" style="text-align:center;margin-bottom:0"/>
-          <input class="fl-input" id="z-bazi-day" type="number" placeholder="日" min="1" max="31" style="text-align:center;margin-bottom:0"/>
-        </div>
-        <div class="fl-label"><i class="ti ti-clock" style="font-size:13px;color:rgba(140,100,255,.65)"></i> 对方出生时辰 <span style="font-size:9px;color:rgba(255,255,255,.25);font-weight:400;text-transform:none;letter-spacing:0">（选填）</span></div>
-        <div id="z-bazi-scgrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px"></div>
-        <!-- auto preview -->
-        <div id="z-bazi-preview" style="display:none;background:rgba(140,100,255,.08);border:1px solid rgba(140,100,255,.2);border-radius:12px;padding:.8rem 1rem;margin-bottom:12px">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.12em;color:rgba(140,100,255,.6);text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:5px"><i class="ti ti-wand" style="font-size:12px"></i>对方命盘预览</div>
-          <div style="display:flex;gap:12px">
-            <div style="text-align:center;flex:1"><div style="font-size:9px;color:rgba(255,255,255,.3);margin-bottom:4px">星座</div><div id="z-bazi-zsym" style="font-size:22px;line-height:1;margin-bottom:3px"></div><div id="z-bazi-zname" style="font-size:12px;font-weight:600;color:#fff"></div></div>
-            <div style="width:1px;background:rgba(255,255,255,.07)"></div>
-            <div style="text-align:center;flex:1"><div style="font-size:9px;color:rgba(255,255,255,.3);margin-bottom:4px">生肖</div><div id="z-bazi-sxem" style="font-size:22px;line-height:1;margin-bottom:3px"></div><div id="z-bazi-sxname" style="font-size:12px;font-weight:600;color:#fff"></div></div>
-            <div style="width:1px;background:rgba(255,255,255,.07)"></div>
-            <div style="text-align:center;flex:2"><div style="font-size:9px;color:rgba(255,255,255,.3);margin-bottom:4px">四柱</div><div id="z-bazi-pillars" style="font-size:13px;font-weight:700;color:#fff;letter-spacing:.08em"></div></div>
-          </div>
-        </div>
       </div>
 
       <button class="big-btn" id="z-main-btn" style="background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:0 4px 20px rgba(14,165,233,.35)" onclick="runZodiac()">
@@ -1227,75 +1205,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#0ea5e9,#6366f1);grid-column:span 2" onclick="shareZPair()"><i class="ti ti-share"></i>分享配对结果</div>
         <div class="sh-btn sh-sec" onclick="copyZPair()"><i class="ti ti-copy"></i>复制</div>
         <div class="sh-btn sh-sec" onclick="resetZodiac()"><i class="ti ti-refresh"></i>重新配对</div>
-      </div>
-    </div>
-    <!-- BAZI PAIR RESULT -->
-    <div id="bazi-pair-result" style="display:none">
-      <div style="background:rgba(10,6,24,.95);border:1.5px solid rgba(140,100,255,.3);border-radius:20px;overflow:hidden;margin-bottom:12px;position:relative">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.7),rgba(140,100,255,.8),rgba(245,158,11,.7),transparent)"></div>
-        <!-- header: both sides -->
-        <div style="padding:1.1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;gap:14px">
-          <div style="text-align:center">
-            <div id="bp-a-avatar" style="font-size:32px;line-height:1;margin-bottom:4px"></div>
-            <div id="bp-a-name" style="font-size:13px;font-weight:600;color:#fff;margin-bottom:2px"></div>
-            <div id="bp-a-pillars" style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.05em"></div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-            <i class="ti ti-hearts" style="font-size:18px;color:rgba(244,114,182,.7)"></i>
-            <div id="bp-score-big" style="font-size:30px;font-weight:700;color:#fff"></div>
-            <div style="font-size:9px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.3);text-transform:uppercase">合缘指数</div>
-          </div>
-          <div style="text-align:center">
-            <div id="bp-b-avatar" style="font-size:32px;line-height:1;margin-bottom:4px"></div>
-            <div id="bp-b-name" style="font-size:13px;font-weight:600;color:#fff;margin-bottom:2px"></div>
-            <div id="bp-b-pillars" style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.05em"></div>
-          </div>
-        </div>
-        <!-- three dimensions -->
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1px solid rgba(255,255,255,.07)">
-          <div style="padding:.8rem .6rem;text-align:center;border-right:1px solid rgba(255,255,255,.07)">
-            <div style="font-size:9px;font-weight:600;letter-spacing:.1em;color:rgba(14,165,233,.6);text-transform:uppercase;margin-bottom:5px">星座相容</div>
-            <div id="bp-zodiac-score" style="font-size:20px;font-weight:700;color:#fff;margin-bottom:3px"></div>
-            <div id="bp-zodiac-label" style="font-size:10px;color:rgba(14,165,233,.7)"></div>
-          </div>
-          <div style="padding:.8rem .6rem;text-align:center;border-right:1px solid rgba(255,255,255,.07)">
-            <div style="font-size:9px;font-weight:600;letter-spacing:.1em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:5px">生肖缘分</div>
-            <div id="bp-sx-score" style="font-size:20px;font-weight:700;color:#fff;margin-bottom:3px"></div>
-            <div id="bp-sx-label" style="font-size:10px;color:rgba(245,158,11,.7)"></div>
-          </div>
-          <div style="padding:.8rem .6rem;text-align:center">
-            <div style="font-size:9px;font-weight:600;letter-spacing:.1em;color:rgba(167,139,250,.6);text-transform:uppercase;margin-bottom:5px">八字合婚</div>
-            <div id="bp-bazi-score" style="font-size:20px;font-weight:700;color:#fff;margin-bottom:3px"></div>
-            <div id="bp-bazi-label" style="font-size:10px;color:rgba(167,139,250,.7)"></div>
-          </div>
-        </div>
-        <!-- score bars -->
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)">
-          <div id="bp-bars" style="display:flex;flex-direction:column;gap:8px"></div>
-        </div>
-        <!-- AI interpretation sections -->
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(140,100,255,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-heart" style="font-size:13px"></i>感情契合</div>
-          <div id="bp-love" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
-        </div>
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(140,100,255,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-users" style="font-size:13px"></i>相处模式</div>
-          <div id="bp-dynamic" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
-        </div>
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(140,100,255,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-bulb" style="font-size:13px"></i>师傅建议</div>
-          <div id="bp-advice" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.68)"></div>
-        </div>
-        <div style="padding:.8rem 1.2rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap" id="bp-kws"></div>
-        <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:11px;color:rgba(255,255,255,.18)">命运馆 · 命盘配对</div>
-          <div style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(140,100,255,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-sparkles" style="font-size:13px;color:rgba(140,100,255,.4)"></i></div>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-        <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#7c3aed,#0ea5e9);grid-column:span 2" onclick="shareBaziPair()"><i class="ti ti-share"></i>分享命盘配对结果</div>
-        <div class="sh-btn sh-sec" onclick="copyBaziPair()"><i class="ti ti-copy"></i>复制</div>
-        <div class="sh-btn sh-sec" onclick="resetBaziPair()"><i class="ti ti-refresh"></i>重新配对</div>
       </div>
     </div>
 
@@ -2154,14 +2063,12 @@ var zMode='solo', selZodiacB=null, zPairData=null;
 
 function switchZMode(m){
   zMode=m;
-  var ids=['z-mode-solo','z-mode-pair','z-mode-bazi'];
+  var ids=['z-mode-solo','z-mode-pair'];
   ids.forEach(function(id){var el=document.getElementById(id);if(el){el.style.background='transparent';el.style.border='none';el.style.color='rgba(255,255,255,.35)';el.style.fontWeight='500';}});
   var pairSec=document.getElementById('z-pair-section');
-  var baziSec=document.getElementById('z-bazi-section');
   var btn=document.getElementById('z-main-btn');
   var inputCard=document.getElementById('zodiac-input-card');
   if(pairSec)pairSec.style.display='none';
-  if(baziSec)baziSec.style.display='none';
   ['zodiac-result','zodiac-pair-result','bazi-pair-result','zodiac-loading'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
   var hasBanner=document.getElementById('z-profile-banner')&&document.getElementById('z-profile-banner').style.display!=='none';
   if(m==='solo'){
@@ -2183,12 +2090,6 @@ function switchZMode(m){
     // 如果有 profile，自己的星座已选好，直接隐藏 "选择你的星座" label 并显示对方选择
     var selfLabel=inputCard?inputCard.querySelector('.fl-label'):null;
     if(selfLabel&&selZodiac!==null){selfLabel.textContent='你的星座（已连接命盘）';}
-  } else if(m==='bazi'){
-    var b=document.getElementById('z-mode-bazi');b.style.background='rgba(140,100,255,.15)';b.style.border='1px solid rgba(140,100,255,.4)';b.style.color='rgba(167,139,250,1)';b.style.fontWeight='600';
-    if(baziSec)baziSec.style.display='block';
-    btn.innerHTML='<i class="ti ti-sparkles"></i>生成命盘配对';
-    if(inputCard)inputCard.style.display='block';
-    initBaziScGrid('z-bazi-scgrid','z');
   }
 }
 
@@ -2869,33 +2770,56 @@ function updateBaziPreview(prefix){
 
 // bazi mode handled directly inside runZodiac and runShengxiao
 
+function genBaziPairResult(A,B,prefix){
+  var zFall=genZPairFallback(A.zodiac,B.zodiac);
+  var sxFall=genSXPairFallback(A.sx,B.sx);
+  var baziScore=calcBaziScore(A.gz,B.gz);
+  var total=Math.round(zFall.score*0.3+sxFall.score*0.3+baziScore*0.4);
+  return{
+    total:total,
+    zodiac_score:zFall.score,
+    zodiac_label:(A.zodiac?A.zodiac.elem:'?')+'×'+(B.zodiac?B.zodiac.elem:'?'),
+    sx_score:sxFall.score,
+    sx_label:sxFall.compat,
+    bazi_score:baziScore,
+    bazi_label:baziScore>=80?'五行相生':baziScore>=65?'中等合局':'需要磨合',
+    love:zFall.love,
+    dynamic:zFall.dynamic,
+    advice:zFall.advice,
+    scores:{love:zFall.scores.love,career:zFall.scores.career,daily:sxFall.scores.daily,comm:zFall.scores.communication},
+    keywords:zFall.keywords,
+    _A:A,_B:B,_prefix:prefix
+  };
+}
+
 function runBaziPair(prefix){
-  // Validate my profile
   var myProfile=null;
   try{var sp=localStorage.getItem('destiny_profile');if(sp)myProfile=JSON.parse(sp);}catch(e){}
-  if(!myProfile||!myProfile.year){showToast('请先完成登入建立你的命盘','ti-user');return;}
-  // Validate partner
+  if(!myProfile||!myProfile.year){showToast('请先建立你的命盘','ti-user');return;}
   var by=parseInt(document.getElementById(prefix+'-bazi-year').value);
   var bm=parseInt(document.getElementById(prefix+'-bazi-month').value);
   var bd=parseInt(document.getElementById(prefix+'-bazi-day').value);
   if(!by||!bm||!bd){showToast('请填写对方的出生日期','ti-calendar');return;}
-  if(by<1920||by>2010){showToast('请填写正确的年份（1920-2010）','ti-calendar');return;}
-  // Build both profiles - 确保 zodiac/sx 有值
-  var myZ=myProfile.zodiac||obGetZodiac(myProfile.month,myProfile.day);
-  var mySX=myProfile.sx||obGetSX(myProfile.year);
-  var myGZ=myProfile.gz||obCalcGZ(myProfile.year,myProfile.month,myProfile.day,myProfile.shichenIdx);
-  var A={year:myProfile.year,month:myProfile.month,day:myProfile.day,scIdx:myProfile.shichenIdx,zodiac:myZ,sx:mySX,gz:myGZ,name:myProfile.name||'你'};
-  var bScIdx=baziSelSC[prefix];
-  var bZ=obGetZodiac(bm,bd);
-  var bSX=obGetSX(by);
-  var bGZ=obCalcGZ(by,bm,bd,bScIdx);
-  var B={year:by,month:bm,day:bd,scIdx:bScIdx,zodiac:bZ,sx:bSX,gz:bGZ,name:'对方'};
-  // Show loading
-  var loadEl=document.getElementById(prefix==='z'?'zodiac-loading':'sx-loading');
-  var inputCard=document.getElementById(prefix==='z'?'zodiac-input-card':'sx-input-card');
+  var myZ=obGetZodiac(myProfile.month,myProfile.day);
+  var mySX=obGetSX(myProfile.year);
+  var myGZ=obCalcGZ(myProfile.year,myProfile.month,myProfile.day,myProfile.shichenIdx||null);
+  var A={year:myProfile.year,month:myProfile.month,day:myProfile.day,zodiac:myZ,sx:mySX,gz:myGZ,name:myProfile.name||'你'};
+  var bScIdx=baziSelSC[prefix]||null;
+  var B={year:by,month:bm,day:bd,zodiac:obGetZodiac(bm,bd),sx:obGetSX(by),gz:obCalcGZ(by,bm,bd,bScIdx),name:'对方'};
+  var inputCard=document.getElementById('sx-input-card');
   if(inputCard)inputCard.style.display='none';
+  var loadEl=document.getElementById('sx-loading');
   if(loadEl)loadEl.style.display='block';
-  callBaziPairAI(A,B,loadEl,prefix);
+  // Run fallback directly (no API needed)
+  var result=genBaziPairResult(A,B,prefix);
+  setTimeout(function(){
+    if(loadEl)loadEl.style.display='none';
+    baziPairData=result;
+    renderBaziPair(prefix);
+    var resEl=document.getElementById('sx-bazi-pair-result');
+    if(resEl)resEl.style.display='block';
+    else showToast('结果加载失败','ti-alert');
+  },1200);
 }
 
 async function callBaziPairAI(A,B,loadEl,prefix){
@@ -3011,8 +2935,8 @@ function resetBaziPair(){
   var sxCard=document.getElementById('sx-input-card');
   if(zCard)zCard.style.display='block';
   if(sxCard)sxCard.style.display='block';
-  ['z-bazi-year','z-bazi-month','z-bazi-day','sx-bazi-year','sx-bazi-month','sx-bazi-day'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
-  ['z-bazi-preview','sx-bazi-preview'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
+  ['sx-bazi-year','sx-bazi-month','sx-bazi-day'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  var prev=document.getElementById('sx-bazi-preview');if(prev)prev.style.display='none';
   baziSelSC={z:null,sx:null};
 }
 </script>
