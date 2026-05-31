@@ -2204,6 +2204,7 @@ function switchSXMode(m){
   if(m==='solo'){
     var s=document.getElementById('sx-mode-solo');s.style.background='rgba(245,158,11,.18)';s.style.border='1px solid rgba(245,158,11,.4)';s.style.color='rgba(245,158,11,1)';s.style.fontWeight='600';
     btn.innerHTML='<i class="ti ti-yin-yang"></i>查看生肖运势';
+    btn.onclick=function(){runShengxiao();};
     if(selSX!==null){
       if(inputCard)inputCard.style.display='none';
       if(!sxData){setTimeout(function(){runShengxiao();},100);}
@@ -2215,6 +2216,7 @@ function switchSXMode(m){
     var p=document.getElementById('sx-mode-pair');p.style.background='rgba(244,114,182,.15)';p.style.border='1px solid rgba(244,114,182,.4)';p.style.color='rgba(244,114,182,1)';p.style.fontWeight='600';
     if(pairSec)pairSec.style.display='block';
     btn.innerHTML='<i class="ti ti-heart"></i>开始生肖配对';
+    btn.onclick=function(){runShengxiao();};
     if(inputCard)inputCard.style.display='block';
     document.getElementById('sx-result').style.display='none';
     document.getElementById('sx-pair-result').style.display='none';
@@ -2225,6 +2227,7 @@ function switchSXMode(m){
     var b=document.getElementById('sx-mode-bazi');b.style.background='rgba(140,100,255,.15)';b.style.border='1px solid rgba(140,100,255,.4)';b.style.color='rgba(167,139,250,1)';b.style.fontWeight='600';
     if(baziSec)baziSec.style.display='block';
     btn.innerHTML='<i class="ti ti-sparkles"></i>生成命盘配对';
+    btn.onclick=function(){runBaziPair('sx');};
     if(inputCard)inputCard.style.display='block';
     initBaziScGrid('sx-bazi-scgrid','sx');
   }
@@ -2796,31 +2799,46 @@ function runBaziPair(prefix){
   var myProfile=null;
   try{var sp=localStorage.getItem('destiny_profile');if(sp)myProfile=JSON.parse(sp);}catch(e){}
   if(!myProfile||!myProfile.year){showToast('请先建立你的命盘','ti-user');return;}
-  var by=parseInt(document.getElementById(prefix+'-bazi-year').value);
-  var bm=parseInt(document.getElementById(prefix+'-bazi-month').value);
-  var bd=parseInt(document.getElementById(prefix+'-bazi-day').value);
+  var yEl=document.getElementById('sx-bazi-year');
+  var mEl=document.getElementById('sx-bazi-month');
+  var dEl=document.getElementById('sx-bazi-day');
+  if(!yEl||!mEl||!dEl){showToast('找不到输入框','ti-alert');return;}
+  var by=parseInt(yEl.value)||0;
+  var bm=parseInt(mEl.value)||0;
+  var bd=parseInt(dEl.value)||0;
   if(!by||!bm||!bd){showToast('请填写对方的出生日期','ti-calendar');return;}
+  // Hide input, show loading
+  var inputCard=document.getElementById('sx-input-card');
+  var loadEl=document.getElementById('sx-loading');
+  if(inputCard)inputCard.style.display='none';
+  if(loadEl)loadEl.style.display='block';
+  // Build profiles
   var myZ=obGetZodiac(myProfile.month,myProfile.day);
   var mySX=obGetSX(myProfile.year);
-  var myGZ=obCalcGZ(myProfile.year,myProfile.month,myProfile.day,myProfile.shichenIdx||null);
+  var myGZ=obCalcGZ(myProfile.year,myProfile.month,myProfile.day,null);
   var A={year:myProfile.year,month:myProfile.month,day:myProfile.day,zodiac:myZ,sx:mySX,gz:myGZ,name:myProfile.name||'你'};
-  var bScIdx=baziSelSC[prefix]||null;
-  var B={year:by,month:bm,day:bd,zodiac:obGetZodiac(bm,bd),sx:obGetSX(by),gz:obCalcGZ(by,bm,bd,bScIdx),name:'对方'};
-  var inputCard=document.getElementById('sx-input-card');
-  if(inputCard)inputCard.style.display='none';
-  var loadEl=document.getElementById('sx-loading');
-  if(loadEl)loadEl.style.display='block';
-  // Run fallback directly (no API needed)
-  var result=genBaziPairResult(A,B,prefix);
+  var bZ=obGetZodiac(bm,bd);
+  var bSX=obGetSX(by);
+  var bGZ=obCalcGZ(by,bm,bd,null);
+  var B={year:by,month:bm,day:bd,zodiac:bZ,sx:bSX,gz:bGZ,name:'对方'};
+  // Calculate and render after short delay
   setTimeout(function(){
-    if(loadEl)loadEl.style.display='none';
-    baziPairData=result;
-    renderBaziPair(prefix);
-    var resEl=document.getElementById('sx-bazi-pair-result');
-    if(resEl)resEl.style.display='block';
-    else showToast('结果加载失败','ti-alert');
-  },1200);
+    try{
+      var result=genBaziPairResult(A,B,'sx');
+      baziPairData=result;
+      if(loadEl)loadEl.style.display='none';
+      renderBaziPair('sx');
+      var resEl=document.getElementById('sx-bazi-pair-result');
+      if(resEl){resEl.style.display='block';}
+      else{showToast('显示结果失败','ti-alert');}
+    }catch(err){
+      if(loadEl)loadEl.style.display='none';
+      if(inputCard)inputCard.style.display='block';
+      showToast('推算出错，请重试','ti-alert');
+    }
+  },1000);
 }
+
 
 async function callBaziPairAI(A,B,loadEl,prefix){
   function gzStr(p){return p.gz?p.gz.year.tg+p.gz.year.dz+p.gz.month.tg+p.gz.month.dz+p.gz.day.tg+p.gz.day.dz+(p.gz.hour?p.gz.hour.tg+p.gz.hour.dz:'（时辰未知）'):'未知';}
