@@ -1815,10 +1815,38 @@ function restartDestiny(){aiDone=false;loadDone=false;aiResult=null;selectedShic
 
 // ── TAROT ──
 function selectMode(m){tarotMode=m;drawnCards=[];document.querySelectorAll('.mode-card').forEach(function(c){c.classList.remove('selected');});document.getElementById('mode-'+m).classList.add('selected');document.getElementById('q-input-wrap').classList.toggle('show',m===3);document.getElementById('draw-area-wrap').style.display=m===3?'none':'block';document.getElementById('three-slots').style.display=m===2?'grid':'none';document.getElementById('tarot-btn').style.display='none';var titles=['点击牌堆，抽出今日塔罗','点击牌堆，依次抽出三张牌','输入问题后点击师傅解读'];setText('draw-title',titles[m-1]);setText('draw-hint',m===3?'':'点击牌堆开始');if(m===2){['slot-0','slot-1','slot-2'].forEach(function(id,i){var s=document.getElementById(id);s.classList.remove('filled');s.innerHTML='<i class="ti ti-cards"></i><div class="card-slot-label">'+['过去','现在','未来'][i]+'</div>';});}var deck=document.querySelector('.deck-card:nth-child(3)');if(deck){deck.style.background='';deck.innerHTML='<div class="deck-pattern"><i class="ti ti-moon-stars"></i></div>';deck.classList.remove('flip-in');}}
+// ── TAROT CARD RENDERER ──
+var CARD_THEMES={major:{bg:'linear-gradient(160deg,#1a0535,#2d0a5e,#0d0220)',border:'rgba(180,120,255,.6)',accent:'#c8a0ff'},wands:{bg:'linear-gradient(160deg,#2a1000,#5a2200,#1a0800)',border:'rgba(255,140,40,.6)',accent:'#ffa040'},cups:{bg:'linear-gradient(160deg,#001a2e,#003a5e,#000d1a)',border:'rgba(80,180,255,.6)',accent:'#60c0ff'},swords:{bg:'linear-gradient(160deg,#0a0a1a,#1a1a3e,#050510)',border:'rgba(160,200,255,.6)',accent:'#b0d0ff'},pentacles:{bg:'linear-gradient(160deg,#0a1a00,#1e3a00,#050d00)',border:'rgba(100,200,80,.6)',accent:'#80e060'}};
+var CARD_SYMS={'The Fool':'✦','The Magician':'∞','The High Priestess':'☽','The Empress':'♀','The Emperor':'♂','The Hierophant':'⚜','The Lovers':'♡','The Chariot':'⚡','Strength':'♾','The Hermit':'◈','Wheel of Fortune':'☸','Justice':'⚖','The Hanged Man':'⊕','Death':'☩','Temperance':'⌀','The Devil':'△','The Tower':'⌂','The Star':'✧','The Moon':'☾','The Sun':'☀','Judgement':'♪','The World':'◉'};
+var ROMAN_NUM=['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'];
+var MAJOR_NAMES=['The Fool','The Magician','The High Priestess','The Empress','The Emperor','The Hierophant','The Lovers','The Chariot','Strength','The Hermit','Wheel of Fortune','Justice','The Hanged Man','Death','Temperance','The Devil','The Tower','The Star','The Moon','The Sun','Judgement','The World'];
+var SUIT_COLORS={wands:'#ff8020',cups:'#40a0ff',swords:'#a0b8ff',pentacles:'#60d040',major:'#c080ff'};
+function buildCardHTML(card,reversed,extra){
+  var t=CARD_THEMES[card.suit]||CARD_THEMES.major;
+  var sym=CARD_SYMS[card.name]||'✦';
+  var sc=SUIT_COLORS[card.suit]||'#c080ff';
+  var mi=MAJOR_NAMES.indexOf(card.name);
+  var num=card.suit==='major'?(mi===0?'0':mi>0?ROMAN_NUM[mi]:''):'';
+  var rot=reversed?'transform:rotate(180deg);':'';
+  return '<div style="width:100%;height:100%;background:'+t.bg+';border:1.5px solid '+t.border+';border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:8px 6px;box-sizing:border-box;'+rot+'position:relative;overflow:hidden">'+
+    '<div style="position:absolute;inset:5px;border:1px dashed '+t.border+';border-radius:7px;opacity:.3;pointer-events:none"></div>'+
+    '<div style="font-size:9px;font-weight:600;color:'+sc+';letter-spacing:.15em;opacity:.8;z-index:1">'+num+'</div>'+
+    '<div style="text-align:center;z-index:1;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center">'+
+      '<div style="font-size:38px;line-height:1;color:'+t.accent+'">'+sym+'</div>'+
+      '<div style="width:40px;height:1px;background:'+t.border+';margin:8px auto;opacity:.5"></div>'+
+      '<div style="font-size:8px;color:'+t.accent+';opacity:.4;letter-spacing:.2em">'+card.suit.toUpperCase()+'</div>'+
+    '</div>'+
+    '<div style="text-align:center;z-index:1">'+
+      '<div style="font-size:10px;font-weight:600;color:#fff;margin-bottom:2px">'+card.zh+'</div>'+
+      (extra||'')+
+    '</div>'+
+  '</div>';
+}
+
 function randCard(){return{card:DECK[Math.floor(Math.random()*DECK.length)],reversed:Math.random()>0.65};}
 function drawCards(){
-  if(tarotMode===1){if(drawnCards.length>0)return;var drawn=randCard();drawnCards=[drawn];var deck=document.querySelector('.deck-card:nth-child(3)');deck.style.background='linear-gradient(160deg,#1a0535,#0d0220)';deck.innerHTML='<div style="position:relative;width:100%;height:100%;overflow:hidden;border-radius:10px"><img src="'+drawn.card.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;'+(drawn.reversed?'transform:rotate(180deg);':'')+'" loading="lazy" onerror="this.onerror=null;this.style.opacity=0"/><div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(0,0,0,.85),transparent);padding:8px 6px 6px"><div style="font-family:Cinzel,serif;font-size:9px;font-weight:500;color:#fff;letter-spacing:.1em;text-align:center">'+drawn.card.zh+'</div>'+(drawn.reversed?'<div style="font-size:9px;color:rgba(240,120,170,.9);text-align:center;margin-top:2px">逆位</div>':'')+'</div></div>';deck.classList.add('flip-in');setText('draw-hint',drawn.card.zh+(drawn.reversed?' · 逆位':' · 正位'));document.getElementById('tarot-btn').style.display='flex';}
-  else if(tarotMode===2){if(drawnCards.length>=3)return;var drawn=randCard();var idx=drawnCards.length;drawnCards.push(drawn);var slot=document.getElementById('slot-'+idx);slot.classList.add('filled');slot.innerHTML='';var face=document.createElement('div');face.className='tarot-card-face flip-in';face.style.cssText='position:relative;width:100%;height:100%;border-radius:13px;overflow:hidden';face.innerHTML='<img src="'+drawn.card.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;'+(drawn.reversed?'transform:rotate(180deg);':'')+'" loading="lazy" onerror="this.onerror=null;this.style.opacity=0"/><div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(0,0,0,.9),transparent);padding:10px 6px 6px"><div style="font-size:10px;font-weight:600;color:#fff;text-align:center;margin-bottom:2px">'+drawn.card.zh+'</div><div style="font-size:9px;color:rgba(200,180,255,.8);text-align:center">'+['过去','现在','未来'][idx]+(drawn.reversed?' · 逆位':' · 正位')+'</div></div>';slot.appendChild(face);if(drawnCards.length===3){document.getElementById('tarot-btn').style.display='flex';}setText('draw-hint',drawnCards.length<3?'再抽 '+(3-drawnCards.length)+' 张':'三张已抽齐，点击解读');}
+  if(tarotMode===1){if(drawnCards.length>0)return;var drawn=randCard();drawnCards=[drawn];var deck=document.querySelector('.deck-card:nth-child(3)');deck.style.background='linear-gradient(160deg,#1a0535,#0d0220)';deck.innerHTML=buildCardHTML(drawn.card,drawn.reversed);deck.classList.add('flip-in');setText('draw-hint',drawn.card.zh+(drawn.reversed?' · 逆位':' · 正位'));document.getElementById('tarot-btn').style.display='flex';}
+  else if(tarotMode===2){if(drawnCards.length>=3)return;var drawn=randCard();var idx=drawnCards.length;drawnCards.push(drawn);var slot=document.getElementById('slot-'+idx);slot.classList.add('filled');slot.innerHTML='';var face=document.createElement('div');face.className='tarot-card-face flip-in';face.style.cssText='position:relative;width:100%;height:100%;border-radius:13px;overflow:hidden';face.innerHTML=buildCardHTML(drawn.card,drawn.reversed,'<div style="font-size:9px;color:rgba(200,180,255,.8);margin-top:3px">'+['过去','现在','未来'][idx]+'</div>');slot.appendChild(face);if(drawnCards.length===3){document.getElementById('tarot-btn').style.display='flex';}setText('draw-hint',drawnCards.length<3?'再抽 '+(3-drawnCards.length)+' 张':'三张已抽齐，点击解读');}
 }
 async function interpretCards(){
   var question=document.getElementById('tarot-question').value||'';
@@ -1837,7 +1865,7 @@ function renderTarotResult(){
   var modeLabels=['单张抽牌','三张牌阵 · 过去·现在·未来','问题占卜'];
   setText('r-mode-label',modeLabels[r.mode-1]);
   var mini=document.getElementById('r-drawn-mini');mini.innerHTML='';
-  if(r.mode===1||r.mode===2){r.cards.forEach(function(dc){var dm=document.createElement('div');dm.className='dm-card';dm.innerHTML='<div style="width:40px;height:60px;border-radius:5px;overflow:hidden;margin:0 auto 5px"><img src="'+dc.card.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;'+(dc.reversed?'transform:rotate(180deg)':'')+'" loading="lazy"/></div><div class="dm-name">'+dc.card.zh+'</div><div class="dm-pos">'+(dc.reversed?'逆位':'正位')+'</div>';mini.appendChild(dm);});}
+  if(r.mode===1||r.mode===2){r.cards.forEach(function(dc){var dm=document.createElement('div');dm.className='dm-card';dm.innerHTML='<div style="width:40px;height:60px;border-radius:5px;overflow:hidden;margin:0 auto 5px">'+buildCardHTML(dc.card,dc.reversed)+'</div><div class="dm-name">'+dc.card.zh+'</div><div class="dm-pos">'+(dc.reversed?'逆位':'正位')+'</div>';mini.appendChild(dm);});}
   else{(d.cards||[]).forEach(function(c){var dm=document.createElement('div');dm.className='dm-card';dm.innerHTML='<div class="dm-symbol">✦</div><div class="dm-name">'+c.name+'</div><div class="dm-pos">'+c.position+'</div>';mini.appendChild(dm);});}
   var secs=document.getElementById('r-interp-sections');secs.innerHTML='';
   function addSec(icon,title,text,kws){var s=document.createElement('div');s.className='interp-section';var kh=(kws||[]).map(function(k){return'<span class="is-kw">'+k+'</span>';}).join('');s.innerHTML='<div class="is-head"><div class="is-icon"><i class="ti '+icon+'"></i></div><div class="is-title">'+title+'</div></div><div class="is-text">'+text+'</div>'+(kh?'<div class="is-kws">'+kh+'</div>':'');secs.appendChild(s);}
