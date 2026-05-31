@@ -1907,6 +1907,50 @@ function renderSX(s){
   document.getElementById('sx-kws').innerHTML=(sxData.keywords||[]).map(function(k){return'<span style="font-size:10px;font-weight:500;color:rgba(245,158,11,.9);background:rgba(245,158,11,.1);padding:4px 12px;border-radius:100px;border:1px solid rgba(245,158,11,.3)">'+k+'</span>';}).join('');
 }
 
+
+// ── 配对哈希生成器（同一对永远同分，不同对分数不同）──
+function comboHash(a,b){var s=[a,b].sort().join('|');var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h;}
+function hashRng(seed){var s=seed>>>0;return function(){s^=s<<13;s^=s>>17;s^=s<<5;s=s>>>0;return s/0xffffffff;};}
+
+function genZPairFallback(zA,zB){
+  var rng=hashRng(comboHash(zA.zh,zB.zh));
+  var elemPairs={'火象|火象':88,'火象|风象':85,'风象|风象':84,'风象|水象':72,'水象|水象':80,'水象|土象':78,'土象|土象':76,'土象|火象':68,'火象|水象':58,'风象|土象':62};
+  var key=[zA.elem,zB.elem].sort().join('|');
+  var base=elemPairs[key]||70;
+  var score=Math.min(98,Math.max(45,base+Math.floor(rng()*16)-8));
+  var lv=Math.min(5,Math.floor(rng()*2)+(score>=80?4:score>=65?3:2));
+  var fv=Math.min(5,Math.floor(rng()*2)+(score>=75?4:3));
+  var cv=Math.min(5,Math.floor(rng()*2)+(score>=70?3:2));
+  var mv=Math.min(5,Math.floor(rng()*2)+(score>=72?3:2));
+  var LOVE=['两人之间有一种说不清楚的吸引力，感情上互相补充，一个感性一个理性，形成奇妙的平衡。','感情能量相互呼应，彼此都能感受到对方的温度，是那种越相处越踏实的组合。','初相遇可能不是最心动的，但时间越长，那份懂得会越来越深，是细水长流型的缘分。','两人频率接近，相处起来少了很多解释的必要，那种默契是慢慢磨合出来的，值得珍惜。','感情上有一点考验期，需要多一点耐心，但越过那个坎，关系会变得很稳固。','这对组合有一种独特的化学反应，表面上不太像，但内在有很多共鸣，越深入越有惊喜。'];
+  var DYN=['相处模式偏向一人主导一人配合，但配合得十分默契，彼此都能在对方身上找到自己缺少的部分。','两人风格互补，一个负责计划，一个负责执行，合作效率很高，但要注意给彼此留空间。','相处时自然舒服，不需要太多刻意，但也需要定期给关系注入新鲜感，避免流于平淡。','有一种竞争又合作的张力，相互激励，彼此成就，是那种让人进步的组合。','相处节奏有时候会不一致，磨合好了之后，会发现对方刚好补上了你缺的那一块。'];
+  var TEN=['有时候价值观上会有小摩擦，需要多一点耐心倾听，而不是急着说服对方。','两人都有自己的主见，遇到意见不合时容易各执一词，学会先听再说会让关系顺很多。','偶尔会有节奏上的不合拍，一个想快一个想慢，找到共同步调是这段关系的功课。','情绪表达方式不同，一个外露一个内敛，需要主动去理解对方的表达方式。'];
+  var ADV=['多一点包容，少一点要求，记得欣赏对方和自己不同的地方，那是你们在一起最大的财富。','定期做一件新鲜的事，给关系注入活力，两人一起成长比各自原地更有意思。','遇到矛盾先冷静再沟通，情绪平了再说事情，那时候的话更容易被听进去。','记得表达感谢，那些你以为对方知道的，说出来会让关系暖很多。'];
+  var KW=[['互补吸引','默契相处','包容为先'],['心有灵犀','慢热深情','细水长流'],['相互成就','张力十足','越久越好'],['需要磨合','潜力无限','真诚最重要'],['频率相近','自然舒适','共同成长'],['吸引明显','需要耐心','值得坚持']];
+  return{score:score,love:LOVE[Math.floor(rng()*LOVE.length)],dynamic:DYN[Math.floor(rng()*DYN.length)],tension:TEN[Math.floor(rng()*TEN.length)],advice:ADV[Math.floor(rng()*ADV.length)],scores:{love:lv,friendship:fv,career:cv,communication:mv},keywords:KW[Math.floor(rng()*KW.length)]};
+}
+
+function genSXPairFallback(sA,sB){
+  var rng=hashRng(comboHash(sA.name,sB.name));
+  var HX={'鼠|龙':1,'鼠|猴':1,'牛|蛇':1,'牛|鸡':1,'虎|马':1,'虎|狗':1,'兔|羊':1,'兔|猪':1,'龙|鼠':1,'龙|猴':1,'蛇|牛':1,'蛇|鸡':1,'马|虎':1,'马|狗':1,'羊|兔':1,'羊|猪':1,'猴|鼠':1,'猴|龙':1,'鸡|牛':1,'鸡|蛇':1,'狗|虎':1,'狗|马':1,'猪|兔':1,'猪|羊':1};
+  var XC={'鼠|马':1,'马|鼠':1,'牛|羊':1,'羊|牛':1,'虎|猴':1,'猴|虎':1,'兔|鸡':1,'鸡|兔':1,'龙|狗':1,'狗|龙':1,'蛇|猪':1,'猪|蛇':1};
+  var pk=sA.name+'|'+sB.name;
+  var isHX=HX[pk],isXC=XC[pk],isSame=sA.name===sB.name;
+  var base=isSame?82:isHX?85:isXC?52:70;
+  var compat=isHX||isSame?'相合':isXC?'相冲':'一般';
+  var score=Math.min(97,Math.max(42,base+Math.floor(rng()*14)-7));
+  var lv=Math.min(5,Math.floor(rng()*2)+(score>=80?4:score>=65?3:2));
+  var cv=Math.min(5,Math.floor(rng()*2)+(score>=72?3:2));
+  var dv=Math.min(5,Math.floor(rng()*2)+(score>=75?4:3));
+  var tv=Math.min(5,Math.floor(rng()*2)+(score>=70?3:2));
+  var LOVE=['两个生肖之间有一种天然的亲近感，彼此气场容易融合，感情上容易产生共鸣，值得认真经营。','初期需要一些磨合，但一旦建立了信任，这段感情会越来越稳固，是细水长流的缘分。','感情上有互补的力量，一个给稳定，一个给活力，两人在一起让彼此更完整。','缘分有，但需要主动维系，不能只靠感觉，用心经营才能走远。','感情能量相互吸引，在一起时有说不清楚的舒适感，那种舒适是难得的。','感情上有考验，需要多一点包容和耐心，考验过了，关系会更深。'];
+  var CAR=['事业上合作顺畅，一方善于规划，一方善于执行，互相补充，合作效果往往超出预期。','合作时有互补优势，但需要多沟通决策方向，避免内耗。','事业上可以互相借力，彼此的资源结合，会产生比单独行动更大的效果。','合作需要清晰分工，各自做擅长的事，减少摩擦，效率会高很多。'];
+  var DAI=['日常相处轻松自在，不需要刻意维护，自然就能保持舒适的节奏。','相处时偶尔有小摩擦，但那是两人更了解彼此的机会。','日常生活节奏比较合拍，一起做事不会觉得累，是让人放松的陪伴。','相处需要一些磨合，但磨合好了，会发现对方其实很懂自己。'];
+  var TIP=['保持真诚是最好的相处之道，不需要太多技巧，用心就够了。','遇到分歧先冷静，把话说清楚比谁赢谁输更重要。','多表达感谢，那些你以为对方知道的，说出来会让关系暖很多。','给彼此一些独处的空间，有了空间，在一起才更有质量。'];
+  var KW=[['天然亲近','互补共进','真诚为本'],['细水长流','磨合出金','值得坚持'],['相合默契','互相借力','共同成长'],['需要耐心','考验缘分','越久越好'],['气场相符','合作顺畅','珍惜缘分'],['互补有力','真心最重要','慢慢来']];
+  return{compat:compat,score:score,love:LOVE[Math.floor(rng()*LOVE.length)],career:CAR[Math.floor(rng()*CAR.length)],daily:DAI[Math.floor(rng()*DAI.length)],tip:TIP[Math.floor(rng()*TIP.length)],scores:{love:lv,career:cv,daily:dv,trust:tv},keywords:KW[Math.floor(rng()*KW.length)]};
+}
+
 // ══════════════════════════════════════════
 //  ZODIAC MODE SWITCH + PAIR
 // ══════════════════════════════════════════
@@ -1985,7 +2029,7 @@ async function callZodiacPairAI(zA,zB){
     var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
     zPairData=JSON.parse(txt);
   }catch(e){
-    zPairData={score:78,love:'两人之间有一种说不清道不明的吸引力，感情上互相补充，一个感性一个理性，反而形成了一种奇妙的平衡。',dynamic:'相处模式偏向于一人主导一人配合，但配合得十分默契，彼此都能在对方身上找到自己缺少的部分。',tension:'有时候价值观上会有小摩擦，需要多一点耐心倾听，而不是急着说服对方。',advice:'多一点包容，少一点要求，记得欣赏对方和自己不同的地方，那是你们在一起最大的财富。',scores:{love:4,friendship:4,career:3,communication:4},keywords:['互补吸引','默契相处','包容为先']};
+    zPairData=genZPairFallback(zA,zB);
   }
   document.getElementById('zodiac-loading').style.display='none';
   renderZodiacPair(zA,zB);
@@ -2108,7 +2152,7 @@ async function callSXPairAI(sA,sB){
     var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
     sxPairData=JSON.parse(txt);
   }catch(e){
-    sxPairData={compat:'相合',score:80,love:'两个生肖之间有一种天然的亲近感，彼此的气场容易融合，感情上容易产生共鸣，是一段值得认真经营的缘分。',career:'在事业上合作顺畅，一方善于规划，一方善于执行，互相补充，合作效果往往超出预期。',daily:'日常相处轻松自在，不需要刻意维护，自然就能保持一种舒适的节奏，是那种越相处越有感情的组合。',tip:'保持真诚是最好的相处之道，不需要太多的技巧，用心就够了。',scores:{love:4,career:3,daily:4,trust:4},keywords:['天然亲近','互补共进','真诚为本']};
+    sxPairData=genSXPairFallback(sA,sB);
   }
   document.getElementById('sx-loading').style.display='none';
   renderSXPair(sA,sB);
