@@ -2873,22 +2873,23 @@ function runBaziPair(prefix){
   // Validate my profile
   var myProfile=null;
   try{var sp=localStorage.getItem('destiny_profile');if(sp)myProfile=JSON.parse(sp);}catch(e){}
-  if(!myProfile||!myProfile.year){showToast('请先完成登入建立你的命盘','ti-user');alert('NO PROFILE: '+JSON.stringify(myProfile));return;}
+  if(!myProfile||!myProfile.year){showToast('请先完成登入建立你的命盘','ti-user');return;}
   // Validate partner
-  var byEl=document.getElementById(prefix+'-bazi-year');
-  var bmEl=document.getElementById(prefix+'-bazi-month');
-  var bdEl=document.getElementById(prefix+'-bazi-day');
-  if(!byEl||!bmEl||!bdEl){alert('INPUT ELEMENTS NOT FOUND: '+prefix+'-bazi-year etc');return;}
-  var by=parseInt(byEl.value);
-  var bm=parseInt(bmEl.value);
-  var bd=parseInt(bdEl.value);
-  alert('DEBUG: prefix='+prefix+' by='+by+' bm='+bm+' bd='+bd+' profile='+myProfile.year);
+  var by=parseInt(document.getElementById(prefix+'-bazi-year').value);
+  var bm=parseInt(document.getElementById(prefix+'-bazi-month').value);
+  var bd=parseInt(document.getElementById(prefix+'-bazi-day').value);
   if(!by||!bm||!bd){showToast('请填写对方的出生日期','ti-calendar');return;}
   if(by<1920||by>2010){showToast('请填写正确的年份（1920-2010）','ti-calendar');return;}
-  // Build both profiles
-  var A={year:myProfile.year,month:myProfile.month,day:myProfile.day,scIdx:myProfile.shichenIdx,zodiac:myProfile.zodiac,sx:myProfile.sx,gz:myProfile.gz,name:myProfile.name||'你'};
+  // Build both profiles - 确保 zodiac/sx 有值
+  var myZ=myProfile.zodiac||obGetZodiac(myProfile.month,myProfile.day);
+  var mySX=myProfile.sx||obGetSX(myProfile.year);
+  var myGZ=myProfile.gz||obCalcGZ(myProfile.year,myProfile.month,myProfile.day,myProfile.shichenIdx);
+  var A={year:myProfile.year,month:myProfile.month,day:myProfile.day,scIdx:myProfile.shichenIdx,zodiac:myZ,sx:mySX,gz:myGZ,name:myProfile.name||'你'};
   var bScIdx=baziSelSC[prefix];
-  var B={year:by,month:bm,day:bd,scIdx:bScIdx,zodiac:obGetZodiac(bm,bd),sx:obGetSX(by),gz:obCalcGZ(by,bm,bd,bScIdx),name:'对方'};
+  var bZ=obGetZodiac(bm,bd);
+  var bSX=obGetSX(by);
+  var bGZ=obCalcGZ(by,bm,bd,bScIdx);
+  var B={year:by,month:bm,day:bd,scIdx:bScIdx,zodiac:bZ,sx:bSX,gz:bGZ,name:'对方'};
   // Show loading
   var loadEl=document.getElementById(prefix==='z'?'zodiac-loading':'sx-loading');
   var inputCard=document.getElementById(prefix==='z'?'zodiac-input-card':'sx-input-card');
@@ -2909,19 +2910,24 @@ async function callBaziPairAI(A,B,loadEl,prefix){
     baziPairData._A=A;baziPairData._B=B;baziPairData._prefix=prefix;
   }catch(e){
     // Fallback: calculate scores algorithmically
-    var zFall=genZPairFallback(A.zodiac,B.zodiac);
-    var sxFall=genSXPairFallback(A.sx,B.sx);
-    var baziScore=calcBaziScore(A.gz,B.gz);
-    var total=Math.round((zFall.score*0.3+sxFall.score*0.3+baziScore*0.4));
-    baziPairData={
-      total:total,
-      zodiac_score:zFall.score,zodiac_label:A.zodiac.elem+'×'+B.zodiac.elem,
-      sx_score:sxFall.score,sx_label:sxFall.compat,
-      bazi_score:baziScore,bazi_label:baziScore>=80?'五行相生':baziScore>=65?'中等合局':'需要磨合',
-      love:zFall.love,dynamic:zFall.dynamic,advice:zFall.advice,
-      scores:{love:zFall.scores.love,career:zFall.scores.career,daily:sxFall.scores.daily,comm:zFall.scores.communication},
-      keywords:zFall.keywords,_A:A,_B:B,_prefix:prefix
-    };
+    try{
+      var zFall=genZPairFallback(A.zodiac,B.zodiac);
+      var sxFall=genSXPairFallback(A.sx,B.sx);
+      var baziScore=calcBaziScore(A.gz,B.gz);
+      var total=Math.round((zFall.score*0.3+sxFall.score*0.3+baziScore*0.4));
+      baziPairData={
+        total:total,
+        zodiac_score:zFall.score,zodiac_label:(A.zodiac?A.zodiac.elem:'?')+'×'+(B.zodiac?B.zodiac.elem:'?'),
+        sx_score:sxFall.score,sx_label:sxFall.compat,
+        bazi_score:baziScore,bazi_label:baziScore>=80?'五行相生':baziScore>=65?'中等合局':'需要磨合',
+        love:zFall.love,dynamic:zFall.dynamic,advice:zFall.advice,
+        scores:{love:zFall.scores.love,career:zFall.scores.career,daily:sxFall.scores.daily,comm:zFall.scores.communication},
+        keywords:zFall.keywords,_A:A,_B:B,_prefix:prefix
+      };
+    }catch(e2){
+      // Ultimate fallback
+      baziPairData={total:75,zodiac_score:78,zodiac_label:'推算中',sx_score:72,sx_label:'一般',bazi_score:76,bazi_label:'五行和合',love:'两人之间有一种独特的缘分，师傅感觉到彼此的气场是可以融合的，值得认真经营。',dynamic:'相处起来自然舒适，不需要太多刻意，两人各有所长，互相补充。',advice:'保持真诚，多沟通，感情的深度在于彼此真正的理解，而不是表面的和谐。',scores:{love:4,career:3,daily:4,comm:3},keywords:['真诚相遇','互补共生','缘分天定'],_A:A,_B:B,_prefix:prefix};
+    }
   }
   if(loadEl)loadEl.style.display='none';
   renderBaziPair(baziPairData._prefix);
