@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>命运馆 · 命理推算</title>
-<meta name="description" content="命盘推算 · 塔罗占卜 · 每日签语 · 幸运号码">
+<meta name="description" content="命盘推算 · 塔罗占卜 · 每日签语 · 深度咨询">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;500&display=swap');
@@ -190,13 +190,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 .remind-tag i{font-size:13px;color:rgba(180,140,255,.9);animation:aidot 2s ease-in-out infinite}
 .remind-text{font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.72)}
 
-.lucky-strip{padding:.9rem 1.3rem;border-top:1px solid rgba(255,255,255,.07)}
-.lucky-head{display:flex;align-items:center;gap:7px;margin-bottom:11px}
-.lucky-head i{font-size:14px;color:rgba(251,191,36,.8);animation:aidot 2s ease-in-out infinite}
-.lucky-head-label{font-size:10px;font-weight:600;letter-spacing:.15em;color:rgba(251,191,36,.7);text-transform:uppercase}
-.lucky-digits{display:flex;gap:6px;justify-content:center;margin-bottom:8px}
-.ld{width:50px;height:62px;border-radius:12px;background:rgba(251,191,36,.1);border:1.5px solid rgba(251,191,36,.35);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:rgba(251,191,36,1);box-shadow:0 0 12px rgba(251,191,36,.15)}
-.lucky-note{font-size:11px;font-weight:400;color:rgba(255,255,255,.4);text-align:center;line-height:1.6}
 .rc-footer{padding:.9rem 1.3rem;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between}
 .footer-brand{font-size:12px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.08em}
 .footer-url{font-size:10px;color:rgba(255,255,255,.18);margin-top:2px}
@@ -802,7 +795,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       <div class="orb-ring"></div><div class="orb-ring2"></div>
     </div>
     <div class="home-h1">探索你的<em>命运轨迹</em></div>
-    <div class="home-sub">生辰八字 · 塔罗占卜 · 每日签语<br>幸运号码 · 师傅全方位推算</div>
+    <div class="home-sub">生辰八字 · 塔罗占卜 · 星座生肖<br>每日签语 · 师傅全方位推算</div>
     <div class="feat-grid">
       <div class="feat-card dc" onclick="goTo('s-input','s-home')">
         <div class="fiw fiw-p"><i class="ti ti-crystal-ball"></i></div>
@@ -881,7 +874,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
       <div class="ls active" id="ls0"><i class="ti ti-loader"></i>解析生辰，排布八字命盘</div>
       <div class="ls" id="ls1"><i class="ti ti-chart-line"></i>推算近期大运流年走势</div>
       <div class="ls" id="ls2"><i class="ti ti-adjustments-horizontal"></i>分析五行格局与运势强弱</div>
-      <div class="ls" id="ls3"><i class="ti ti-hash"></i>推算本期幸运数字组合</div>
+      <div class="ls" id="ls3"><i class="ti ti-adjustments"></i>综合五行格局整理</div>
       <div class="ls" id="ls4"><i class="ti ti-file-check"></i>整理报告，即将完成</div>
     </div>
   </div>
@@ -900,7 +893,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="rc-chip"><i class="ti ti-user"></i><span id="r-gender">—</span></div>
         <div class="rc-chip"><i class="ti ti-clock"></i><span id="r-shichen">未来30天</span></div>
       </div>
-      <div class="rc-title"><div class="rc-title-main">Future 30 Days</div><div class="rc-title-sub">财运 · 感情 · 工作 · 幸运号码</div></div>
+      <div class="rc-title"><div class="rc-title-main">Future 30 Days</div><div class="rc-title-sub">财运 · 感情 · 工作</div></div>
       <div class="rc-section">
         <div class="rcs-head"><div class="rcs-left"><div class="rcs-icon"><i class="ti ti-coin"></i></div><div class="rcs-title">财运</div></div><div class="rcs-score"><i class="ti ti-star-filled"></i><span id="r-s-money">—</span></div></div>
         <div class="score-bar" id="r-b-money"></div><div class="rcs-text" id="r-t-money">—</div><div class="rcs-kws" id="r-k-money"></div>
@@ -914,11 +907,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="score-bar" id="r-b-work"></div><div class="rcs-text" id="r-t-work">—</div><div class="rcs-kws" id="r-k-work"></div>
       </div>
       <div class="rc-section"><div class="remind-box"><div class="remind-tag"><i class="ti ti-alert-circle"></i>近期特别提醒</div><div class="remind-text" id="r-remind">—</div></div></div>
-      <div class="lucky-strip">
-        <div class="lucky-head"><i class="ti ti-number"></i><div class="lucky-head-label">本期幸运号码 · 万字 4D</div></div>
-        <div class="lucky-digits" id="r-lucky"></div>
-        <div class="lucky-note" id="r-lucky-note">—</div>
-      </div>
       <div class="rc-footer">
         <div><div class="footer-brand">命运馆</div><div class="footer-url">destinyai.com</div></div>
         <div class="footer-seal"><i class="ti ti-shield-check"></i></div>
@@ -1538,7 +1526,7 @@ function startAnalysis(){
 }
 function runLoading(){
   aiDone=false;loadDone=false;aiResult=null;
-  var stats=[['正在解析你的生辰八字','建立命盘结构…'],['推算流年大运走势','五行相生相克分析…'],['分析运势强弱格局','财运 · 感情 · 工作…'],['推算本期幸运数字','吉数能量匹配中…'],['报告即将完成','最后整合…']];
+  var stats=[['正在解析你的生辰八字','建立命盘结构…'],['推算流年大运走势','五行相生相克分析…'],['分析运势强弱格局','财运 · 感情 · 工作…'],['综合五行格局整理','汇整推算结果…'],['报告即将完成','最后整合…']];
   var pf=document.getElementById('l-prog'),prog=0,si=0;
   var timer=setInterval(function(){var t=[15,35,57,78,93][Math.min(si,4)];if(prog<t){prog+=1.1;pf.style.width=Math.min(prog,100)+'%';}},80);
   [0,2000,4200,6500,8500].forEach(function(t,i){setTimeout(function(){si=i;if(i>0){var p=document.getElementById('ls'+(i-1));p.classList.remove('active');p.classList.add('done');p.querySelector('i').className='ti ti-check';}document.getElementById('ls'+i).classList.add('active');var s=stats[i];var lt=document.getElementById('l-title'),ls=document.getElementById('l-sub');lt.style.opacity='0';ls.style.opacity='0';setTimeout(function(){lt.textContent=s[0];ls.textContent=s[1];lt.style.opacity='1';ls.style.opacity='1';lt.style.transition='opacity .4s';ls.style.transition='opacity .4s';},340);},t);});
@@ -1566,7 +1554,7 @@ async function callDestinyAI(){
   var b=userData.bday,g=userData.gender,w=userData.worry,sc=userData.shichen;
   var scText=sc?'，出生时辰：'+sc.zh+'（地支：'+sc.dz+'）':'（时辰未填）';
   try{
-    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:'你是一位神秘而温柔的命理趋势分析师，结合生辰八字与现代AI趋势分析。根据以下信息生成未来30天运势与幸运号码：\n生日：'+b+scText+'\n性别：'+g+'\n烦恼：'+(w||'未填写')+'\n\n要求：神秘感、像真人命理师、让人被理解、不100%说死、每段约50字、有画面感。若有时辰请结合八字时柱分析，lucky4d给一组真实4位万字号码，reason给20字内原因。\n只返回JSON：{"money":{"score":4,"text":"…","keywords":["词1","词2"]},"love":{"score":3,"text":"…","keywords":["词1","词2"]},"work":{"score":4,"text":"…","keywords":["词1","词2"]},"remind":"…","lucky4d":{"number":"1234","reason":"天干吉数聚合"}}\nscore为1-5整数。'}]})});
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:'你是一位神秘而温柔的命理趋势分析师，结合生辰八字与命理推算。根据以下信息生成未来30天运势：\n生日：'+b+scText+'\n性别：'+g+'\n烦恼：'+(w||'未填写')+'\n\n要求：神秘感、像真人命理师、让人被理解、不100%说死、每段约50字、有画面感。若有时辰请结合八字时柱分析。\n只返回JSON：{"money":{"score":4,"text":"…","keywords":["词1","词2"]},"love":{"score":3,"text":"…","keywords":["词1","词2"]},"work":{"score":4,"text":"…","keywords":["词1","词2"]},"remind":"…"}\nscore为1-5整数。'}]})});
     var data=await res.json();
     var txt=data.content.map(function(c){return c.text||'';}).join('').replace(/```json|```/g,'').trim();
     aiResult=JSON.parse(txt);
@@ -1577,8 +1565,7 @@ async function callDestinyAI(){
       money:{score:Math.floor(rng()*2)+3,text:getDailySentence('cai',b2,0),keywords:['贵人相助','细水长流']},
       love:{score:Math.floor(rng()*2)+3,text:getDailySentence('qing',b2,0),keywords:['内心波动','缘起于微']},
       work:{score:Math.floor(rng()*2)+3,text:getDailySentence('life',b2,0),keywords:['暗中有人','厚积薄发']},
-      remind:getDailySentence('life',b2,1),
-      lucky4d:{number:num,reason:'天干地支吉数，本期能量聚合'}
+      remind:getDailySentence('life',b2,1)
     };
   }
   aiDone=true;tryShowResult();
@@ -1592,9 +1579,6 @@ function fillResult(){
   setText('r-shichen',userData.shichen?userData.shichen.zh:'未来30天');
   var fill=function(key,d){setText('r-s-'+key,d.score+' / 5');document.getElementById('r-b-'+key).innerHTML=scoreBar(d.score);setText('r-t-'+key,d.text);document.getElementById('r-k-'+key).innerHTML=(d.keywords||[]).map(function(k){return'<span class="rcs-kw">'+k+'</span>';}).join('');};
   fill('money',r.money);fill('love',r.love);fill('work',r.work);setText('r-remind',r.remind);
-  var lucky=r.lucky4d||{number:'8888',reason:'吉数推算'};
-  document.getElementById('r-lucky').innerHTML=String(lucky.number).padStart(4,'0').split('').map(function(d){return'<div class="ld">'+d+'</div>';}).join('');
-  setText('r-lucky-note',lucky.reason);
 }
 function doShare(){if(navigator.share){navigator.share({title:'命运馆 · 未来30天',text:'师傅推算了我的运势！快来试试',url:window.location.href}).catch(function(){});}else{showToast('请截图分享给朋友','ti-camera');}}
 function copyLink(){if(navigator.clipboard){navigator.clipboard.writeText(window.location.href).then(function(){showToast('链接已复制','ti-check');});}}
