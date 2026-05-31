@@ -414,6 +414,140 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 .sc-pill-time{font-size:8px;font-weight:400;color:rgba(255,255,255,.3);margin-top:2px}
 .sc-pill.on .sc-pill-zh{color:#fff}
 .sc-pill.on .sc-pill-time{color:rgba(180,140,255,.7)}
+/* ══ ONBOARDING ══ */
+.ob{position:fixed;inset:0;z-index:300;background:#000;display:flex;flex-direction:column;align-items:center;overflow-y:auto;transition:opacity .5s,transform .5s}
+.ob.hidden{opacity:0;pointer-events:none;transform:translateY(20px)}
+.ob-inner{width:100%;max-width:420px;min-height:100vh;display:flex;flex-direction:column}
+.ob-splash{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;text-align:center}
+.ob-orb{width:90px;height:90px;border-radius:50%;background:conic-gradient(from 180deg,rgba(140,80,255,.9),rgba(0,160,255,.7),rgba(180,80,255,.8),rgba(140,80,255,.9));filter:blur(1px);animation:orbspin 8s linear infinite;position:relative;margin:0 auto 1.4rem;box-shadow:0 0 36px rgba(140,80,255,.35)}
+.ob-orb-shine{position:absolute;inset:7px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.2),transparent 60%)}
+.ob-ring{position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(255,255,255,.08);animation:pring 3s ease-in-out infinite}
+.ob-ring2{position:absolute;inset:-24px;border-radius:50%;border:1px solid rgba(255,255,255,.04);animation:pring 3s ease-in-out infinite 1s}
+.ob-title{font-size:30px;font-weight:700;letter-spacing:-.03em;color:#fff;margin-bottom:.5rem}
+.ob-sub{font-size:13px;color:rgba(255,255,255,.45);line-height:1.75;margin-bottom:.5rem}
+.ob-tagline{font-size:11px;font-weight:600;letter-spacing:.16em;color:rgba(160,120,255,.7);text-transform:uppercase;margin-bottom:2.2rem}
+.ob-btn-wrap{width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px}
+.ob-btn-p{width:100%;padding:15px 20px;border-radius:13px;border:none;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 22px rgba(124,58,237,.45),inset 0 1px 0 rgba(255,255,255,.15);transition:all .2s}
+.ob-btn-p:hover{opacity:.92;transform:translateY(-1px)}
+.ob-btn-p i{font-size:17px}
+.ob-btn-g{width:100%;padding:14px 20px;border-radius:13px;border:2px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
+.ob-btn-g:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.45)}
+.ob-btn-g i{font-size:16px}
+.ob-note{font-size:11px;color:rgba(255,255,255,.25);margin-top:1.1rem;letter-spacing:.04em}
+
+/* Login page */
+.ob-login{flex:1;display:none;flex-direction:column;padding:1.5rem}
+.ob-login.show{display:flex}
+.ob-login-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:5px}
+.ob-login-sub{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:1.6rem;line-height:1.6}
+.ob-fi{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:13px;padding:14px 16px;font-family:'Inter',sans-serif;font-size:15px;color:#fff;outline:none;transition:all .2s;margin-bottom:12px}
+.ob-fi:focus{border-color:rgba(140,100,255,.6);background:rgba(140,100,255,.08);box-shadow:0 0 0 3px rgba(140,100,255,.12)}
+.ob-fi::placeholder{color:rgba(255,255,255,.22);font-size:14px}
+.ob-back-row{display:flex;align-items:center;gap:7px;cursor:pointer;margin-bottom:1.4rem;color:rgba(255,255,255,.4);font-size:13px}
+.ob-back-row i{font-size:17px}
+.ob-back-row:hover{color:rgba(255,255,255,.75)}
+.ob-profile-found{background:rgba(140,100,255,.08);border:1.5px solid rgba(140,100,255,.28);border-radius:16px;padding:1.1rem 1.2rem;margin-bottom:14px;display:none}
+.ob-profile-found.show{display:block}
+.ob-pf-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ob-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
+.ob-pf-name{font-size:16px;font-weight:700;color:#fff}
+.ob-pf-sub{font-size:11px;color:rgba(255,255,255,.38);margin-top:2px}
+.ob-pf-chips{display:flex;gap:6px;flex-wrap:wrap}
+.ob-pchip{font-size:11px;font-weight:500;padding:3px 11px;border-radius:100px;background:rgba(140,100,255,.12);border:1px solid rgba(140,100,255,.28);color:rgba(180,140,255,.9)}
+.ob-no-found{text-align:center;padding:1.5rem;color:rgba(255,255,255,.3);font-size:13px;display:none}
+.ob-no-found.show{display:block}
+.ob-no-found i{font-size:32px;display:block;margin-bottom:.6rem;color:rgba(255,255,255,.18)}
+
+/* Form steps */
+.ob-form{flex:1;display:none;flex-direction:column}
+.ob-form.show{display:flex}
+.ob-fheader{padding:1.4rem 1.5rem .8rem;position:sticky;top:0;background:linear-gradient(180deg,#000 72%,transparent);z-index:10}
+.ob-progress{display:flex;gap:4px;margin-bottom:1rem}
+.ob-pdot{flex:1;height:3px;border-radius:100px;background:rgba(255,255,255,.08);transition:background .4s}
+.ob-pdot.done{background:linear-gradient(90deg,#7c3aed,#3b82f6)}
+.ob-pdot.active{background:rgba(140,100,255,.55)}
+.ob-stag{font-size:10px;font-weight:600;letter-spacing:.16em;color:rgba(255,255,255,.28);text-transform:uppercase;margin-bottom:4px}
+.ob-stitle{font-size:22px;font-weight:700;color:#fff;margin-bottom:4px}
+.ob-ssub{font-size:13px;color:rgba(255,255,255,.38);line-height:1.6}
+.ob-fbody{padding:.8rem 1.5rem;flex:1;overflow-y:auto}
+.ob-field{margin-bottom:16px}
+.ob-label{font-size:11px;font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.ob-label i{font-size:13px;color:rgba(140,100,255,.65)}
+.ob-req{color:rgba(240,100,100,.7);margin-left:1px}
+.ob-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.ob-hint{font-size:11px;color:rgba(255,255,255,.22);margin-top:6px;line-height:1.55;display:flex;align-items:flex-start;gap:5px}
+.ob-hint i{font-size:12px;color:rgba(140,100,255,.45);flex-shrink:0;margin-top:1px}
+.ob-name-echo{font-size:13px;font-weight:500;color:rgba(140,100,255,.75);margin-top:4px;min-height:17px}
+.ob-seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ob-sopt{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:13px 10px;text-align:center;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:5px}
+.ob-sopt i{font-size:22px;color:rgba(255,255,255,.28)}
+.ob-sopt span{font-size:13px;font-weight:500;color:rgba(255,255,255,.42)}
+.ob-sopt.on{background:rgba(140,100,255,.14);border-color:rgba(140,100,255,.5)}
+.ob-sopt.on i{color:rgba(180,140,255,1)}
+.ob-sopt.on span{color:#fff}
+.ob-scgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ob-sc{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.08);border-radius:11px;padding:9px 4px;text-align:center;cursor:pointer;transition:all .2s}
+.ob-sc.on{background:rgba(140,100,255,.14);border-color:rgba(140,100,255,.5)}
+.ob-sc-zh{font-size:13px;font-weight:600;color:rgba(255,255,255,.78)}
+.ob-sc-tm{font-size:9px;color:rgba(255,255,255,.28);margin-top:2px}
+.ob-sc.on .ob-sc-zh{color:#fff}.ob-sc.on .ob-sc-tm{color:rgba(180,140,255,.65)}
+.ob-auto{display:none;flex-direction:column;gap:7px;margin-top:10px}
+.ob-auto.show{display:flex}
+.ob-abadge{background:rgba(140,100,255,.09);border:1.5px solid rgba(140,100,255,.22);border-radius:12px;padding:10px 13px;display:flex;align-items:center;gap:10px}
+.ob-abadge-em{font-size:24px;line-height:1}
+.ob-abadge-lbl{font-size:9px;font-weight:600;letter-spacing:.12em;color:rgba(140,100,255,.55);text-transform:uppercase;margin-bottom:2px}
+.ob-abadge-val{font-size:14px;font-weight:700;color:#fff}
+.ob-abadge-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px}
+.ob-abadge-tick{font-size:15px;color:rgba(140,100,255,.65)}
+.ob-ta{width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:13px;padding:13px 15px;font-family:'Inter',sans-serif;font-size:14px;color:#fff;outline:none;resize:none;line-height:1.75;transition:all .2s;height:100px}
+.ob-ta:focus{border-color:rgba(140,100,255,.55);background:rgba(140,100,255,.07)}
+.ob-ta::placeholder{color:rgba(255,255,255,.2)}
+.ob-tags{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ob-tag{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.09);border-radius:11px;padding:12px 8px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:500;color:rgba(255,255,255,.4)}
+.ob-tag i{font-size:15px;color:rgba(255,255,255,.22)}
+.ob-tag.on{background:rgba(140,100,255,.12);border-color:rgba(140,100,255,.45);color:#fff}
+.ob-tag.on i{color:rgba(180,140,255,.9)}
+.ob-fnav{padding:.9rem 1.5rem 1.6rem;display:flex;gap:9px;align-items:center;position:sticky;bottom:0;background:linear-gradient(0deg,#000 72%,transparent)}
+.ob-fback{width:44px;height:50px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.ob-fback i{font-size:18px;color:rgba(255,255,255,.5)}
+.ob-fback:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
+.ob-fnext{flex:1;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;border-radius:12px;padding:15px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:#fff;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(100,60,200,.35),inset 0 1px 0 rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;gap:8px}
+.ob-fnext:hover{opacity:.92;transform:translateY(-1px)}
+.ob-fnext i{font-size:17px}
+
+/* Profile preview */
+.ob-pfcard{background:rgba(14,8,32,.95);border:1.5px solid rgba(140,100,255,.28);border-radius:20px;overflow:hidden;position:relative;margin-bottom:13px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.ob-pfcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(160,120,255,.85),rgba(100,160,255,.75),transparent)}
+.ob-pftop{padding:1.1rem 1.2rem .9rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:11px}
+.ob-pfav{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 0 16px rgba(140,100,255,.32)}
+.ob-pfname{font-size:17px;font-weight:700;color:#fff;margin-bottom:2px}
+.ob-pfdate{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.05em}
+.ob-pfchips{padding:.7rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;gap:6px;flex-wrap:wrap}
+.ob-pfchip{font-size:11px;font-weight:500;padding:3px 11px;border-radius:100px;display:flex;align-items:center;gap:4px}
+.ob-pfchip i{font-size:11px}
+.opc-purple{background:rgba(140,100,255,.12);border:1px solid rgba(140,100,255,.28);color:rgba(180,140,255,.9)}
+.opc-blue{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);color:rgba(96,165,250,.9)}
+.opc-amber{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:rgba(251,191,36,.9)}
+.opc-pink{background:rgba(244,114,182,.1);border:1px solid rgba(244,114,182,.25);color:rgba(244,114,182,.9)}
+.ob-pillars-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:.85rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.ob-pm{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:.6rem .3rem;text-align:center}
+.ob-pm-lbl{font-size:9px;font-weight:600;letter-spacing:.1em;color:rgba(255,255,255,.24);text-transform:uppercase;margin-bottom:4px}
+.ob-pm-gz{font-size:20px;font-weight:700;color:#fff;line-height:1;margin-bottom:2px}
+.ob-pm-elem{font-size:9px;font-weight:600;padding:2px 6px;border-radius:100px;display:inline-block}
+.ob-pm-gz2{font-size:18px;font-weight:700;color:rgba(255,255,255,.82);line-height:1;margin-top:4px;padding-top:4px;border-top:1px dashed rgba(255,255,255,.07)}
+.ob-destiny-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:.85rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.ob-di{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:.8rem;text-align:center}
+.ob-di-em{font-size:26px;margin-bottom:4px;line-height:1}
+.ob-di-type{font-size:9px;font-weight:600;letter-spacing:.1em;color:rgba(255,255,255,.24);text-transform:uppercase;margin-bottom:2px}
+.ob-di-val{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.ob-di-sub{font-size:10px;color:rgba(255,255,255,.3)}
+.ob-pffooter{padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between}
+.ob-pfbrand{font-size:11px;color:rgba(255,255,255,.18);font-weight:300}
+.ob-enter-btn{width:100%;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;border-radius:13px;padding:16px;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer;transition:all .2s;box-shadow:0 4px 24px rgba(100,60,200,.4),inset 0 1px 0 rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:10px}
+.ob-enter-btn:hover{opacity:.92;transform:translateY(-1px)}
+.ob-enter-btn i{font-size:18px}
+.ob-edit-link{text-align:center;font-size:12px;color:rgba(255,255,255,.22);cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;gap:5px}
+.ob-edit-link:hover{color:rgba(255,255,255,.55)}
 </style>
 </head>
 <body>
@@ -421,6 +555,232 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
 <!-- STAR CANVAS -->
 <canvas id="starCanvas"></canvas>
 <div class="ambient"></div>
+
+<!-- ══════════════════════════════════════
+     ONBOARDING OVERLAY
+══════════════════════════════════════ -->
+<div class="ob" id="ob-overlay">
+  <div class="ob-inner">
+
+    <!-- PAGE A: SPLASH -->
+    <div id="ob-splash" class="ob-splash">
+      <div class="ob-orb">
+        <div class="ob-orb-shine"></div>
+        <div class="ob-ring"></div>
+        <div class="ob-ring2"></div>
+      </div>
+      <div class="ob-title">命运馆</div>
+      <div class="ob-sub">生辰八字 · 塔罗占卜 · 星座生肖<br>每日签语 · 深度咨询</div>
+      <div class="ob-tagline">传承命理 · 解读你的轨迹</div>
+      <div class="ob-btn-wrap">
+        <button class="ob-btn-p" onclick="obShowForm()">
+          <i class="ti ti-sparkles"></i>开始建立我的命盘
+        </button>
+        <button class="ob-btn-g" onclick="obShowLogin()">
+          <i class="ti ti-login"></i>我已经有账户了
+        </button>
+        <div class="ob-note">填写一次，永久保存 · 所有功能自动匹配你的命盘</div>
+      </div>
+    </div>
+
+    <!-- PAGE B: LOGIN (已有账户) -->
+    <div class="ob-login" id="ob-login">
+      <div style="padding:1.4rem 1.5rem 0">
+        <div class="ob-back-row" onclick="obShowSplash()">
+          <i class="ti ti-arrow-left"></i><span>返回</span>
+        </div>
+        <div class="ob-login-title">欢迎回来</div>
+        <div class="ob-login-sub">输入你的名字或联系方式，师傅马上认出你</div>
+        <input class="ob-fi" id="ob-login-input" type="text" placeholder="输入名字 / WhatsApp / Email" oninput="obSearchProfile()"/>
+        <div class="ob-profile-found" id="ob-found-card">
+          <div class="ob-pf-head">
+            <div class="ob-avatar" id="ob-found-avatar">？</div>
+            <div>
+              <div class="ob-pf-name" id="ob-found-name">—</div>
+              <div class="ob-pf-sub" id="ob-found-sub">—</div>
+            </div>
+          </div>
+          <div class="ob-pf-chips" id="ob-found-chips"></div>
+        </div>
+        <div class="ob-no-found" id="ob-not-found">
+          <i class="ti ti-search-off"></i>
+          找不到这个账户，要新建一个吗？
+        </div>
+      </div>
+      <div style="padding:1rem 1.5rem;display:flex;flex-direction:column;gap:10px;margin-top:auto">
+        <button class="ob-btn-p" id="ob-login-btn" onclick="obLoginConfirm()" style="display:none">
+          <i class="ti ti-door-enter"></i>确认，进入命运馆
+        </button>
+        <button class="ob-btn-g" id="ob-new-from-login" onclick="obShowForm()" style="display:none">
+          <i class="ti ti-plus"></i>新建我的命盘
+        </button>
+      </div>
+    </div>
+
+    <!-- PAGE C: FORM (新用户三步填写) -->
+    <div class="ob-form" id="ob-form">
+      <div class="ob-fheader">
+        <div class="ob-progress">
+          <div class="ob-pdot active" id="ob-dot0"></div>
+          <div class="ob-pdot" id="ob-dot1"></div>
+          <div class="ob-pdot" id="ob-dot2"></div>
+        </div>
+        <div class="ob-stag" id="ob-stag">步骤 1 / 3</div>
+        <div class="ob-stitle" id="ob-stitle">你叫什么名字？</div>
+        <div class="ob-ssub" id="ob-ssub">让师傅记住你，之后每次推算都更精准</div>
+      </div>
+      <div class="ob-fbody">
+
+        <!-- STEP 1 -->
+        <div id="ob-step1">
+          <div class="ob-field">
+            <div class="ob-label"><i class="ti ti-user"></i>你的名字<span class="ob-req">*</span></div>
+            <input class="ob-fi" id="ob-name" type="text" placeholder="直接输入你的名字" oninput="obNameEcho()" maxlength="20"/>
+            <div class="ob-name-echo" id="ob-name-echo"></div>
+          </div>
+          <div class="ob-field">
+            <div class="ob-label"><i class="ti ti-gender-bigender"></i>性别<span class="ob-req">*</span></div>
+            <div class="ob-seg">
+              <div class="ob-sopt" id="ob-g-m" onclick="obSetGender('男',this)">
+                <i class="ti ti-gender-male"></i><span>男命</span>
+              </div>
+              <div class="ob-sopt" id="ob-g-f" onclick="obSetGender('女',this)">
+                <i class="ti ti-gender-female"></i><span>女命</span>
+              </div>
+            </div>
+          </div>
+          <div class="ob-field">
+            <div class="ob-label"><i class="ti ti-device-mobile"></i>联系方式</div>
+            <input class="ob-fi" id="ob-contact" type="text" placeholder="WhatsApp / Email（方便咨询联系）" maxlength="60"/>
+            <div class="ob-hint"><i class="ti ti-lock"></i>资料只用于你的命盘，不会分享给第三方</div>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div id="ob-step2" style="display:none">
+          <div class="ob-field">
+            <div class="ob-label"><i class="ti ti-calendar"></i>出生日期<span class="ob-req">*</span></div>
+            <div class="ob-row3">
+              <input class="ob-fi" id="ob-year" type="number" placeholder="年份" min="1920" max="2010" oninput="obBdayChange()" style="text-align:center;margin-bottom:0"/>
+              <input class="ob-fi" id="ob-month" type="number" placeholder="月" min="1" max="12" oninput="obBdayChange()" style="text-align:center;margin-bottom:0"/>
+              <input class="ob-fi" id="ob-day" type="number" placeholder="日" min="1" max="31" oninput="obBdayChange()" style="text-align:center;margin-bottom:0"/>
+            </div>
+            <div class="ob-hint" style="margin-top:7px"><i class="ti ti-info-circle"></i>填写公历生日，系统自动换算八字、星座、生肖</div>
+          </div>
+          <div class="ob-field">
+            <div class="ob-label"><i class="ti ti-clock"></i>出生时辰
+              <span style="font-size:9px;color:rgba(255,255,255,.25);font-weight:400;text-transform:none;letter-spacing:0">（选填 · 填了更精准）</span>
+            </div>
+            <div class="ob-scgrid" id="ob-scgrid"></div>
+            <div class="ob-hint" style="margin-top:6px"><i class="ti ti-info-circle"></i>不知道也没关系，留空即可</div>
+          </div>
+          <div class="ob-auto" id="ob-auto">
+            <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(140,100,255,.6);text-transform:uppercase;margin-bottom:2px;display:flex;align-items:center;gap:5px"><i class="ti ti-wand" style="font-size:12px"></i>根据生日自动推算</div>
+            <div class="ob-abadge">
+              <div class="ob-abadge-em" id="ob-zsym">♈</div>
+              <div style="flex:1">
+                <div class="ob-abadge-lbl">星座</div>
+                <div class="ob-abadge-val" id="ob-zname">—</div>
+                <div class="ob-abadge-sub" id="ob-zdates">—</div>
+              </div>
+              <i class="ti ti-check ob-abadge-tick"></i>
+            </div>
+            <div class="ob-abadge">
+              <div class="ob-abadge-em" id="ob-sxem">🐭</div>
+              <div style="flex:1">
+                <div class="ob-abadge-lbl">生肖</div>
+                <div class="ob-abadge-val" id="ob-sxname">—</div>
+                <div class="ob-abadge-sub" id="ob-sxsub">—</div>
+              </div>
+              <i class="ti ti-check ob-abadge-tick"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div id="ob-step3" style="display:none">
+          <div class="ob-field">
+            <div class="ob-label"><i class="ti ti-message-heart"></i>最近有什么烦恼或期待？</div>
+            <textarea class="ob-ta" id="ob-concern" placeholder="例：工作压力大，想知道近期有没有转机。感情方面一直没有进展。想知道今年适不适合投资…&#10;&#10;说越多，师傅推算越精准。"></textarea>
+            <div class="ob-hint"><i class="ti ti-lock"></i>只有你看到，师傅推算时会参考你的情况</div>
+          </div>
+          <div class="ob-field">
+            <div class="ob-label"><i class="ti ti-target"></i>最想了解哪方面？</div>
+            <div class="ob-tags">
+              <div class="ob-tag" onclick="obToggleTag(this,'财运')"><i class="ti ti-coin"></i>财运</div>
+              <div class="ob-tag" onclick="obToggleTag(this,'感情')"><i class="ti ti-heart"></i>感情</div>
+              <div class="ob-tag" onclick="obToggleTag(this,'事业')"><i class="ti ti-briefcase"></i>事业</div>
+              <div class="ob-tag" onclick="obToggleTag(this,'健康')"><i class="ti ti-heartbeat"></i>健康</div>
+              <div class="ob-tag" onclick="obToggleTag(this,'家庭')"><i class="ti ti-home"></i>家庭</div>
+              <div class="ob-tag" onclick="obToggleTag(this,'人生方向')"><i class="ti ti-compass"></i>人生方向</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="ob-fnav">
+        <div class="ob-fback" id="ob-fback" onclick="obPrevStep()" style="display:none">
+          <i class="ti ti-arrow-left"></i>
+        </div>
+        <button class="ob-fnext" onclick="obNextStep()">
+          <span id="ob-next-lbl">继续</span>
+          <i class="ti ti-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- PAGE D: PROFILE PREVIEW -->
+    <div class="ob-form" id="ob-preview" style="overflow-y:auto">
+      <div style="padding:1.4rem 1.5rem 1rem">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.18em;color:rgba(255,255,255,.28);text-transform:uppercase;margin-bottom:5px">命盘已建立</div>
+        <div style="font-size:22px;font-weight:700;color:#fff;margin-bottom:4px" id="ob-greeting">你好！</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.36);line-height:1.6">师傅已根据你的生辰八字建立专属命盘</div>
+      </div>
+      <div style="padding:0 1.5rem 1.5rem;flex:1">
+        <div class="ob-pfcard">
+          <div class="ob-pftop">
+            <div class="ob-pfav" id="ob-pfav">？</div>
+            <div>
+              <div class="ob-pfname" id="ob-pfname">—</div>
+              <div class="ob-pfdate" id="ob-pfdate">—</div>
+            </div>
+          </div>
+          <div class="ob-pfchips" id="ob-pfchips"></div>
+          <div style="padding:.7rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)">
+            <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(255,255,255,.26);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:5px"><i class="ti ti-columns" style="font-size:12px;color:rgba(140,100,255,.55)"></i>四柱八字</div>
+            <div class="ob-pillars-mini" id="ob-pillars"></div>
+          </div>
+          <div class="ob-destiny-row">
+            <div class="ob-di">
+              <div class="ob-di-em" id="ob-pr-zsym">—</div>
+              <div class="ob-di-type">星座</div>
+              <div class="ob-di-val" id="ob-pr-zname">—</div>
+              <div class="ob-di-sub" id="ob-pr-zdates">—</div>
+            </div>
+            <div class="ob-di">
+              <div class="ob-di-em" id="ob-pr-sxem">—</div>
+              <div class="ob-di-type">生肖</div>
+              <div class="ob-di-val" id="ob-pr-sxname">—</div>
+              <div class="ob-di-sub" id="ob-pr-sxelem">—</div>
+            </div>
+          </div>
+          <div class="ob-pffooter">
+            <div class="ob-pfbrand">命运馆 · 专属命盘</div>
+            <div style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center"><i class="ti ti-shield-check" style="font-size:13px;color:rgba(255,255,255,.2)"></i></div>
+          </div>
+        </div>
+        <button class="ob-enter-btn" onclick="obEnterApp()">
+          <i class="ti ti-crystal-ball"></i>进入命运馆
+        </button>
+        <div class="ob-edit-link" onclick="obShowForm()">
+          <i class="ti ti-edit" style="font-size:13px"></i>修改资料
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- END ONBOARDING -->
 
 <!-- ═══ HOME ═══ -->
 <div class="screen" id="s-home">
@@ -1746,6 +2106,416 @@ function resetSX(){
   document.getElementById('sx-input-card').style.display='block';
   document.querySelectorAll('#sx-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
   document.querySelectorAll('#sx-grid-b > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
+}
+// ═══════════════════════════════════════════
+//  ONBOARDING SYSTEM
+// ═══════════════════════════════════════════
+var OB_SHICHEN=[
+  {zh:'子时',time:'23-01',dz:'子'},{zh:'丑时',time:'01-03',dz:'丑'},
+  {zh:'寅时',time:'03-05',dz:'寅'},{zh:'卯时',time:'05-07',dz:'卯'},
+  {zh:'辰时',time:'07-09',dz:'辰'},{zh:'巳时',time:'09-11',dz:'巳'},
+  {zh:'午时',time:'11-13',dz:'午'},{zh:'未时',time:'13-15',dz:'未'},
+  {zh:'申时',time:'15-17',dz:'申'},{zh:'酉时',time:'17-19',dz:'酉'},
+  {zh:'戌时',time:'19-21',dz:'戌'},{zh:'亥时',time:'21-23',dz:'亥'}
+];
+var OB_ZODIACS=[
+  {zh:'摩羯座',sym:'♑',dates:'12.22-1.19',elem:'土象'},
+  {zh:'水瓶座',sym:'♒',dates:'1.20-2.18',elem:'风象'},
+  {zh:'双鱼座',sym:'♓',dates:'2.19-3.20',elem:'水象'},
+  {zh:'白羊座',sym:'♈',dates:'3.21-4.19',elem:'火象'},
+  {zh:'金牛座',sym:'♉',dates:'4.20-5.20',elem:'土象'},
+  {zh:'双子座',sym:'♊',dates:'5.21-6.20',elem:'风象'},
+  {zh:'巨蟹座',sym:'♋',dates:'6.21-7.22',elem:'水象'},
+  {zh:'狮子座',sym:'♌',dates:'7.23-8.22',elem:'火象'},
+  {zh:'处女座',sym:'♍',dates:'8.23-9.22',elem:'土象'},
+  {zh:'天秤座',sym:'♎',dates:'9.23-10.22',elem:'风象'},
+  {zh:'天蝎座',sym:'♏',dates:'10.23-11.21',elem:'水象'},
+  {zh:'射手座',sym:'♐',dates:'11.22-12.21',elem:'火象'}
+];
+var OB_SX=[
+  {name:'鼠',emoji:'🐭',elem:'水'},{name:'牛',emoji:'🐂',elem:'土'},
+  {name:'虎',emoji:'🐯',elem:'木'},{name:'兔',emoji:'🐰',elem:'木'},
+  {name:'龙',emoji:'🐲',elem:'土'},{name:'蛇',emoji:'🐍',elem:'火'},
+  {name:'马',emoji:'🐴',elem:'火'},{name:'羊',emoji:'🐑',elem:'土'},
+  {name:'猴',emoji:'🐵',elem:'金'},{name:'鸡',emoji:'🐔',elem:'金'},
+  {name:'狗',emoji:'🐶',elem:'土'},{name:'猪',emoji:'🐷',elem:'水'}
+];
+var OB_TG=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+var OB_DZ=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+var OB_TGE=['木','木','火','火','土','土','金','金','水','水'];
+var OB_DZE=['水','土','木','木','土','火','火','土','金','金','土','水'];
+var OB_ESTYLE={
+  '木':'background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:rgba(100,220,120,1)',
+  '火':'background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:rgba(248,113,113,1)',
+  '土':'background:rgba(234,179,8,.12);border:1px solid rgba(234,179,8,.3);color:rgba(250,204,21,1)',
+  '金':'background:rgba(209,213,219,.12);border:1px solid rgba(209,213,219,.3);color:rgba(220,230,245,1)',
+  '水':'background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:rgba(96,165,250,1)'
+};
+
+var obStep=1, obGender=null, obSelSC=null, obTags=[], obProfile={};
+
+// Build shichen grid
+(function(){
+  var g=document.getElementById('ob-scgrid');
+  if(!g)return;
+  OB_SHICHEN.forEach(function(sc,i){
+    var d=document.createElement('div');d.className='ob-sc';
+    d.innerHTML='<div class="ob-sc-zh">'+sc.zh+'</div><div class="ob-sc-tm">'+sc.time+'</div>';
+    d.onclick=function(){
+      document.querySelectorAll('.ob-sc').forEach(function(b){b.classList.remove('on');});
+      d.classList.add('on');obSelSC=i;
+    };
+    g.appendChild(d);
+  });
+})();
+
+// Check if profile already exists on load
+(function(){
+  try{
+    var saved=localStorage.getItem('destiny_profile');
+    if(saved){
+      var p=JSON.parse(saved);
+      obProfile=p;
+      // Skip splash → go straight to app with profile loaded
+      obApplyProfileToApp(p);
+      document.getElementById('ob-overlay').classList.add('hidden');
+      // Preload userData for destiny analysis
+      userData={
+        bday:p.year+'-'+pad2(p.month)+'-'+pad2(p.day),
+        gender:p.gender,worry:p.concern||'',
+        shichen:p.shichen?OB_SHICHEN[p.shichenIdx]:null
+      };
+      return;
+    }
+  }catch(e){}
+})();
+
+function obGetZodiac(m,d){
+  var idx=0;
+  if(m===1&&d<=19)idx=0;else if(m===1)idx=1;
+  else if(m===2&&d<=18)idx=1;else if(m===2)idx=2;
+  else if(m===3&&d<=20)idx=2;else if(m===3)idx=3;
+  else if(m===4&&d<=19)idx=3;else if(m===4)idx=4;
+  else if(m===5&&d<=20)idx=4;else if(m===5)idx=5;
+  else if(m===6&&d<=20)idx=5;else if(m===6)idx=6;
+  else if(m===7&&d<=22)idx=6;else if(m===7)idx=7;
+  else if(m===8&&d<=22)idx=7;else if(m===8)idx=8;
+  else if(m===9&&d<=22)idx=8;else if(m===9)idx=9;
+  else if(m===10&&d<=22)idx=9;else if(m===10)idx=10;
+  else if(m===11&&d<=21)idx=10;else if(m===11)idx=11;
+  else if(m===12&&d<=21)idx=11;else idx=0;
+  return OB_ZODIACS[idx];
+}
+function obGetSX(y){var i=(y-4)%12;if(i<0)i+=12;return OB_SX[i];}
+
+function obCalcGZ(year,month,day,scIdx){
+  var yi=(year-4)%10;if(yi<0)yi+=10;
+  var di=(year-4)%12;if(di<0)di+=12;
+  var mDZ=(month+1)%12;
+  var mTG=(([0,2,4,6,8][yi%5])+(month-1))%10;
+  var a=Math.floor((14-month)/12);
+  var y2=year+4800-a,m2=month+12*a-3;
+  var jd=day+Math.floor((153*m2+2)/5)+365*y2+Math.floor(y2/4)-Math.floor(y2/100)+Math.floor(y2/400)-32045;
+  var dTG=(jd+9)%10;if(dTG<0)dTG+=10;
+  var dDZ=(jd+1)%12;if(dDZ<0)dDZ+=12;
+  var hTG=null,hDZ=null;
+  if(scIdx!==null&&scIdx!==undefined){
+    hTG=([0,2,4,6,8][dTG%5]+scIdx)%10;
+    hDZ=scIdx;
+  }
+  return{
+    year:{tg:OB_TG[yi],dz:OB_DZ[di],tgE:OB_TGE[yi],dzE:OB_DZE[di]},
+    month:{tg:OB_TG[mTG],dz:OB_DZ[mDZ],tgE:OB_TGE[mTG],dzE:OB_DZE[mDZ]},
+    day:{tg:OB_TG[dTG],dz:OB_DZ[dDZ],tgE:OB_TGE[dTG],dzE:OB_DZE[dDZ]},
+    hour:hTG!==null?{tg:OB_TG[hTG],dz:OB_DZ[hDZ],tgE:OB_TGE[hTG],dzE:OB_DZE[hDZ]}:null
+  };
+}
+
+// Page switching
+function obHideAll(){
+  ['ob-splash','ob-login','ob-form','ob-preview'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){el.style.display='none';el.classList.remove('show');}
+  });
+}
+function obShowSplash(){obHideAll();document.getElementById('ob-splash').style.display='flex';}
+function obShowLogin(){
+  obHideAll();
+  var el=document.getElementById('ob-login');
+  el.style.display='flex';el.classList.add('show');
+  document.getElementById('ob-login-input').value='';
+  document.getElementById('ob-found-card').classList.remove('show');
+  document.getElementById('ob-not-found').classList.remove('show');
+  document.getElementById('ob-login-btn').style.display='none';
+  document.getElementById('ob-new-from-login').style.display='none';
+}
+function obShowForm(){
+  obHideAll();obStep=1;
+  var el=document.getElementById('ob-form');el.style.display='flex';el.classList.add('show');
+  obUpdateStep();
+}
+function obShowPreview(){
+  obHideAll();
+  var el=document.getElementById('ob-preview');el.style.display='flex';el.classList.add('show');
+  obBuildPreview();
+}
+
+// LOGIN SEARCH
+function obSearchProfile(){
+  var q=document.getElementById('ob-login-input').value.trim().toLowerCase();
+  var foundCard=document.getElementById('ob-found-card');
+  var notFound=document.getElementById('ob-not-found');
+  var loginBtn=document.getElementById('ob-login-btn');
+  var newBtn=document.getElementById('ob-new-from-login');
+  foundCard.classList.remove('show');notFound.classList.remove('show');
+  loginBtn.style.display='none';newBtn.style.display='none';
+  if(q.length<1)return;
+  try{
+    var saved=localStorage.getItem('destiny_profile');
+    if(!saved){
+      if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
+      return;
+    }
+    var p=JSON.parse(saved);
+    var nameMatch=p.name&&p.name.toLowerCase().includes(q);
+    var contactMatch=p.contact&&p.contact.toLowerCase().includes(q);
+    if(nameMatch||contactMatch){
+      // Show found card
+      document.getElementById('ob-found-avatar').textContent=p.name?p.name.charAt(0):'？';
+      document.getElementById('ob-found-name').textContent=p.name||'—';
+      document.getElementById('ob-found-sub').textContent=(p.year?p.year+'年':'')+(p.month?p.month+'月':'')+(p.day?p.day+'日':'')+(p.zodiac?' · '+p.zodiac.zh:'')+(p.sx?' · 属'+p.sx.name:'');
+      var chips=document.getElementById('ob-found-chips');chips.innerHTML='';
+      if(p.gender){chips.innerHTML+='<div class="ob-pchip">'+p.gender+'命</div>';}
+      if(p.zodiac){chips.innerHTML+='<div class="ob-pchip">'+p.zodiac.zh+'</div>';}
+      if(p.sx){chips.innerHTML+='<div class="ob-pchip">属'+p.sx.name+'</div>';}
+      foundCard.classList.add('show');
+      loginBtn.style.display='flex';
+      obProfile=p;
+    } else {
+      if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
+    }
+  }catch(e){
+    if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
+  }
+}
+
+function obLoginConfirm(){
+  obApplyProfileToApp(obProfile);
+  // preload userData
+  userData={
+    bday:obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day),
+    gender:obProfile.gender,
+    worry:obProfile.concern||'',
+    shichen:obProfile.shichen||null
+  };
+  document.getElementById('ob-overlay').classList.add('hidden');
+  showToast('欢迎回来，'+obProfile.name+'！','ti-sparkles');
+}
+
+// FORM STEP LOGIC
+var OB_STEPS=[
+  {tag:'步骤 1 / 3',title:'你叫什么名字？',sub:'让师傅记住你，之后每次推算都更精准'},
+  {tag:'步骤 2 / 3',title:'你的生辰是哪天？',sub:'公历生日即可，系统自动换算八字与星座生肖'},
+  {tag:'步骤 3 / 3',title:'最近有什么想问的？',sub:'说出来，师傅推算时会专门针对你的情况'}
+];
+
+function obUpdateStep(){
+  var s=OB_STEPS[obStep-1];
+  setText('ob-stag',s.tag);setText('ob-stitle',s.title);setText('ob-ssub',s.sub);
+  [0,1,2].forEach(function(i){
+    var el=document.getElementById('ob-dot'+i);
+    if(!el)return;
+    el.className='ob-pdot'+(i<obStep-1?' done':i===obStep-1?' active':'');
+  });
+  ['ob-step1','ob-step2','ob-step3'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='none';
+  });
+  var cur=document.getElementById('ob-step'+obStep);if(cur)cur.style.display='block';
+  var back=document.getElementById('ob-fback');
+  if(back)back.style.display=obStep>1?'flex':'none';
+  setText('ob-next-lbl',obStep===3?'完成建档':'继续');
+}
+
+function obNameEcho(){
+  var n=document.getElementById('ob-name').value.trim();
+  setText('ob-name-echo',n?'你好，'+n+'！师傅会记住你的。':'');
+}
+function obSetGender(g,el){
+  obGender=g;
+  document.querySelectorAll('.ob-sopt').forEach(function(e){e.classList.remove('on');});
+  el.classList.add('on');
+}
+function obToggleTag(el,tag){
+  if(el.classList.contains('on')){el.classList.remove('on');obTags=obTags.filter(function(t){return t!==tag;});}
+  else{el.classList.add('on');obTags.push(tag);}
+}
+function obBdayChange(){
+  var y=parseInt(document.getElementById('ob-year').value);
+  var m=parseInt(document.getElementById('ob-month').value);
+  var d=parseInt(document.getElementById('ob-day').value);
+  if(!y||!m||!d||y<1900||y>2010||m<1||m>12||d<1||d>31){
+    document.getElementById('ob-auto').classList.remove('show');return;
+  }
+  var z=obGetZodiac(m,d);var sx=obGetSX(y);
+  setText('ob-zsym',z.sym);setText('ob-zname',z.zh);setText('ob-zdates',z.dates+' · '+z.elem);
+  setText('ob-sxem',sx.emoji);setText('ob-sxname','属'+sx.name);setText('ob-sxsub','五行 · '+sx.elem);
+  document.getElementById('ob-auto').classList.add('show');
+}
+
+function obNextStep(){
+  if(obStep===1){
+    var name=document.getElementById('ob-name').value.trim();
+    if(!name){showToast('请先填写你的名字','ti-user');return;}
+    if(!obGender){showToast('请选择性别','ti-gender-bigender');return;}
+    obProfile.name=name;obProfile.gender=obGender;
+    obProfile.contact=document.getElementById('ob-contact').value.trim();
+    obStep=2;obUpdateStep();
+  } else if(obStep===2){
+    var y=parseInt(document.getElementById('ob-year').value);
+    var m=parseInt(document.getElementById('ob-month').value);
+    var d=parseInt(document.getElementById('ob-day').value);
+    if(!y||!m||!d){showToast('请填写完整的出生日期','ti-calendar');return;}
+    if(y<1920||y>2010){showToast('请填写正确的年份（1920-2010）','ti-calendar');return;}
+    obProfile.year=y;obProfile.month=m;obProfile.day=d;
+    obProfile.shichenIdx=obSelSC;
+    obProfile.shichen=obSelSC!==null?OB_SHICHEN[obSelSC]:null;
+    obProfile.zodiac=obGetZodiac(m,d);
+    obProfile.sx=obGetSX(y);
+    obProfile.gz=obCalcGZ(y,m,d,obSelSC);
+    obStep=3;obUpdateStep();
+  } else if(obStep===3){
+    obProfile.concern=document.getElementById('ob-concern').value.trim();
+    obProfile.tags=obTags.slice();
+    obProfile.createdAt=new Date().toISOString();
+    try{localStorage.setItem('destiny_profile',JSON.stringify(obProfile));}catch(e){}
+    obShowPreview();
+  }
+}
+function obPrevStep(){if(obStep>1){obStep--;obUpdateStep();}}
+
+// BUILD PREVIEW CARD
+function obBuildPreview(){
+  var p=obProfile;
+  setText('ob-greeting','你好，'+p.name+'！');
+  document.getElementById('ob-pfav').textContent=p.name?p.name.charAt(0):'？';
+  setText('ob-pfname',p.name);
+  var now=new Date();
+  setText('ob-pfdate',now.getFullYear()+'年'+pad2(now.getMonth()+1)+'月'+pad2(now.getDate())+'日 · 命盘建立');
+  // chips
+  var chips=document.getElementById('ob-pfchips');chips.innerHTML='';
+  var chipData=[
+    {cls:'opc-purple',icon:'ti-user',text:p.gender+'命'},
+    {cls:'opc-blue',icon:'ti-stars',text:p.zodiac?p.zodiac.zh:'—'},
+    {cls:'opc-amber',icon:'ti-yin-yang',text:p.sx?'属'+p.sx.name:'—'}
+  ];
+  if(p.shichen)chipData.push({cls:'opc-pink',icon:'ti-clock',text:p.shichen.zh});
+  chipData.forEach(function(c){
+    chips.innerHTML+='<div class="ob-pfchip '+c.cls+'"><i class="ti '+c.icon+'"></i>'+c.text+'</div>';
+  });
+  // pillars
+  var pg=document.getElementById('ob-pillars');pg.innerHTML='';
+  var gz=p.gz;
+  var cols=[
+    {lbl:'年柱',tg:gz.year.tg,dz:gz.year.dz,tgE:gz.year.tgE,dzE:gz.year.dzE},
+    {lbl:'月柱',tg:gz.month.tg,dz:gz.month.dz,tgE:gz.month.tgE,dzE:gz.month.dzE},
+    {lbl:'日柱',tg:gz.day.tg,dz:gz.day.dz,tgE:gz.day.tgE,dzE:gz.day.dzE},
+    gz.hour?{lbl:'时柱',tg:gz.hour.tg,dz:gz.hour.dz,tgE:gz.hour.tgE,dzE:gz.hour.dzE}:{lbl:'时柱',tg:'?',dz:'?',tgE:'',dzE:''}
+  ];
+  cols.forEach(function(c){
+    var div=document.createElement('div');div.className='ob-pm';
+    div.innerHTML='<div class="ob-pm-lbl">'+c.lbl+'</div>'+
+      '<div class="ob-pm-gz">'+c.tg+'</div>'+
+      (c.tgE?'<div class="ob-pm-elem" style="'+OB_ESTYLE[c.tgE]+'">'+c.tgE+'</div>':'<div style="height:16px"></div>')+
+      '<div class="ob-pm-gz2">'+c.dz+'</div>'+
+      (c.dzE?'<div class="ob-pm-elem" style="'+OB_ESTYLE[c.dzE]+';margin-top:3px">'+c.dzE+'</div>':'');
+    pg.appendChild(div);
+  });
+  // destiny
+  setText('ob-pr-zsym',p.zodiac?p.zodiac.sym:'—');
+  setText('ob-pr-zname',p.zodiac?p.zodiac.zh:'—');
+  setText('ob-pr-zdates',p.zodiac?p.zodiac.dates+' · '+p.zodiac.elem:'—');
+  setText('ob-pr-sxem',p.sx?p.sx.emoji:'—');
+  setText('ob-pr-sxname',p.sx?'属'+p.sx.name:'—');
+  setText('ob-pr-sxelem',p.sx?'五行 · '+p.sx.elem:'—');
+}
+
+// ENTER APP - apply profile and close overlay
+function obEnterApp(){
+  obApplyProfileToApp(obProfile);
+  // set userData for destiny tab
+  userData={
+    bday:obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day),
+    gender:obProfile.gender,
+    worry:obProfile.concern||'',
+    shichen:obProfile.shichen||null
+  };
+  document.getElementById('ob-overlay').classList.add('hidden');
+  showToast('欢迎来到命运馆，'+obProfile.name+'！','ti-sparkles');
+}
+
+// Apply saved profile data to all app tabs
+function obApplyProfileToApp(p){
+  if(!p)return;
+  // Pre-fill destiny input
+  if(p.year&&p.month&&p.day){
+    var bdayStr=p.year+'-'+pad2(p.month)+'-'+pad2(p.day);
+    var bdayEl=document.getElementById('a-bday');
+    if(bdayEl)bdayEl.value=bdayStr;
+    // Save to localStorage for lucky/fate tabs
+    try{localStorage.setItem('destiny_bday',bdayStr);}catch(e){}
+    // Pre-fill fate tab
+    var fEl=document.getElementById('f-bday');if(fEl)fEl.value=bdayStr;
+    var lEl=document.getElementById('l-bday');if(lEl)lEl.value=bdayStr;
+  }
+  // Pre-fill gender
+  if(p.gender){
+    gender=p.gender;
+    document.querySelectorAll('.gender-pill').forEach(function(el){el.classList.remove('on');});
+    var gpills=document.querySelectorAll('.gender-pill');
+    gpills.forEach(function(el){
+      if((p.gender==='男'&&el.textContent.includes('Male'))||(p.gender==='女'&&el.textContent.includes('Female'))){
+        el.classList.add('on');
+      }
+    });
+  }
+  // Pre-fill concern
+  if(p.concern){var wEl=document.getElementById('a-worry');if(wEl)wEl.value=p.concern;}
+  // Pre-fill shichen in destiny tab
+  if(p.shichenIdx!==null&&p.shichenIdx!==undefined){
+    selectedShichen=p.shichenIdx;
+    var scpills=document.querySelectorAll('#a-shichenGrid .sc-pill');
+    scpills.forEach(function(el,i){
+      el.classList.toggle('on',i===p.shichenIdx);
+    });
+    if(p.shichen){setText('sc-selected-label',p.shichen.zh+'（'+p.shichen.dz+'）');}
+  }
+  // Auto-select zodiac in zodiac tab
+  if(p.zodiac&&typeof ZODIACS!=='undefined'){
+    var zIdx=ZODIACS.findIndex(function(z){return z.zh===p.zodiac.zh;});
+    if(zIdx>=0){
+      selZodiac=zIdx;
+      var zgridItems=document.querySelectorAll('#zodiac-grid > div');
+      if(zgridItems[zIdx]){
+        zgridItems[zIdx].style.background='rgba(14,165,233,.15)';
+        zgridItems[zIdx].style.borderColor='rgba(14,165,233,.55)';
+      }
+    }
+  }
+  // Auto-select shengxiao in shengxiao tab
+  if(p.sx&&typeof SX!=='undefined'){
+    var sxIdx=SX.findIndex(function(s){return s.name===p.sx.name;});
+    if(sxIdx>=0){
+      selSX=sxIdx;
+      var sxgridItems=document.querySelectorAll('#sx-grid > div');
+      if(sxgridItems[sxIdx]){
+        sxgridItems[sxIdx].style.background='rgba(245,158,11,.15)';
+        sxgridItems[sxIdx].style.borderColor='rgba(245,158,11,.55)';
+      }
+    }
+  }
+  // Update home top bar name if present
+  var bn=document.getElementById('brand-user-name');
+  if(bn&&p.name)bn.textContent=p.name;
 }
 </script>
 </body>
