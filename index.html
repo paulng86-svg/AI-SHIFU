@@ -1567,17 +1567,84 @@ var L_REASONS=['天干地支吉数，今日能量聚合','五行木火相生，�
 var L_CONFS=['中等','较强','强','极强','最强'];
 var DAY_ICONS=['ti-sunrise','ti-sun','ti-moon'];
 var DECK=[
-  {name:'The Fool',zh:'愚者',symbol:'🌟'},{name:'The Magician',zh:'魔术师',symbol:'⚡'},
-  {name:'The High Priestess',zh:'女祭司',symbol:'🌙'},{name:'The Empress',zh:'女皇',symbol:'🌿'},
-  {name:'The Emperor',zh:'皇帝',symbol:'🔱'},{name:'The Hierophant',zh:'教皇',symbol:'⚜'},
-  {name:'The Lovers',zh:'恋人',symbol:'♾'},{name:'The Chariot',zh:'战车',symbol:'⚔'},
-  {name:'Strength',zh:'力量',symbol:'🦁'},{name:'The Hermit',zh:'隐者',symbol:'🕯'},
-  {name:'Wheel of Fortune',zh:'命运之轮',symbol:'☸'},{name:'Justice',zh:'正义',symbol:'⚖'},
-  {name:'The Hanged Man',zh:'倒吊人',symbol:'🔄'},{name:'Death',zh:'死神',symbol:'🌒'},
-  {name:'Temperance',zh:'节制',symbol:'🌊'},{name:'The Devil',zh:'恶魔',symbol:'🔒'},
-  {name:'The Tower',zh:'塔',symbol:'⚡'},{name:'The Star',zh:'星星',symbol:'✦'},
-  {name:'The Moon',zh:'月亮',symbol:'🌕'},{name:'The Sun',zh:'太阳',symbol:'☀'},
-  {name:'Judgement',zh:'审判',symbol:'🎺'},{name:'The World',zh:'世界',symbol:'🌍'}
+  {name:'The Fool',zh:'愚者',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/RWS_Tarot_00_Fool.jpg/300px-RWS_Tarot_00_Fool.jpg'},
+  {name:'The Magician',zh:'魔法师',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/RWS_Tarot_01_Magician.jpg/300px-RWS_Tarot_01_Magician.jpg'},
+  {name:'The High Priestess',zh:'女祭司',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/RWS_Tarot_02_High_Priestess.jpg/300px-RWS_Tarot_02_High_Priestess.jpg'},
+  {name:'The Empress',zh:'皇后',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/RWS_Tarot_03_Empress.jpg/300px-RWS_Tarot_03_Empress.jpg'},
+  {name:'The Emperor',zh:'皇帝',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/RWS_Tarot_04_Emperor.jpg/300px-RWS_Tarot_04_Emperor.jpg'},
+  {name:'The Hierophant',zh:'教皇',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/RWS_Tarot_05_Hierophant.jpg/300px-RWS_Tarot_05_Hierophant.jpg'},
+  {name:'The Lovers',zh:'恋人',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/TheLovers.jpg/300px-TheLovers.jpg'},
+  {name:'The Chariot',zh:'战车',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/RWS_Tarot_07_Chariot.jpg/300px-RWS_Tarot_07_Chariot.jpg'},
+  {name:'Strength',zh:'力量',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/RWS_Tarot_08_Strength.jpg/300px-RWS_Tarot_08_Strength.jpg'},
+  {name:'The Hermit',zh:'隐士',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/RWS_Tarot_09_Hermit.jpg/300px-RWS_Tarot_09_Hermit.jpg'},
+  {name:'Wheel of Fortune',zh:'命运之轮',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg/300px-RWS_Tarot_10_Wheel_of_Fortune.jpg'},
+  {name:'Justice',zh:'正义',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/RWS_Tarot_11_Justice.jpg/300px-RWS_Tarot_11_Justice.jpg'},
+  {name:'The Hanged Man',zh:'倒吊人',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/RWS_Tarot_12_Hanged_Man.jpg/300px-RWS_Tarot_12_Hanged_Man.jpg'},
+  {name:'Death',zh:'死神',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/RWS_Tarot_13_Death.jpg/300px-RWS_Tarot_13_Death.jpg'},
+  {name:'Temperance',zh:'节制',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/RWS_Tarot_14_Temperance.jpg/300px-RWS_Tarot_14_Temperance.jpg'},
+  {name:'The Devil',zh:'恶魔',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/RWS_Tarot_15_Devil.jpg/300px-RWS_Tarot_15_Devil.jpg'},
+  {name:'The Tower',zh:'塔',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/RWS_Tarot_16_Tower.jpg/300px-RWS_Tarot_16_Tower.jpg'},
+  {name:'The Star',zh:'星星',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/RWS_Tarot_17_Star.jpg/300px-RWS_Tarot_17_Star.jpg'},
+  {name:'The Moon',zh:'月亮',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/RWS_Tarot_18_Moon.jpg/300px-RWS_Tarot_18_Moon.jpg'},
+  {name:'The Sun',zh:'太阳',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/RWS_Tarot_19_Sun.jpg/300px-RWS_Tarot_19_Sun.jpg'},
+  {name:'Judgement',zh:'审判',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/RWS_Tarot_20_Judgement.jpg/300px-RWS_Tarot_20_Judgement.jpg'},
+  {name:'The World',zh:'世界',suit:'major',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/RWS_Tarot_21_World.jpg/300px-RWS_Tarot_21_World.jpg'},
+  {name:'Ace of Wands',zh:'权杖一',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Wands01.jpg/300px-Wands01.jpg'},
+  {name:'Two of Wands',zh:'权杖二',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Wands02.jpg/300px-Wands02.jpg'},
+  {name:'Three of Wands',zh:'权杖三',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wands03.jpg/300px-Wands03.jpg'},
+  {name:'Four of Wands',zh:'权杖四',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Wands04.jpg/300px-Wands04.jpg'},
+  {name:'Five of Wands',zh:'权杖五',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Wands05.jpg/300px-Wands05.jpg'},
+  {name:'Six of Wands',zh:'权杖六',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Wands06.jpg/300px-Wands06.jpg'},
+  {name:'Seven of Wands',zh:'权杖七',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Wands07.jpg/300px-Wands07.jpg'},
+  {name:'Eight of Wands',zh:'权杖八',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Wands08.jpg/300px-Wands08.jpg'},
+  {name:'Nine of Wands',zh:'权杖九',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Wands09.jpg/300px-Wands09.jpg'},
+  {name:'Ten of Wands',zh:'权杖十',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Wands10.jpg/300px-Wands10.jpg'},
+  {name:'Page of Wands',zh:'权杖侍从',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Wands11.jpg/300px-Wands11.jpg'},
+  {name:'Knight of Wands',zh:'权杖骑士',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Wands12.jpg/300px-Wands12.jpg'},
+  {name:'Queen of Wands',zh:'权杖皇后',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Wands13.jpg/300px-Wands13.jpg'},
+  {name:'King of Wands',zh:'权杖国王',suit:'wands',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Wands14.jpg/300px-Wands14.jpg'},
+  {name:'Ace of Cups',zh:'圣杯一',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Cups01.jpg/300px-Cups01.jpg'},
+  {name:'Two of Cups',zh:'圣杯二',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Cups02.jpg/300px-Cups02.jpg'},
+  {name:'Three of Cups',zh:'圣杯三',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Cups03.jpg/300px-Cups03.jpg'},
+  {name:'Four of Cups',zh:'圣杯四',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Cups04.jpg/300px-Cups04.jpg'},
+  {name:'Five of Cups',zh:'圣杯五',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Cups05.jpg/300px-Cups05.jpg'},
+  {name:'Six of Cups',zh:'圣杯六',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Cups06.jpg/300px-Cups06.jpg'},
+  {name:'Seven of Cups',zh:'圣杯七',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Cups07.jpg/300px-Cups07.jpg'},
+  {name:'Eight of Cups',zh:'圣杯八',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cups08.jpg/300px-Cups08.jpg'},
+  {name:'Nine of Cups',zh:'圣杯九',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Cups09.jpg/300px-Cups09.jpg'},
+  {name:'Ten of Cups',zh:'圣杯十',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Cups10.jpg/300px-Cups10.jpg'},
+  {name:'Page of Cups',zh:'圣杯侍从',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Cups11.jpg/300px-Cups11.jpg'},
+  {name:'Knight of Cups',zh:'圣杯骑士',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Cups12.jpg/300px-Cups12.jpg'},
+  {name:'Queen of Cups',zh:'圣杯皇后',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Cups13.jpg/300px-Cups13.jpg'},
+  {name:'King of Cups',zh:'圣杯国王',suit:'cups',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Cups14.jpg/300px-Cups14.jpg'},
+  {name:'Ace of Swords',zh:'宝剑一',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Swords01.jpg/300px-Swords01.jpg'},
+  {name:'Two of Swords',zh:'宝剑二',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Swords02.jpg/300px-Swords02.jpg'},
+  {name:'Three of Swords',zh:'宝剑三',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Swords03.jpg/300px-Swords03.jpg'},
+  {name:'Four of Swords',zh:'宝剑四',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Swords04.jpg/300px-Swords04.jpg'},
+  {name:'Five of Swords',zh:'宝剑五',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Swords05.jpg/300px-Swords05.jpg'},
+  {name:'Six of Swords',zh:'宝剑六',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Swords06.jpg/300px-Swords06.jpg'},
+  {name:'Seven of Swords',zh:'宝剑七',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Swords07.jpg/300px-Swords07.jpg'},
+  {name:'Eight of Swords',zh:'宝剑八',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Swords08.jpg/300px-Swords08.jpg'},
+  {name:'Nine of Swords',zh:'宝剑九',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Swords09.jpg/300px-Swords09.jpg'},
+  {name:'Ten of Swords',zh:'宝剑十',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Swords10.jpg/300px-Swords10.jpg'},
+  {name:'Page of Swords',zh:'宝剑侍从',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Swords11.jpg/300px-Swords11.jpg'},
+  {name:'Knight of Swords',zh:'宝剑骑士',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Swords12.jpg/300px-Swords12.jpg'},
+  {name:'Queen of Swords',zh:'宝剑皇后',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Swords13.jpg/300px-Swords13.jpg'},
+  {name:'King of Swords',zh:'宝剑国王',suit:'swords',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Swords14.jpg/300px-Swords14.jpg'},
+  {name:'Ace of Pentacles',zh:'星币一',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Pents01.jpg/300px-Pents01.jpg'},
+  {name:'Two of Pentacles',zh:'星币二',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Pents02.jpg/300px-Pents02.jpg'},
+  {name:'Three of Pentacles',zh:'星币三',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Pents03.jpg/300px-Pents03.jpg'},
+  {name:'Four of Pentacles',zh:'星币四',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Pents04.jpg/300px-Pents04.jpg'},
+  {name:'Five of Pentacles',zh:'星币五',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Pents05.jpg/300px-Pents05.jpg'},
+  {name:'Six of Pentacles',zh:'星币六',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pents06.jpg/300px-Pents06.jpg'},
+  {name:'Seven of Pentacles',zh:'星币七',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Pents07.jpg/300px-Pents07.jpg'},
+  {name:'Eight of Pentacles',zh:'星币八',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Pents08.jpg/300px-Pents08.jpg'},
+  {name:'Nine of Pentacles',zh:'星币九',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Pents09.jpg/300px-Pents09.jpg'},
+  {name:'Ten of Pentacles',zh:'星币十',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Pents10.jpg/300px-Pents10.jpg'},
+  {name:'Page of Pentacles',zh:'星币侍从',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Pents11.jpg/300px-Pents11.jpg'},
+  {name:'Knight of Pentacles',zh:'星币骑士',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Pents12.jpg/300px-Pents12.jpg'},
+  {name:'Queen of Pentacles',zh:'星币皇后',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Pents13.jpg/300px-Pents13.jpg'},
+  {name:'King of Pentacles',zh:'星币国王',suit:'pentacles',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Pents14.jpg/300px-Pents14.jpg'}
 ];
 
 // ── UTILS ──
@@ -1750,8 +1817,8 @@ function restartDestiny(){aiDone=false;loadDone=false;aiResult=null;selectedShic
 function selectMode(m){tarotMode=m;drawnCards=[];document.querySelectorAll('.mode-card').forEach(function(c){c.classList.remove('selected');});document.getElementById('mode-'+m).classList.add('selected');document.getElementById('q-input-wrap').classList.toggle('show',m===3);document.getElementById('draw-area-wrap').style.display=m===3?'none':'block';document.getElementById('three-slots').style.display=m===2?'grid':'none';document.getElementById('tarot-btn').style.display='none';var titles=['点击牌堆，抽出今日塔罗','点击牌堆，依次抽出三张牌','输入问题后点击师傅解读'];setText('draw-title',titles[m-1]);setText('draw-hint',m===3?'':'点击牌堆开始');if(m===2){['slot-0','slot-1','slot-2'].forEach(function(id,i){var s=document.getElementById(id);s.classList.remove('filled');s.innerHTML='<i class="ti ti-cards"></i><div class="card-slot-label">'+['过去','现在','未来'][i]+'</div>';});}var deck=document.querySelector('.deck-card:nth-child(3)');if(deck){deck.style.background='';deck.innerHTML='<div class="deck-pattern"><i class="ti ti-moon-stars"></i></div>';deck.classList.remove('flip-in');}}
 function randCard(){return{card:DECK[Math.floor(Math.random()*DECK.length)],reversed:Math.random()>0.65};}
 function drawCards(){
-  if(tarotMode===1){if(drawnCards.length>0)return;var drawn=randCard();drawnCards=[drawn];var deck=document.querySelector('.deck-card:nth-child(3)');deck.style.background='linear-gradient(160deg,#1a0535,#0d0220)';deck.innerHTML='<div style="text-align:center;padding:12px"><div style="font-size:42px;line-height:1;margin-bottom:8px'+(drawn.reversed?';transform:rotate(180deg)':'')+'"">'+drawn.card.symbol+'</div><div style="font-family:Cinzel,serif;font-size:9px;font-weight:500;color:rgba(255,255,255,.75);letter-spacing:.1em">'+drawn.card.zh+'</div>'+(drawn.reversed?'<div style="font-size:9px;font-weight:500;color:rgba(240,120,170,.8);margin-top:5px">逆位</div>':'')+'</div>';deck.classList.add('flip-in');setText('draw-hint',drawn.card.zh+(drawn.reversed?' · 逆位':' · 正位'));document.getElementById('tarot-btn').style.display='flex';}
-  else if(tarotMode===2){if(drawnCards.length>=3)return;var drawn=randCard();var idx=drawnCards.length;drawnCards.push(drawn);var slot=document.getElementById('slot-'+idx);slot.classList.add('filled');slot.innerHTML='';var face=document.createElement('div');face.className='tarot-card-face flip-in';face.innerHTML='<div class="tcf-top"><div class="tcf-symbol'+(drawn.reversed?' style="transform:rotate(180deg)"':'')+'"">'+drawn.card.symbol+'</div><div class="tcf-name">'+drawn.card.zh+'</div>'+(drawn.reversed?'<div class="tcf-reversed">逆位</div>':'')+'</div><div class="tcf-bottom"><div class="tcf-pos">'+['过去','现在','未来'][idx]+'</div></div>';slot.appendChild(face);if(drawnCards.length===3){document.getElementById('tarot-btn').style.display='flex';}setText('draw-hint',drawnCards.length<3?'再抽 '+(3-drawnCards.length)+' 张':'三张已抽齐，点击解读');}
+  if(tarotMode===1){if(drawnCards.length>0)return;var drawn=randCard();drawnCards=[drawn];var deck=document.querySelector('.deck-card:nth-child(3)');deck.style.background='linear-gradient(160deg,#1a0535,#0d0220)';deck.innerHTML='<div style="position:relative;width:100%;height:100%;overflow:hidden;border-radius:10px"><img src="'+drawn.card.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;'+(drawn.reversed?'transform:rotate(180deg);':'')+'" loading="lazy" onerror="this.onerror=null;this.style.opacity=0"/><div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(0,0,0,.85),transparent);padding:8px 6px 6px"><div style="font-family:Cinzel,serif;font-size:9px;font-weight:500;color:#fff;letter-spacing:.1em;text-align:center">'+drawn.card.zh+'</div>'+(drawn.reversed?'<div style="font-size:9px;color:rgba(240,120,170,.9);text-align:center;margin-top:2px">逆位</div>':'')+'</div></div>';deck.classList.add('flip-in');setText('draw-hint',drawn.card.zh+(drawn.reversed?' · 逆位':' · 正位'));document.getElementById('tarot-btn').style.display='flex';}
+  else if(tarotMode===2){if(drawnCards.length>=3)return;var drawn=randCard();var idx=drawnCards.length;drawnCards.push(drawn);var slot=document.getElementById('slot-'+idx);slot.classList.add('filled');slot.innerHTML='';var face=document.createElement('div');face.className='tarot-card-face flip-in';face.style.cssText='position:relative;width:100%;height:100%;border-radius:13px;overflow:hidden';face.innerHTML='<img src="'+drawn.card.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;'+(drawn.reversed?'transform:rotate(180deg);':'')+'" loading="lazy" onerror="this.onerror=null;this.style.opacity=0"/><div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(0,0,0,.9),transparent);padding:10px 6px 6px"><div style="font-size:10px;font-weight:600;color:#fff;text-align:center;margin-bottom:2px">'+drawn.card.zh+'</div><div style="font-size:9px;color:rgba(200,180,255,.8);text-align:center">'+['过去','现在','未来'][idx]+(drawn.reversed?' · 逆位':' · 正位')+'</div></div>';slot.appendChild(face);if(drawnCards.length===3){document.getElementById('tarot-btn').style.display='flex';}setText('draw-hint',drawnCards.length<3?'再抽 '+(3-drawnCards.length)+' 张':'三张已抽齐，点击解读');}
 }
 async function interpretCards(){
   var question=document.getElementById('tarot-question').value||'';
@@ -1770,7 +1837,7 @@ function renderTarotResult(){
   var modeLabels=['单张抽牌','三张牌阵 · 过去·现在·未来','问题占卜'];
   setText('r-mode-label',modeLabels[r.mode-1]);
   var mini=document.getElementById('r-drawn-mini');mini.innerHTML='';
-  if(r.mode===1||r.mode===2){r.cards.forEach(function(dc){var dm=document.createElement('div');dm.className='dm-card';dm.innerHTML='<div class="dm-symbol">'+dc.card.symbol+'</div><div class="dm-name">'+dc.card.zh+'</div><div class="dm-pos">'+(dc.reversed?'逆位':'正位')+'</div>';mini.appendChild(dm);});}
+  if(r.mode===1||r.mode===2){r.cards.forEach(function(dc){var dm=document.createElement('div');dm.className='dm-card';dm.innerHTML='<div style="width:40px;height:60px;border-radius:5px;overflow:hidden;margin:0 auto 5px"><img src="'+dc.card.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;'+(dc.reversed?'transform:rotate(180deg)':'')+'" loading="lazy"/></div><div class="dm-name">'+dc.card.zh+'</div><div class="dm-pos">'+(dc.reversed?'逆位':'正位')+'</div>';mini.appendChild(dm);});}
   else{(d.cards||[]).forEach(function(c){var dm=document.createElement('div');dm.className='dm-card';dm.innerHTML='<div class="dm-symbol">✦</div><div class="dm-name">'+c.name+'</div><div class="dm-pos">'+c.position+'</div>';mini.appendChild(dm);});}
   var secs=document.getElementById('r-interp-sections');secs.innerHTML='';
   function addSec(icon,title,text,kws){var s=document.createElement('div');s.className='interp-section';var kh=(kws||[]).map(function(k){return'<span class="is-kw">'+k+'</span>';}).join('');s.innerHTML='<div class="is-head"><div class="is-icon"><i class="ti '+icon+'"></i></div><div class="is-title">'+title+'</div></div><div class="is-text">'+text+'</div>'+(kh?'<div class="is-kws">'+kh+'</div>':'');secs.appendChild(s);}
