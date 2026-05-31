@@ -1636,8 +1636,6 @@ function autoRunZodiac(){
   if(selZodiac!==null&&zMode==='solo'&&!zodiacData){
     var card=document.getElementById('zodiac-input-card');
     if(card)card.style.display='none';
-    document.getElementById('zodiac-result').style.display='none';
-    document.getElementById('zodiac-loading').style.display='block';
     runZodiac();
   } else if(selZodiac===null&&zMode==='solo'){
     // 没有 profile，显示选择卡
@@ -1649,8 +1647,6 @@ function autoRunSX(){
   if(selSX!==null&&sxMode==='solo'&&!sxData){
     var card=document.getElementById('sx-input-card');
     if(card)card.style.display='none';
-    document.getElementById('sx-result').style.display='none';
-    document.getElementById('sx-loading').style.display='block';
     runShengxiao();
   } else if(selSX===null&&sxMode==='solo'){
     var card=document.getElementById('sx-input-card');
@@ -2095,7 +2091,7 @@ function switchZMode(m){
   var inputCard=document.getElementById('zodiac-input-card');
   if(pairSec)pairSec.style.display='none';
   if(baziSec)baziSec.style.display='none';
-  ['zodiac-result','zodiac-pair-result','bazi-pair-result'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
+  ['zodiac-result','zodiac-pair-result','bazi-pair-result','zodiac-loading'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
   var hasBanner=document.getElementById('z-profile-banner')&&document.getElementById('z-profile-banner').style.display!=='none';
   if(m==='solo'){
     var s=document.getElementById('z-mode-solo');s.style.background='rgba(14,165,233,.18)';s.style.border='1px solid rgba(14,165,233,.4)';s.style.color='rgba(14,165,233,1)';s.style.fontWeight='600';
@@ -2113,6 +2109,9 @@ function switchZMode(m){
     btn.innerHTML='<i class="ti ti-heart"></i>开始星座配对';
     if(inputCard)inputCard.style.display='block';
     if(!document.getElementById('zodiac-grid-b').children.length)buildZGridB();
+    // 如果有 profile，自己的星座已选好，直接隐藏 "选择你的星座" label 并显示对方选择
+    var selfLabel=inputCard?inputCard.querySelector('.fl-label'):null;
+    if(selfLabel&&selZodiac!==null){selfLabel.textContent='你的星座（已连接命盘）';}
   } else if(m==='bazi'){
     var b=document.getElementById('z-mode-bazi');b.style.background='rgba(140,100,255,.15)';b.style.border='1px solid rgba(140,100,255,.4)';b.style.color='rgba(167,139,250,1)';b.style.fontWeight='600';
     if(baziSec)baziSec.style.display='block';
@@ -2228,7 +2227,7 @@ function switchSXMode(m){
   var inputCard=document.getElementById('sx-input-card');
   if(pairSec)pairSec.style.display='none';
   if(baziSec)baziSec.style.display='none';
-  ['sx-result','sx-pair-result','bazi-pair-result'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
+  ['sx-result','sx-pair-result','bazi-pair-result','sx-loading'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
   var hasBanner=document.getElementById('sx-profile-banner')&&document.getElementById('sx-profile-banner').style.display!=='none';
   if(m==='solo'){
     var s=document.getElementById('sx-mode-solo');s.style.background='rgba(245,158,11,.18)';s.style.border='1px solid rgba(245,158,11,.4)';s.style.color='rgba(245,158,11,1)';s.style.fontWeight='600';
@@ -2248,6 +2247,8 @@ function switchSXMode(m){
     document.getElementById('sx-result').style.display='none';
     document.getElementById('sx-pair-result').style.display='none';
     if(!document.getElementById('sx-grid-b').children.length)buildSXGridB();
+    var selfLabel=inputCard?inputCard.querySelector('.fl-label'):null;
+    if(selfLabel&&selSX!==null){selfLabel.textContent='你的生肖（已连接命盘）';}
   } else if(m==='bazi'){
     var b=document.getElementById('sx-mode-bazi');b.style.background='rgba(140,100,255,.15)';b.style.border='1px solid rgba(140,100,255,.4)';b.style.color='rgba(167,139,250,1)';b.style.fontWeight='600';
     if(baziSec)baziSec.style.display='block';
@@ -2745,13 +2746,13 @@ function zShowManual(){
   selZodiac=null;zodiacData=null;
   var card=document.getElementById('zodiac-input-card');if(card)card.style.display='block';
   var b=document.getElementById('z-profile-banner');if(b)b.style.display='none';
-  ['zodiac-result','zodiac-pair-result','bazi-pair-result'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
+  ['zodiac-result','zodiac-pair-result','bazi-pair-result','zodiac-loading'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
 }
 function sxShowManual(){
   selSX=null;sxData=null;
   var card=document.getElementById('sx-input-card');if(card)card.style.display='block';
   var b=document.getElementById('sx-profile-banner');if(b)b.style.display='none';
-  ['sx-result','sx-pair-result','bazi-pair-result'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
+  ['sx-result','sx-pair-result','bazi-pair-result','sx-loading'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
 }
 
 function initBaziScGrid(gridId, prefix){
