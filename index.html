@@ -1229,7 +1229,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
     </div>
 
     <!-- Mode Toggle -->
-    <div style="display:flex;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px"> onclick="switchSXMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.4);color:rgba(245,158,11,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-yin-yang"></i>运势分析</div>
+    <div style="display:flex;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
+      <div id="sx-mode-solo" onclick="switchSXMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.4);color:rgba(245,158,11,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-yin-yang"></i>运势分析</div>
       <div id="sx-mode-pair" onclick="switchSXMode('pair')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-heart"></i>生肖配对</div>
     </div>
 
@@ -1917,17 +1918,26 @@ function switchZMode(m){
   var pair=document.getElementById('z-mode-pair');
   var pairSec=document.getElementById('z-pair-section');
   var btn=document.getElementById('z-main-btn');
+  var inputCard=document.getElementById('zodiac-input-card');
   if(m==='solo'){
     solo.style.background='rgba(14,165,233,.18)';solo.style.border='1px solid rgba(14,165,233,.4)';solo.style.color='rgba(14,165,233,1)';solo.style.fontWeight='600';
     pair.style.background='transparent';pair.style.border='none';pair.style.color='rgba(255,255,255,.35)';pair.style.fontWeight='500';
     pairSec.style.display='none';
     btn.innerHTML='<i class="ti ti-stars"></i>查看星座运势';
+    // 有 profile 时 solo 模式隐藏选择卡
+    if(selZodiac!==null&&document.getElementById('z-profile-banner')&&document.getElementById('z-profile-banner').style.display!=='none'){
+      if(inputCard)inputCard.style.display='none';
+    }
   } else {
     pair.style.background='rgba(244,114,182,.15)';pair.style.border='1px solid rgba(244,114,182,.4)';pair.style.color='rgba(244,114,182,1)';pair.style.fontWeight='600';
     solo.style.background='transparent';solo.style.border='none';solo.style.color='rgba(255,255,255,.35)';solo.style.fontWeight='500';
     pairSec.style.display='block';
     btn.innerHTML='<i class="ti ti-heart"></i>开始星座配对';
-    // build grid B if not built
+    // 配对模式永远显示选择卡
+    if(inputCard)inputCard.style.display='block';
+    // 隐藏结果
+    document.getElementById('zodiac-result').style.display='none';
+    document.getElementById('zodiac-pair-result').style.display='none';
     if(!document.getElementById('zodiac-grid-b').children.length) buildZGridB();
   }
 }
@@ -2033,16 +2043,26 @@ function switchSXMode(m){
   var pair=document.getElementById('sx-mode-pair');
   var pairSec=document.getElementById('sx-pair-section');
   var btn=document.getElementById('sx-main-btn');
+  var inputCard=document.getElementById('sx-input-card');
   if(m==='solo'){
     solo.style.background='rgba(245,158,11,.18)';solo.style.border='1px solid rgba(245,158,11,.4)';solo.style.color='rgba(245,158,11,1)';solo.style.fontWeight='600';
     pair.style.background='transparent';pair.style.border='none';pair.style.color='rgba(255,255,255,.35)';pair.style.fontWeight='500';
     pairSec.style.display='none';
     btn.innerHTML='<i class="ti ti-yin-yang"></i>查看生肖运势';
+    // 有 profile 时 solo 模式隐藏选择卡
+    if(selSX!==null&&document.getElementById('sx-profile-banner')&&document.getElementById('sx-profile-banner').style.display!=='none'){
+      if(inputCard)inputCard.style.display='none';
+    }
   } else {
     pair.style.background='rgba(244,114,182,.15)';pair.style.border='1px solid rgba(244,114,182,.4)';pair.style.color='rgba(244,114,182,1)';pair.style.fontWeight='600';
     solo.style.background='transparent';solo.style.border='none';solo.style.color='rgba(255,255,255,.35)';solo.style.fontWeight='500';
     pairSec.style.display='block';
     btn.innerHTML='<i class="ti ti-heart"></i>开始生肖配对';
+    // 配对模式永远显示选择卡
+    if(inputCard)inputCard.style.display='block';
+    // 隐藏结果，重新选择
+    document.getElementById('sx-result').style.display='none';
+    document.getElementById('sx-pair-result').style.display='none';
     if(!document.getElementById('sx-grid-b').children.length) buildSXGridB();
   }
 }
@@ -2538,9 +2558,8 @@ function obApplyProfileToApp(p){
           zi.textContent=p.zodiac.sym+' '+p.zodiac.zh+'（'+p.zodiac.dates+'）· '+bdayLabel;
         }
       }
-      // Hide input card, auto-run if solo mode
-      var zCard=document.getElementById('zodiac-input-card');
-      if(zCard)zCard.style.display='none';
+      // 只在 solo 模式隐藏选择卡，配对模式保留
+      if(zMode==='solo'){var zCard=document.getElementById('zodiac-input-card');if(zCard)zCard.style.display='none';}
     }
   }
 
@@ -2566,9 +2585,8 @@ function obApplyProfileToApp(p){
           sxi.textContent=p.sx.emoji+' 属'+p.sx.name+'（五行·'+p.sx.elem+'）· '+p.year+'年生辰推算';
         }
       }
-      // Hide input card
-      var sxCard=document.getElementById('sx-input-card');
-      if(sxCard)sxCard.style.display='none';
+      // 只在 solo 模式隐藏选择卡
+      if(sxMode==='solo'){var sxCard=document.getElementById('sx-input-card');if(sxCard)sxCard.style.display='none';}
     }
   }
 
