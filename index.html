@@ -1848,13 +1848,7 @@ var selZodiac=null, zodiacData=null, curZTab='today';
   });
 })();
 
-function runZodiac(){
-  if(selZodiac===null){showToast('请先选择星座','ti-stars');return;}
-  var z=ZODIACS[selZodiac];
-  document.getElementById('zodiac-input-card').style.display='none';
-  document.getElementById('zodiac-loading').style.display='block';
-  callZodiacAI(z);
-}
+// runZodiac defined below with full mode support
 
 async function callZodiacAI(z){
   var today=new Date();var MONTHS_E=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -1951,13 +1945,7 @@ var selSX=null, sxData=null;
   });
 })();
 
-function runShengxiao(){
-  if(selSX===null){showToast('请先选择生肖','ti-yin-yang');return;}
-  var s=SX[selSX];
-  document.getElementById('sx-input-card').style.display='none';
-  document.getElementById('sx-loading').style.display='block';
-  callSXAI(s);
-}
+// runShengxiao defined below with full mode support
 
 async function callSXAI(s){
   var yr=new Date().getFullYear();
@@ -2113,6 +2101,7 @@ function buildZGridB(){
 }
 
 function runZodiac(){
+  if(zMode==='bazi'){runBaziPair('z');return;}
   if(zMode==='pair'){
     runZodiacPair(); return;
   }
@@ -2242,6 +2231,7 @@ function buildSXGridB(){
 }
 
 function runShengxiao(){
+  if(sxMode==='bazi'){runBaziPair('sx');return;}
   if(sxMode==='pair'){runSXPair();return;}
   if(selSX===null){showToast('请先选择生肖','ti-yin-yang');return;}
   var s=SX[selSX];
@@ -2815,17 +2805,7 @@ function updateBaziPreview(prefix){
   if(prev)prev.style.display='block';
 }
 
-// Override runZodiac and runShengxiao to handle bazi mode
-var _origRunZodiac = runZodiac;
-runZodiac = function(){
-  if(zMode==='bazi'){runBaziPair('z');return;}
-  _origRunZodiac();
-};
-var _origRunShengxiao = runShengxiao;
-runShengxiao = function(){
-  if(sxMode==='bazi'){runBaziPair('sx');return;}
-  _origRunShengxiao();
-};
+// bazi mode handled directly inside runZodiac and runShengxiao
 
 function runBaziPair(prefix){
   // Validate my profile
