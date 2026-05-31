@@ -2889,10 +2889,10 @@ function runBaziPair(prefix){
   var inputCard=document.getElementById(prefix==='z'?'zodiac-input-card':'sx-input-card');
   if(inputCard)inputCard.style.display='none';
   if(loadEl)loadEl.style.display='block';
-  callBaziPairAI(A,B,loadEl);
+  callBaziPairAI(A,B,loadEl,prefix);
 }
 
-async function callBaziPairAI(A,B,loadEl){
+async function callBaziPairAI(A,B,loadEl,prefix){
   function gzStr(p){return p.gz?p.gz.year.tg+p.gz.year.dz+p.gz.month.tg+p.gz.month.dz+p.gz.day.tg+p.gz.day.dz+(p.gz.hour?p.gz.hour.tg+p.gz.hour.dz:'（时辰未知）'):'未知';}
   var prompt='你是一位专业命理师，请根据两人的生辰八字、星座、生肖进行全面的命盘配对分析。\n\n甲方：'+A.year+'年'+A.month+'月'+A.day+'日生，八字：'+gzStr(A)+'，'+A.zodiac.zh+'，属'+A.sx.name+'\n乙方：'+B.year+'年'+B.month+'月'+B.day+'日生，八字：'+gzStr(B)+'，'+B.zodiac.zh+'，属'+B.sx.name+'\n\n请分析：\n1. 星座相容指数（0-100整数）及关键词\n2. 生肖缘分指数（0-100整数）及相合/相冲/一般\n3. 八字合婚指数（0-100整数）及核心判断\n4. 综合合缘指数（三者加权，0-100整数）\n5. 感情契合分析（约60字，有画面感）\n6. 相处模式（约50字）\n7. 师傅建议（约50字，温柔提醒）\n8. 各维度评分（感情/事业/日常/沟通，1-5）\n9. 三个关键词\n\n语气神秘温柔，像真人命理师跟他们说话，不要太学术。\n只返回JSON：{"total":82,"zodiac_score":85,"zodiac_label":"火象相合","sx_score":78,"sx_label":"相合","bazi_score":80,"bazi_label":"日柱相生","love":"…","dynamic":"…","advice":"…","scores":{"love":4,"career":3,"daily":4,"comm":4},"keywords":["词1","词2","词3"]}';
 
