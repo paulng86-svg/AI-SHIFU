@@ -809,14 +809,14 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
         <div class="feat-desc">三种牌阵<br>师傅深度解读</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
-      <div class="feat-card" style="border-color:rgba(14,165,233,.2)" onclick="goTo('s-zodiac','s-home')">
+      <div class="feat-card" style="border-color:rgba(14,165,233,.2)" onclick="enterZodiacTab('s-home')">
         <div style="position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.5),transparent)"></div>
         <div class="fiw" style="background:rgba(14,165,233,.1);border:1.5px solid rgba(14,165,233,.3)"><i class="ti ti-stars" style="color:rgba(14,165,233,1)"></i></div>
         <div class="feat-title">星座运势</div>
         <div class="feat-desc">今日/本周/本月<br>性格配对解读</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
-      <div class="feat-card" style="border-color:rgba(245,158,11,.2)" onclick="goTo('s-shengxiao','s-home')">
+      <div class="feat-card" style="border-color:rgba(245,158,11,.2)" onclick="enterSXTab('s-home')">
         <div style="position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.5),transparent)"></div>
         <div class="fiw" style="background:rgba(245,158,11,.1);border:1.5px solid rgba(245,158,11,.3)"><i class="ti ti-yin-yang" style="color:rgba(245,158,11,1)"></i></div>
         <div class="feat-title">生肖运势</div>
@@ -1615,35 +1615,59 @@ function goTo(to,from){
   f.classList.add('exit');
   setTimeout(function(){f.classList.add('hidden');f.classList.remove('exit');t.classList.remove('hidden');t.scrollTop=0;},500);
 }
+// 统一的星座/生肖入口函数
+function enterZodiacTab(from){
+  from=from||'s-home';
+  document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');});
+  var n=document.getElementById('nav-zodiac');if(n)n.classList.add('active');
+  goTo('s-zodiac',from);
+  setTimeout(function(){autoRunZodiac();},450);
+}
+function enterSXTab(from){
+  from=from||'s-home';
+  document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');});
+  var n=document.getElementById('nav-shengxiao');if(n)n.classList.add('active');
+  goTo('s-shengxiao',from);
+  setTimeout(function(){autoRunSX();},450);
+}
+
+// 自动运行逻辑
+function autoRunZodiac(){
+  if(selZodiac!==null&&zMode==='solo'&&!zodiacData){
+    var card=document.getElementById('zodiac-input-card');
+    if(card)card.style.display='none';
+    document.getElementById('zodiac-result').style.display='none';
+    document.getElementById('zodiac-loading').style.display='block';
+    runZodiac();
+  } else if(selZodiac===null&&zMode==='solo'){
+    // 没有 profile，显示选择卡
+    var card=document.getElementById('zodiac-input-card');
+    if(card)card.style.display='block';
+  }
+}
+function autoRunSX(){
+  if(selSX!==null&&sxMode==='solo'&&!sxData){
+    var card=document.getElementById('sx-input-card');
+    if(card)card.style.display='none';
+    document.getElementById('sx-result').style.display='none';
+    document.getElementById('sx-loading').style.display='block';
+    runShengxiao();
+  } else if(selSX===null&&sxMode==='solo'){
+    var card=document.getElementById('sx-input-card');
+    if(card)card.style.display='block';
+  }
+}
+
 function navTo(tab){
   document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');});
   document.getElementById('nav-'+tab).classList.add('active');
   var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao'};
   var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
-  var cur=null;all.forEach(function(s){if(!document.getElementById(s).classList.contains('hidden'))cur=s;});
+  var cur=null;all.forEach(function(s){var el=document.getElementById(s);if(el&&!el.classList.contains('hidden'))cur=s;});
   if(cur&&cur!==map[tab]){
     goTo(map[tab],cur);
-    // 有命盘资料时，进入星座/生肖 tab 自动运行运势
-    if(tab==='zodiac'){
-      setTimeout(function(){
-        if(selZodiac!==null&&zMode==='solo'&&!zodiacData){
-          // 隐藏选择卡，直接运行
-          var card=document.getElementById('zodiac-input-card');
-          if(card)card.style.display='none';
-          runZodiac();
-        }
-      },400);
-    }
-    if(tab==='shengxiao'){
-      setTimeout(function(){
-        if(selSX!==null&&sxMode==='solo'&&!sxData){
-          // 隐藏选择卡，直接运行
-          var card=document.getElementById('sx-input-card');
-          if(card)card.style.display='none';
-          runShengxiao();
-        }
-      },400);
-    }
+    if(tab==='zodiac'){setTimeout(autoRunZodiac,450);}
+    if(tab==='shengxiao'){setTimeout(autoRunSX,450);}
   }
 }
 
@@ -2076,8 +2100,13 @@ function switchZMode(m){
   if(m==='solo'){
     var s=document.getElementById('z-mode-solo');s.style.background='rgba(14,165,233,.18)';s.style.border='1px solid rgba(14,165,233,.4)';s.style.color='rgba(14,165,233,1)';s.style.fontWeight='600';
     btn.innerHTML='<i class="ti ti-stars"></i>查看星座运势';
-    if(selZodiac!==null&&hasBanner){if(inputCard)inputCard.style.display='none';}
-    else{if(inputCard)inputCard.style.display='block';}
+    if(selZodiac!==null){
+      if(inputCard)inputCard.style.display='none';
+      if(!zodiacData){setTimeout(function(){runZodiac();},100);}
+      else{document.getElementById('zodiac-result').style.display='block';}
+    } else {
+      if(inputCard)inputCard.style.display='block';
+    }
   } else if(m==='pair'){
     var p=document.getElementById('z-mode-pair');p.style.background='rgba(244,114,182,.15)';p.style.border='1px solid rgba(244,114,182,.4)';p.style.color='rgba(244,114,182,1)';p.style.fontWeight='600';
     if(pairSec)pairSec.style.display='block';
@@ -2204,8 +2233,13 @@ function switchSXMode(m){
   if(m==='solo'){
     var s=document.getElementById('sx-mode-solo');s.style.background='rgba(245,158,11,.18)';s.style.border='1px solid rgba(245,158,11,.4)';s.style.color='rgba(245,158,11,1)';s.style.fontWeight='600';
     btn.innerHTML='<i class="ti ti-yin-yang"></i>查看生肖运势';
-    if(selSX!==null&&hasBanner){if(inputCard)inputCard.style.display='none';}
-    else{if(inputCard)inputCard.style.display='block';}
+    if(selSX!==null){
+      if(inputCard)inputCard.style.display='none';
+      if(!sxData){setTimeout(function(){runShengxiao();},100);}
+      else{document.getElementById('sx-result').style.display='block';}
+    } else {
+      if(inputCard)inputCard.style.display='block';
+    }
   } else if(m==='pair'){
     var p=document.getElementById('sx-mode-pair');p.style.background='rgba(244,114,182,.15)';p.style.border='1px solid rgba(244,114,182,.4)';p.style.color='rgba(244,114,182,1)';p.style.fontWeight='600';
     if(pairSec)pairSec.style.display='block';
