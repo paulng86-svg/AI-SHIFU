@@ -2,6 +2,9 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>命运馆 · 命理推算</title>
 <meta name="description" content="命盘推算 · 塔罗占卜 · 每日签语 · 深度咨询">
@@ -556,7 +559,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 ::-webkit-scrollbar-thumb{background:rgba(255,215,0,.2);border-radius:100px}
 </style>
 </head>
-<body>
+<body style="background:#6B0000">
 <!-- CHINESE THEME: Gold top bar -->
 <div style="position:fixed;top:0;left:0;right:0;height:3px;z-index:9999;background:linear-gradient(90deg,#6B0000,#b8860b,#ffd700,#b8860b,#6B0000);pointer-events:none"></div>
 <div style="position:fixed;top:3px;left:0;right:0;height:1px;z-index:9999;background:linear-gradient(90deg,transparent,rgba(255,215,0,.3),transparent);pointer-events:none"></div>
@@ -797,7 +800,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
   <div class="inner">
     <div class="top-bar">
       <div class="brand">
-        <div class="brand-mark">命</div>
+        <div class="brand-mark" style="font-family:Noto Serif SC,serif;font-size:17px;font-weight:700">命</div>
         <div><div class="brand-name">命运馆</div><div class="brand-sub">命运 · 塔罗 · 签语 · 幸运</div></div>
       </div>
       <div class="time-block">
@@ -808,6 +811,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
     </div>
     <div class="home-eyebrow">传承命理 · 多维度命运解读</div>
     <div class="gold-divider"><div class="gold-divider-diamond"></div></div>
+    <div style="display:flex;justify-content:center;gap:10px;opacity:.35;font-size:16px;margin-bottom:4px">☁ ❈ ☁ ❈ ☁</div>
     <div class="orb-wrap">
       <div class="orb-core"><div class="orb-shine"></div></div>
       <div class="orb-ring"></div><div class="orb-ring2"></div>
@@ -817,33 +821,33 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
     <div class="gold-divider"><div class="gold-divider-diamond"></div></div>
     <div class="feat-grid">
       <div class="feat-card dc" onclick="goTo('s-input','s-home')">
-        <div class="fiw fiw-p"><i class="ti ti-crystal-ball"></i></div>
+        <div class="fiw fiw-p">🔮</div>
         <div class="feat-title">命运分析</div>
         <div class="feat-desc">30天运势<br>生辰八字推算</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
       <div class="feat-card tc" onclick="goTo('s-tarot','s-home')">
-        <div class="fiw fiw-t"><i class="ti ti-cards"></i></div>
+        <div class="fiw fiw-t">🎴</div>
         <div class="feat-title">塔罗占卜</div>
         <div class="feat-desc">三种牌阵<br>师傅深度解读</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
       <div class="feat-card" style="border-color:rgba(255,215,0,.22)" onclick="enterZodiacTab('s-home')">
         <div style="position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.5),transparent)"></div>
-        <div class="fiw" style="background:rgba(14,165,233,.1);border:1.5px solid rgba(14,165,233,.3)"><i class="ti ti-stars" style="color:rgba(14,165,233,1)"></i></div>
+        <div class="fiw fiw-p">⭐</div>
         <div class="feat-title">星座运势</div>
         <div class="feat-desc">今日/本周/本月<br>性格配对解读</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
       <div class="feat-card" style="border-color:rgba(255,215,0,.22)" onclick="enterSXTab('s-home')">
         <div style="position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.5),transparent)"></div>
-        <div class="fiw" style="background:rgba(245,158,11,.1);border:1.5px solid rgba(245,158,11,.3)"><i class="ti ti-yin-yang" style="color:rgba(245,158,11,1)"></i></div>
+        <div class="fiw fiw-t">🐉</div>
         <div class="feat-title">生肖运势</div>
         <div class="feat-desc">今年运势 · 相合相冲<br>事业感情全分析</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
       </div>
       <div class="feat-card fc" onclick="goTo('s-fate','s-home')" style="grid-column:span 2">
-        <div class="fiw fiw-a"><i class="ti ti-sun"></i></div>
+        <div class="fiw fiw-a">📜</div>
         <div class="feat-title">每日签语</div>
         <div class="feat-desc">师傅推算 · 今日能量 · 未来3天预测</div>
         <div class="feat-arrow"><i class="ti ti-arrow-right"></i></div>
@@ -904,7 +908,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
   <div class="inner">
     <div class="result-card">
       <div class="rc-head">
-        <div class="brand"><div class="brand-mark">命</div><div><div class="brand-name">命运馆</div><div class="brand-sub">命运趋势分析</div></div></div>
+        <div class="brand"><div class="brand-mark" style="font-family:Noto Serif SC,serif;font-size:17px;font-weight:700">命</div><div><div class="brand-name">命运馆</div><div class="brand-sub">命运趋势分析</div></div></div>
         <div class="rc-meta" id="r-range">—</div>
       </div>
       <div class="rc-user">
@@ -1506,10 +1510,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 <div class="bottom-nav">
   <div class="nav-bar">
     <button class="nav-item active" id="nav-home" onclick="navTo('home')"><i class="ti ti-home"></i><div class="nav-label">首页</div></button>
-    <button class="nav-item" id="nav-destiny" onclick="navTo('destiny')"><i class="ti ti-crystal-ball"></i><div class="nav-label">命运</div></button>
-    <button class="nav-item" id="nav-tarot" onclick="navTo('tarot')"><i class="ti ti-cards"></i><div class="nav-label">塔罗</div></button>
-    <button class="nav-item" id="nav-zodiac" onclick="navTo('zodiac')"><i class="ti ti-stars"></i><div class="nav-label">星座</div></button>
-    <button class="nav-item" id="nav-shengxiao" onclick="navTo('shengxiao')"><i class="ti ti-yin-yang"></i><div class="nav-label">生肖</div></button>
+    <button class="nav-item" id="nav-destiny" onclick="navTo('destiny')"><span style="font-size:20px">🔮</span><div class="nav-label">命运</div></button>
+    <button class="nav-item" id="nav-tarot" onclick="navTo('tarot')"><span style="font-size:20px">🎴</span><div class="nav-label">塔罗</div></button>
+    <button class="nav-item" id="nav-zodiac" onclick="navTo('zodiac')"><span style="font-size:20px">⭐</span><div class="nav-label">星座</div></button>
+    <button class="nav-item" id="nav-shengxiao" onclick="navTo('shengxiao')"><span style="font-size:20px">🐉</span><div class="nav-label">生肖</div></button>
   </div>
 </div>
 <div class="toast" id="toast"><i class="ti ti-info-circle" id="toast-icon"></i><span id="toast-msg"></span></div>
