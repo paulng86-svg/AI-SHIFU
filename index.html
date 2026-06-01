@@ -4071,35 +4071,6 @@ function resetBaziPair(){
   baziSelSC={z:null,sx:null};
 }
 </script>
-
-<!-- BOTTOM NAV - Fixed -->
-<div id="bottom-nav-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:9000;background:#3a0000;border-top:2px solid rgba(255,215,0,.3);padding-bottom:env(safe-area-inset-bottom)">
-  <div style="display:flex;justify-content:space-around;align-items:center;padding:.5rem 0 .4rem">
-    <button class="nav-item active" id="nav-home" onclick="navTo('home')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:#ffd700;font-family:'Noto Serif SC','Inter',sans-serif">
-      <i class="ti ti-home" style="font-size:20px"></i>
-      <div style="font-size:9px;letter-spacing:.06em">首页</div>
-    </button>
-    <button class="nav-item" id="nav-destiny" onclick="navTo('destiny')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:rgba(255,215,0,.35);font-family:'Noto Serif SC','Inter',sans-serif">
-      <span style="font-size:20px">🔮</span>
-      <div style="font-size:9px;letter-spacing:.06em">命运</div>
-    </button>
-    <button class="nav-item" id="nav-tarot" onclick="navTo('tarot')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:rgba(255,215,0,.35);font-family:'Noto Serif SC','Inter',sans-serif">
-      <span style="font-size:20px">🎴</span>
-      <div style="font-size:9px;letter-spacing:.06em">塔罗</div>
-    </button>
-    <button class="nav-item" id="nav-zodiac" onclick="navTo('zodiac')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:rgba(255,215,0,.35);font-family:'Noto Serif SC','Inter',sans-serif">
-      <span style="font-size:20px">⭐</span>
-      <div style="font-size:9px;letter-spacing:.06em">星座</div>
-    </button>
-    <button class="nav-item" id="nav-shengxiao" onclick="navTo('shengxiao')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:rgba(255,215,0,.35);font-family:'Noto Serif SC','Inter',sans-serif">
-      <span style="font-size:20px">🐉</span>
-      <div style="font-size:9px;letter-spacing:.06em">生肖</div>
-    </button>
-    <button class="nav-item" id="nav-member" onclick="navTo('member')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:rgba(255,215,0,.35);font-family:'Noto Serif SC','Inter',sans-serif">
-      <span style="font-size:20px">👑</span>
-      <div style="font-size:9px;letter-spacing:.06em">会员</div>
-    </button>
-  </div>
-</div>
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#3a0000;border-top:2px solid rgba(255,215,0,.4)"><div style="display:flex;justify-content:space-around;align-items:center;padding:.6rem 0 .5rem;max-width:480px;margin:0 auto"><button onclick="navTo('home')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:#ffd700;font-size:9px"><i class="ti ti-home" style="font-size:22px;display:block"></i>首页</button><button onclick="navTo('destiny')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:rgba(255,215,0,.4);font-size:9px"><span style="font-size:21px">🔮</span>命运</button><button onclick="navTo('tarot')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:rgba(255,215,0,.4);font-size:9px"><span style="font-size:21px">🎴</span>塔罗</button><button onclick="navTo('zodiac')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:rgba(255,215,0,.4);font-size:9px"><span style="font-size:21px">⭐</span>星座</button><button onclick="navTo('shengxiao')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:rgba(255,215,0,.4);font-size:9px"><span style="font-size:21px">🐉</span>生肖</button><button onclick="navTo('member')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:rgba(255,215,0,.4);font-size:9px"><span style="font-size:21px">👑</span>会员</button></div></div>
 </body>
 </html>
