@@ -2531,12 +2531,28 @@ function checkMemberStatus(){
 var _origNavTo = navTo;
 navTo = function(tab){
   if(tab === 'member'){
-    var map2={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao',member:'s-member'};
-    var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-member'];
-    var cur=null;all.forEach(function(s){var el=document.getElementById(s);if(el&&!el.classList.contains('hidden'))cur=s;});
-    if(cur) goTo('s-member',cur);
-    checkMemberStatus();
-    renderMemberPage();
+    var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-member','s-admin'];
+    var cur=null;
+    all.forEach(function(s){var el=document.getElementById(s);if(el&&!el.classList.contains('hidden'))cur=s;});
+    if(cur && cur!=='s-member') goTo('s-member', cur);
+    else if(!cur) {
+      var m=document.getElementById('s-member');
+      if(m) m.classList.remove('hidden');
+    }
+    setTimeout(function(){
+      checkMemberStatus();
+      renderMemberPage();
+    }, 100);
+    return;
+  }
+  // Hide member screen if visible
+  var mEl=document.getElementById('s-member');
+  if(mEl && !mEl.classList.contains('hidden')){
+    var all2=['s-home','s-input','s-tarot','s-fate','s-zodiac','s-shengxiao'];
+    var map2={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao'};
+    mEl.classList.add('hidden');
+    var t=document.getElementById(map2[tab]);
+    if(t){t.classList.remove('hidden');t.scrollTop=0;}
     return;
   }
   _origNavTo(tab);
