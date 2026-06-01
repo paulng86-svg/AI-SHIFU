@@ -1579,16 +1579,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   </div>
 </div>
 
-<!-- NAV -->
-<div class="bottom-nav">
-  <div class="nav-bar">
-    <button class="nav-item active" id="nav-home" onclick="navTo('home')"><i class="ti ti-home"></i><div class="nav-label">首页</div></button>
-    <button class="nav-item" id="nav-destiny" onclick="navTo('destiny')"><span style="font-size:20px">🔮</span><div class="nav-label">命运</div></button>
-    <button class="nav-item" id="nav-tarot" onclick="navTo('tarot')"><span style="font-size:20px">🎴</span><div class="nav-label">塔罗</div></button>
-    <button class="nav-item" id="nav-zodiac" onclick="navTo('zodiac')"><span style="font-size:20px">⭐</span><div class="nav-label">星座</div></button>
-    <button class="nav-item" id="nav-shengxiao" onclick="navTo('shengxiao')"><span style="font-size:20px">🐉</span><div class="nav-label">生肖</div></button>
-  </div>
-</div>
+<!-- NAV placeholder -->
 <div class="toast" id="toast"><i class="ti ti-info-circle" id="toast-icon"></i><span id="toast-msg"></span></div>
 
 <script>
@@ -1761,14 +1752,14 @@ function goTo(to,from){
 // 统一的星座/生肖入口函数
 function enterZodiacTab(from){
   from=from||'s-home';
-  document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');b.style.color='rgba(255,215,0,.35)';});
   var n=document.getElementById('nav-zodiac');if(n)n.classList.add('active');
   goTo('s-zodiac',from);
   setTimeout(function(){autoRunZodiac();},450);
 }
 function enterSXTab(from){
   from=from||'s-home';
-  document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');b.style.color='rgba(255,215,0,.35)';});
   var n=document.getElementById('nav-shengxiao');if(n)n.classList.add('active');
   goTo('s-shengxiao',from);
   setTimeout(function(){autoRunSX();},450);
@@ -1798,8 +1789,12 @@ function autoRunSX(){
 }
 
 function navTo(tab){
-  document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('nav-'+tab).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(b){
+    b.classList.remove('active');
+    b.style.color='rgba(255,215,0,.35)';
+  });
+  var activeBtn=document.getElementById('nav-'+tab);
+  if(activeBtn){activeBtn.classList.add('active');activeBtn.style.color='#ffd700';}
   var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao'};
   var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
   var cur=null;all.forEach(function(s){var el=document.getElementById(s);if(el&&!el.classList.contains('hidden'))cur=s;});
@@ -3525,5 +3520,31 @@ function resetBaziPair(){
   baziSelSC={z:null,sx:null};
 }
 </script>
+
+<!-- BOTTOM NAV - Fixed -->
+<div id="bottom-nav-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:9000;background:#3a0000;border-top:2px solid rgba(255,215,0,.3);padding-bottom:env(safe-area-inset-bottom)">
+  <div style="display:flex;justify-content:space-around;align-items:center;padding:.5rem 0 .4rem">
+    <button class="nav-item active" id="nav-home" onclick="navTo('home')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:#ffd700;font-family:'Noto Serif SC','Inter',sans-serif">
+      <i class="ti ti-home" style="font-size:20px"></i>
+      <div style="font-size:9px;letter-spacing:.06em">首页</div>
+    </button>
+    <button class="nav-item" id="nav-destiny" onclick="navTo('destiny')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:rgba(255,215,0,.35);font-family:'Noto Serif SC','Inter',sans-serif">
+      <span style="font-size:20px">🔮</span>
+      <div style="font-size:9px;letter-spacing:.06em">命运</div>
+    </button>
+    <button class="nav-item" id="nav-tarot" onclick="navTo('tarot')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:rgba(255,215,0,.35);font-family:'Noto Serif SC','Inter',sans-serif">
+      <span style="font-size:20px">🎴</span>
+      <div style="font-size:9px;letter-spacing:.06em">塔罗</div>
+    </button>
+    <button class="nav-item" id="nav-zodiac" onclick="navTo('zodiac')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:rgba(255,215,0,.35);font-family:'Noto Serif SC','Inter',sans-serif">
+      <span style="font-size:20px">⭐</span>
+      <div style="font-size:9px;letter-spacing:.06em">星座</div>
+    </button>
+    <button class="nav-item" id="nav-shengxiao" onclick="navTo('shengxiao')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;padding:.3rem .6rem;color:rgba(255,215,0,.35);font-family:'Noto Serif SC','Inter',sans-serif">
+      <span style="font-size:20px">🐉</span>
+      <div style="font-size:9px;letter-spacing:.06em">生肖</div>
+    </button>
+  </div>
+</div>
 </body>
 </html>
