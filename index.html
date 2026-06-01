@@ -1989,9 +1989,21 @@ function navTo(tab){
   });
   var activeBtn=document.getElementById('nav-'+tab);
   if(activeBtn){activeBtn.classList.add('active');activeBtn.style.color='#ffd700';}
-  var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao'};
-  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
+
+  var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao',member:'s-member'};
+  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-member'];
   var cur=null;all.forEach(function(s){var el=document.getElementById(s);if(el&&!el.classList.contains('hidden'))cur=s;});
+
+  if(tab==='member'){
+    if(cur && cur!=='s-member') goTo('s-member',cur);
+    else if(!cur||cur==='s-member'){
+      all.forEach(function(s){var el=document.getElementById(s);if(el&&s!=='s-member')el.classList.add('hidden');});
+      document.getElementById('s-member').classList.remove('hidden');
+    }
+    setTimeout(function(){checkMemberStatus();renderMemberPage();},150);
+    return;
+  }
+
   if(cur&&cur!==map[tab]){
     goTo(map[tab],cur);
     if(tab==='zodiac'){setTimeout(autoRunZodiac,450);}
@@ -2527,36 +2539,7 @@ function checkMemberStatus(){
   }
 }
 
-// Update navTo to handle member tab
-var _origNavTo = navTo;
-navTo = function(tab){
-  if(tab === 'member'){
-    var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-member','s-admin'];
-    var cur=null;
-    all.forEach(function(s){var el=document.getElementById(s);if(el&&!el.classList.contains('hidden'))cur=s;});
-    if(cur && cur!=='s-member') goTo('s-member', cur);
-    else if(!cur) {
-      var m=document.getElementById('s-member');
-      if(m) m.classList.remove('hidden');
-    }
-    setTimeout(function(){
-      checkMemberStatus();
-      renderMemberPage();
-    }, 100);
-    return;
-  }
-  // Hide member screen if visible
-  var mEl=document.getElementById('s-member');
-  if(mEl && !mEl.classList.contains('hidden')){
-    var all2=['s-home','s-input','s-tarot','s-fate','s-zodiac','s-shengxiao'];
-    var map2={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao'};
-    mEl.classList.add('hidden');
-    var t=document.getElementById(map2[tab]);
-    if(t){t.classList.remove('hidden');t.scrollTop=0;}
-    return;
-  }
-  _origNavTo(tab);
-};
+// navTo updated directly to handle member tab
 
 // Init on load
 document.addEventListener('DOMContentLoaded',function(){
