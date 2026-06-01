@@ -1005,9 +1005,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
         <!-- Phase 2: 30 cards spread -->
         <div id="tarot-spread" style="display:none">
-          <div style="text-align:center;margin-bottom:10px">
-            <div style="font-size:13px;font-weight:600;color:#ffd700;margin-bottom:3px">✦ 牌已展开 · 选择你感应到的那张 ✦</div>
-            <div id="tarot-spread-hint" style="font-size:11px;color:rgba(255,215,0,.45)">单张模式：选1张 &nbsp;|&nbsp; 三张牌阵：依次选3张</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div onclick="tarotBackToMeditate()" style="font-size:11px;color:rgba(255,215,0,.4);cursor:pointer;display:flex;align-items:center;gap:4px">← 重新默念</div>
+            <div style="font-size:12px;font-weight:600;color:#ffd700">✦ 选择你感应的那张 ✦</div>
+            <div id="tarot-spread-hint" style="font-size:11px;color:rgba(255,215,0,.45)"></div>
           </div>
           <div id="tarot-30-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:12px"></div>
           <div id="tarot-selection-bar" style="display:none;background:rgba(139,0,0,.3);border:1px solid rgba(255,215,0,.25);border-radius:10px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between">
@@ -2035,6 +2036,24 @@ function buildCardHTML(card,reversed,extra){
 }
 
 function randCard(){return{card:DECK[Math.floor(Math.random()*DECK.length)],reversed:Math.random()>0.65};}
+
+function tarotBackToMeditate(){
+  // Restore original meditate HTML
+  drawnCards=[];selectedSpreadIdx=[];
+  document.getElementById('tarot-meditate').innerHTML=
+    '<div style="font-size:28px;margin-bottom:8px">🕯️</div>'+
+    '<div style="font-size:14px;font-weight:600;color:#ffd700;margin-bottom:6px;letter-spacing:.05em">闭上眼睛，默念你的问题</div>'+
+    '<div style="font-size:12px;color:rgba(255,215,0,.5);line-height:1.8;margin-bottom:16px">让心安静下来<br>心中默念一个 1-30 的数字</div>'+
+    '<div style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#8B0000,#ffd700);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;cursor:pointer;box-shadow:0 0 20px rgba(255,215,0,.3);animation:pring 2s ease-in-out infinite" onclick="tarotSpreadCards()">'+
+    '<span style="font-size:20px">☯</span></div>'+
+    '<div style="font-size:11px;color:rgba(255,215,0,.35)">准备好了，点击太极展开牌阵</div>';
+  document.getElementById('tarot-meditate').style.display='block';
+  document.getElementById('tarot-spread').style.display='none';
+  document.getElementById('tarot-btn').style.display='none';
+  document.getElementById('tarot-selection-bar').style.display='none';
+  var slots=document.getElementById('three-slots');if(slots)slots.style.display='none';
+}
+
 // ── 30-CARD SPREAD EXPERIENCE ──
 var spreadCards30=[]; // shuffled deck of 30
 var selectedSpreadIdx=[]; // indices selected by user
@@ -2105,14 +2124,18 @@ function tarotConfirmSelection(){
   // Show result — same flow as before
   if(tarotMode===1){
     // show single card reveal
+    // Show selected card preview + interpret button
     document.getElementById('tarot-spread').style.display='none';
-    document.getElementById('tarot-meditate').style.display='block';
-    // Reset for next time but show selected card
     var drawn=drawnCards[0];
-    // Animate reveal
-    document.getElementById('draw-area-wrap').style.display='block';
-    document.getElementById('tarot-spread').style.display='none';
-    document.getElementById('tarot-meditate').innerHTML='<div style="text-align:center"><div style="font-size:11px;color:rgba(255,215,0,.4);letter-spacing:.15em;margin-bottom:8px">你的塔罗</div><div style="width:90px;height:135px;border-radius:10px;overflow:hidden;margin:0 auto 10px;border:2px solid rgba(255,215,0,.4)">'+buildCardHTML(drawn.card,drawn.reversed)+'</div><div style="font-size:14px;font-weight:700;color:#ffd700;margin-bottom:3px">'+drawn.card.zh+'</div><div style="font-size:11px;color:rgba(255,215,0,.5)">'+(drawn.reversed?'逆位':'正位')+'</div></div>';
+    document.getElementById('tarot-meditate').style.display='block';
+    document.getElementById('tarot-meditate').innerHTML=
+      '<div style="text-align:center">'+
+      '<div style="font-size:11px;color:rgba(255,215,0,.4);letter-spacing:.15em;margin-bottom:8px">你选择的塔罗</div>'+
+      '<div style="width:90px;height:135px;border-radius:10px;overflow:hidden;margin:0 auto 10px;border:2px solid rgba(255,215,0,.4)">'+buildCardHTML(drawn.card,drawn.reversed)+'</div>'+
+      '<div style="font-size:14px;font-weight:700;color:#ffd700;margin-bottom:3px">'+drawn.card.zh+'</div>'+
+      '<div style="font-size:11px;color:rgba(255,215,0,.5)">'+(drawn.reversed?'逆位':'正位')+'</div>'+
+      '<div onclick="tarotBackToMeditate()" style="margin-top:10px;font-size:11px;color:rgba(255,215,0,.3);cursor:pointer">← 重新选牌</div>'+
+      '</div>';
     document.getElementById('tarot-btn').style.display='flex';
   } else if(tarotMode===2){
     document.getElementById('draw-area-wrap').style.display='none';
@@ -2205,7 +2228,7 @@ function renderTarotResult(){
   else if(r.mode===2){addSec('ti-clock-hour-4','过去',d.past);addSec('ti-current-location','现在',d.present);addSec('ti-telescope','未来',d.future);addSec('ti-sparkles','综合解读',d.summary,d.keywords);}
   else{if(r.question){var qd=document.createElement('div');qd.className='interp-section';qd.innerHTML='<div class="is-head"><div class="is-icon"><i class="ti ti-message-question"></i></div><div class="is-title">你的问题</div></div><div class="is-text" style="font-style:italic;color:rgba(255,255,255,.5)">「'+r.question+'」</div>';secs.appendChild(qd);}(d.cards||[]).forEach(function(c,i){addSec('ti-cards','第'+(i+1)+'张 · '+c.name+' · '+c.position,c.meaning);});addSec('ti-sparkles','综合答案',d.answer,d.keywords);}
 }
-function resetTarot(){drawnCards=[];tarotResult=null;spreadCards30=[];selectedSpreadIdx=[];document.getElementById('tarot-result').style.display='none';document.getElementById('tarot-step1').style.display='block';document.getElementById('tarot-btn').style.display='none';document.getElementById('tarot-question').value='';document.getElementById('tarot-meditate').style.display='block';document.getElementById('tarot-spread').style.display='none';document.getElementById('draw-area-wrap').style.display='block';document.getElementById('three-slots').style.display='none';selectMode(1);}
+function resetTarot(){drawnCards=[];tarotResult=null;spreadCards30=[];selectedSpreadIdx=[];document.getElementById('tarot-result').style.display='none';document.getElementById('tarot-step1').style.display='block';document.getElementById('tarot-btn').style.display='none';document.getElementById('tarot-question').value='';tarotBackToMeditate();selectMode(1);}
 function shareTarot(){var text='命运馆 · 塔罗占卜\n';if(tarotResult&&tarotResult.data){if(tarotResult.mode===1)text+='「'+tarotResult.data.core+'」';else if(tarotResult.mode===2)text+='「'+tarotResult.data.summary+'」';else text+='「'+tarotResult.data.answer+'」';}text+='\n→ destinyai.com';if(navigator.share){navigator.share({title:'塔罗馆占卜',text:text}).catch(function(){});}else{showToast('请截图分享','ti-camera');}}
 function copyTarot(){var text='';if(tarotResult&&tarotResult.data){if(tarotResult.mode===1)text=tarotResult.data.core;else if(tarotResult.mode===2)text=tarotResult.data.summary;else text=tarotResult.data.answer;}if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){showToast('解读已复制','ti-check');});}}
 function shareWATarot(){window.open('https://wa.me/?text='+encodeURIComponent('我刚用命运馆占卜了！快来试试 → destinyai.com'),'_blank');}
