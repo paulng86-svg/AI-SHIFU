@@ -1988,7 +1988,27 @@ function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent('Tomorr
 function restartDestiny(){aiDone=false;loadDone=false;aiResult=null;selectedShichen=null;document.getElementById('sc-selected-label').textContent='';document.querySelectorAll('.sc-pill').forEach(function(b){b.classList.remove('on');});document.getElementById('l-prog').style.width='0%';var icons=['ti-loader','ti-chart-line','ti-adjustments-horizontal','ti-hash','ti-file-check'];for(var i=0;i<5;i++){var el=document.getElementById('ls'+i);el.classList.remove('active','done');if(i===0)el.classList.add('active');el.querySelector('i').className='ti '+icons[i];}setText('l-title','正在解析你的生辰八字');setText('l-sub','建立命盘结构…');goTo('s-input','s-result');document.getElementById('nav-destiny').classList.add('active');document.getElementById('nav-home').classList.remove('active');}
 
 // ── TAROT ──
-function selectMode(m){tarotMode=m;drawnCards=[];spreadCards30=[];selectedSpreadIdx=[];document.getElementById('tarot-meditate').style.display='block';document.getElementById('tarot-spread').style.display='none';document.getElementById('three-slots').style.display='none';document.getElementById('draw-area-wrap').style.display='block';document.querySelectorAll('.mode-card').forEach(function(c){c.classList.remove('selected');});document.getElementById('mode-'+m).classList.add('selected');document.getElementById('q-input-wrap').classList.toggle('show',m===3);document.getElementById('draw-area-wrap').style.display=m===3?'none':'block';document.getElementById('three-slots').style.display=m===2?'grid':'none';document.getElementById('tarot-btn').style.display='none';var titles=['点击牌堆，抽出今日塔罗','点击牌堆，依次抽出三张牌','输入问题后点击Tomorrow解读'];setText('draw-title',titles[m-1]);setText('draw-hint',m===3?'':'点击牌堆开始');if(m===2){['slot-0','slot-1','slot-2'].forEach(function(id,i){var s=document.getElementById(id);s.classList.remove('filled');s.innerHTML='<i class="ti ti-cards"></i><div class="card-slot-label">'+['过去','现在','未来'][i]+'</div>';});}var deck=document.querySelector('.deck-card:nth-child(3)');if(deck){deck.style.background='';deck.innerHTML='<div class="deck-pattern"><i class="ti ti-moon-stars"></i></div>';deck.classList.remove('flip-in');}}
+function selectMode(m){
+  tarotMode=m;
+  drawnCards=[];spreadCards30=[];selectedSpreadIdx=[];
+  // Reset UI
+  document.querySelectorAll('.mode-card').forEach(function(c){c.classList.remove('selected');});
+  document.getElementById('mode-'+m).classList.add('selected');
+  var qWrap=document.getElementById('q-input-wrap');
+  if(qWrap)qWrap.classList.toggle('show',m===3);
+  var drawWrap=document.getElementById('draw-area-wrap');
+  if(drawWrap)drawWrap.style.display=m===3?'none':'block';
+  document.getElementById('tarot-btn').style.display='none';
+  // Reset spread UI
+  var med=document.getElementById('tarot-meditate');if(med)med.style.display='block';
+  var spr=document.getElementById('tarot-spread');if(spr)spr.style.display='none';
+  var slots=document.getElementById('three-slots');if(slots)slots.style.display='none';
+  // Update spread hint
+  if(m===2){
+    var sh=document.getElementById('tarot-spread-hint');
+    if(sh)sh.textContent='感应到哪张就选哪张 · 需选3张';
+  }
+}
 // ── TAROT CARD RENDERER ──
 var SUIT_COLORS={wands:'#ff8020',cups:'#40a0ff',swords:'#a0b8ff',pentacles:'#60d040',major:'#c080ff'};
 var CARD_BG={major:'linear-gradient(160deg,#1a0535,#2d0a5e)',wands:'linear-gradient(160deg,#2a1000,#5a2200)',cups:'linear-gradient(160deg,#001a2e,#003a5e)',swords:'linear-gradient(160deg,#0a0a1a,#1a1a3e)',pentacles:'linear-gradient(160deg,#0a1a00,#1e3a00)'};
