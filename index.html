@@ -2676,6 +2676,7 @@ var OB_ESTYLE={
 };
 
 var obRelStatus=null;
+var obStep=1,obGender=null,obSelSC=null,obTags=[],obProfile={};
 function obSetRelStatus(status,el){
   obRelStatus=status;
   document.querySelectorAll('#ob-rel-grid .ob-sopt').forEach(function(e){e.classList.remove('on');});
@@ -2778,7 +2779,7 @@ function obShowLogin(){
   document.getElementById('ob-new-from-login').style.display='none';
 }
 function obShowForm(){
-  obHideAll();obStep=1;
+  obHideAll();obStep=1;obGender=null;obSelSC=null;obTags=[];obProfile={};obRelStatus=null;
   var el=document.getElementById('ob-form');el.style.display='flex';el.classList.add('show');
   obUpdateStep();
 }
