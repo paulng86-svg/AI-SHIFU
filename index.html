@@ -289,6 +289,13 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .score-bar{height:4px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;margin:6px 0 2px}
 .score-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#8B0000,#ffd700)}
 
+/* ══ TAROT LOADING ══ */
+.tarot-loading{display:none;text-align:center;padding:3rem 0}
+.tarot-loading.show{display:block}
+.tarot-spinner{width:50px;height:50px;border-radius:50%;border:2.5px solid rgba(255,215,0,.15);border-top-color:rgba(255,215,0,.8);animation:spin 1s linear infinite;margin:0 auto 1rem}
+.tl-title{font-size:13px;font-weight:700;letter-spacing:.2em;color:#ffd700;margin-bottom:6px}
+.tl-sub{font-size:11px;color:rgba(255,215,0,.45)}
+
 /* Compatibility chip */
 .compat-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:100px;
   font-size:12px;font-weight:600;background:rgba(139,0,0,.35);
