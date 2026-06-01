@@ -654,8 +654,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:#000;color:#fff;
           <div class="ob-field">
             <div class="ob-label"><i class="ti ti-calendar"></i>出生日期<span class="ob-req">*</span></div>
             <div class="ob-row3">
-              <input class="ob-fi" id="ob-year" type="number" placeholder="年份" min="1920" max="2010" oninput="obBdayChange()" style="text-align:center;margin-bottom:0"/>
-              <input class="ob-fi" id="ob-month" type="number" placeholder="月" min="1" max="12" oninput="obBdayChange()" style="text-align:center;margin-bottom:0"/>
+              <input class="ob-fi" id="ob-year" type="number" placeholder="年份" min="1920" max="2010" oninput="obBdayChange();if(this.value.length>=4){document.getElementById('ob-month').focus();document.getElementById('ob-month').select();}" style="text-align:center;margin-bottom:0"/>
+              <input class="ob-fi" id="ob-month" type="number" placeholder="月" min="1" max="12" oninput="obBdayChange();var mv=parseInt(this.value);if(this.value.length>=2||(mv>=2&&mv<=9)){document.getElementById('ob-day').focus();document.getElementById('ob-day').select();}" style="text-align:center;margin-bottom:0"/>
               <input class="ob-fi" id="ob-day" type="number" placeholder="日" min="1" max="31" oninput="obBdayChange()" style="text-align:center;margin-bottom:0"/>
             </div>
             <div class="ob-hint" style="margin-top:7px"><i class="ti ti-info-circle"></i>填写公历生日，系统自动换算八字、星座、生肖</div>
