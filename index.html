@@ -1848,7 +1848,7 @@ function startAnalysis(){
   var bday=document.getElementById('a-bday').value;
   if(!bday){showToast('请先填写生日','ti-calendar');return;}
   var sc=selectedShichen!==null?SHICHEN_DATA[selectedShichen]:null;
-  userData={bday:bday,gender:gender,worry:document.getElementById('a-worry').value||'',shichen:sc};
+  userData={bday:bday,gender:gender,worry:document.getElementById('a-worry').value||'',shichen:sc,relStatus:(function(){try{var p=JSON.parse(localStorage.getItem('destiny_profile')||'{}');return p.relStatus||'未填写';}catch(e){return '未填写';}})()};
   goTo('s-loading','s-input');setTimeout(function(){runLoading();callDestinyAI();},300);
 }
 function runLoading(){
@@ -2976,7 +2976,8 @@ function obSetRelStatus(status,el){
       userData={
         bday:p.year+'-'+pad2(p.month)+'-'+pad2(p.day),
         gender:p.gender,worry:p.concern||'',
-        shichen:p.shichen?OB_SHICHEN[p.shichenIdx]:null
+        shichen:p.shichen?OB_SHICHEN[p.shichenIdx]:null,
+        relStatus:p.relStatus||'未填写'
       };
       return;
     }
@@ -3099,7 +3100,8 @@ function obLoginConfirm(){
     bday:obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day),
     gender:obProfile.gender,
     worry:obProfile.concern||'',
-    shichen:obProfile.shichen||null
+    shichen:obProfile.shichen||null,
+    relStatus:obProfile.relStatus||'未填写'
   };
   document.getElementById('ob-overlay').classList.add('hidden');
   showToast('欢迎回来，'+obProfile.name+'！','ti-sparkles');
@@ -3241,7 +3243,8 @@ function obEnterApp(){
     bday:obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day),
     gender:obProfile.gender,
     worry:obProfile.concern||'',
-    shichen:obProfile.shichen||null
+    shichen:obProfile.shichen||null,
+    relStatus:obProfile.relStatus||'未填写'
   };
   document.getElementById('ob-overlay').classList.add('hidden');
   showToast('欢迎来到命运馆，'+obProfile.name+'！','ti-sparkles');
