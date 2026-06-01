@@ -980,7 +980,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       <div class="sh-btn sh-sec" onclick="copyLink()"><i class="ti ti-link"></i>复制链接</div>
       <div class="sh-btn sh-sec" onclick="shareWA()"><i class="ti ti-brand-whatsapp"></i>WhatsApp</div>
     </div>
-    <div class="redo-link" onclick="restartDestiny()"><i class="ti ti-refresh"></i>重新推算</div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <div class="redo-link" onclick="restartDestiny()" style="flex:1;text-align:center"><i class="ti ti-refresh"></i>重新推算</div>
+      <div class="redo-link" onclick="goTo('s-home','s-result')" style="flex:1;text-align:center;color:rgba(255,215,0,.6)"><i class="ti ti-home"></i>返回首页</div>
+    </div>
   </div>
 </div>
 
@@ -1066,7 +1069,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
         <div class="sh-btn sh-sec" onclick="copyTarot()"><i class="ti ti-copy"></i>复制解读</div>
         <div class="sh-btn sh-sec" onclick="shareWATarot()"><i class="ti ti-brand-whatsapp"></i>WhatsApp</div>
       </div>
-      <div class="redo-link" onclick="resetTarot()"><i class="ti ti-refresh"></i>重新占卜</div>
+      <div style="display:flex;gap:8px;margin-top:8px"><div class="redo-link" onclick="resetTarot()" style="flex:1;text-align:center"><i class="ti ti-refresh"></i>重新占卜</div><div class="redo-link" onclick="navTo('home')" style="flex:1;text-align:center;color:rgba(255,215,0,.6)"><i class="ti ti-home"></i>返回首页</div></div>
     </div>
   <!-- BOTTOM NAV -->
   <div style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#3a0000;border-top:2px solid rgba(255,215,0,.3);padding-bottom:env(safe-area-inset-bottom)"><div style="display:flex;justify-content:space-around;align-items:center;padding:.5rem 0 .45rem"><button onclick="navTo('home')" style="display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;padding:.3rem .8rem;color:rgba(255,215,0,.4)"><i class="ti ti-home" style="font-size:20px"></i><span style="font-size:9px">首页</span></button><button onclick="navTo('destiny')" style="display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;padding:.3rem .8rem;color:rgba(255,215,0,.4)"><span style="font-size:19px">🔮</span><span style="font-size:9px">命运</span></button><button onclick="navTo('tarot')" style="display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;padding:.3rem .8rem;color:rgba(255,215,0,.4)"><span style="font-size:19px">🎴</span><span style="font-size:9px">塔罗</span></button><button onclick="navTo('zodiac')" style="display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;padding:.3rem .8rem;color:rgba(255,215,0,.4)"><span style="font-size:19px">⭐</span><span style="font-size:9px">星座</span></button><button onclick="navTo('shengxiao')" style="display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;padding:.3rem .8rem;color:rgba(255,215,0,.4)"><span style="font-size:19px">🐉</span><span style="font-size:9px">生肖</span></button></div></div>
