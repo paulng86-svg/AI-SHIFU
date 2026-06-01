@@ -2005,7 +2005,7 @@ function selectMode(m){
   var qWrap=document.getElementById('q-input-wrap');
   if(qWrap)qWrap.classList.toggle('show',m===3);
   var drawWrap=document.getElementById('draw-area-wrap');
-  if(drawWrap)drawWrap.style.display=m===3?'none':'block';
+  if(drawWrap)drawWrap.style.display='block'; // always show - meditate/spread needed for all modes
   document.getElementById('tarot-btn').style.display='none';
   // Reset spread UI
   var med=document.getElementById('tarot-meditate');if(med)med.style.display='block';
@@ -2125,13 +2125,9 @@ function tarotConfirmSelection(){
   if(selectedSpreadIdx.length<needed){
     showToast('请选择'+needed+'张牌','ti-cards');return;
   }
-  // Build drawnCards from selected
   drawnCards=selectedSpreadIdx.map(function(idx){return spreadCards30[idx];});
 
-  // Show result — same flow as before
   if(tarotMode===1){
-    // show single card reveal
-    // Show selected card preview + interpret button
     document.getElementById('tarot-spread').style.display='none';
     var drawn=drawnCards[0];
     document.getElementById('tarot-meditate').style.display='block';
@@ -2144,9 +2140,9 @@ function tarotConfirmSelection(){
       '<div onclick="tarotBackToMeditate()" style="margin-top:10px;font-size:11px;color:rgba(255,215,0,.3);cursor:pointer">← 重新选牌</div>'+
       '</div>';
     document.getElementById('tarot-btn').style.display='flex';
+
   } else if(tarotMode===2){
     document.getElementById('draw-area-wrap').style.display='none';
-    // Fill the three slots (recreate them)
     var slots=document.getElementById('three-slots');
     slots.style.display='grid';
     ['slot-0','slot-1','slot-2'].forEach(function(id,i){
@@ -2156,6 +2152,21 @@ function tarotConfirmSelection(){
         s.innerHTML='<div style="width:100%;height:100%;border-radius:8px;overflow:hidden">'+buildCardHTML(drawnCards[i].card,drawnCards[i].reversed,'<div style="font-size:8px;color:rgba(255,215,0,.6);margin-top:2px">'+['过去','现在','未来'][i]+'</div>')+'</div>';
       }
     });
+    document.getElementById('tarot-btn').style.display='flex';
+
+  } else if(tarotMode===3){
+    // Mode 3: show selected card, then user clicks interpret
+    document.getElementById('tarot-spread').style.display='none';
+    var drawn=drawnCards[0];
+    document.getElementById('tarot-meditate').style.display='block';
+    document.getElementById('tarot-meditate').innerHTML=
+      '<div style="text-align:center">'+
+      '<div style="font-size:11px;color:rgba(255,215,0,.4);letter-spacing:.15em;margin-bottom:8px">已为你选定塔罗</div>'+
+      '<div style="width:90px;height:135px;border-radius:10px;overflow:hidden;margin:0 auto 10px;border:2px solid rgba(255,215,0,.4)">'+buildCardHTML(drawn.card,drawn.reversed)+'</div>'+
+      '<div style="font-size:14px;font-weight:700;color:#ffd700;margin-bottom:3px">'+drawn.card.zh+'</div>'+
+      '<div style="font-size:11px;color:rgba(255,215,0,.5)">'+(drawn.reversed?'逆位':'正位')+'</div>'+
+      '<div onclick="tarotBackToMeditate()" style="margin-top:10px;font-size:11px;color:rgba(255,215,0,.3);cursor:pointer">← 重新选牌</div>'+
+      '</div>';
     document.getElementById('tarot-btn').style.display='flex';
   }
 }
@@ -2167,6 +2178,7 @@ function drawCards(){
 async function interpretCards(){
   var question=document.getElementById('tarot-question').value||'';
   if(tarotMode===3&&!question.trim()){showToast('请先输入你的问题','ti-message-question');return;}
+  if(drawnCards.length===0){showToast('请先展开牌阵选牌','ti-cards');return;}
   document.getElementById('tarot-step1').style.display='none';document.getElementById('tarot-loading').classList.add('show');
   var prompt='';
   if(tarotMode===1){var c=drawnCards[0];prompt='你是一位神秘而智慧的塔罗牌解读师。用户抽到了「'+c.card.zh+'」('+c.card.name+')'+(c.reversed?'逆位':'正位')+'。\n请提供：1.核心含义（约50字）2.今日建议（约40字）3.需注意（约40字）4.三个关键词。\n只返回JSON：{"core":"…","advice":"…","warning":"…","keywords":["词1","词2","词3"]}';}
