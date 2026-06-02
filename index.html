@@ -1931,11 +1931,10 @@ function showToast(msg,icon){
   setTimeout(function(){t.classList.remove('show');},2800);
 }
 function goTo(to,from){
-  var f=document.getElementById(from),t=document.getElementById(to);
-  if(!t)return;
-  if(f){f.style.opacity='0';setTimeout(function(){f.classList.add('hidden');f.style.opacity='';},300);}
-  t.classList.remove('hidden');t.style.opacity='0';t.scrollTop=0;
-  setTimeout(function(){t.style.opacity='1';},20);
+  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
+  all.forEach(function(s){var el=document.getElementById(s);if(el)el.classList.add('hidden');});
+  var t=document.getElementById(to);
+  if(t){t.classList.remove('hidden');t.scrollTop=0;}
 }
 // 统一的星座/生肖入口函数
 function enterZodiacTab(from){
