@@ -579,6 +579,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(255,215,0,.2);border-radius:100px}
+
+/* Member page hidden by default */
+#s-member { display: none !important; }
+#s-member.show { display: block !important; }
+#s-admin { display: none !important; }
+#s-admin.show { display: block !important; }
 </style>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -1606,7 +1612,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 
 <!-- ═══ MEMBERSHIP ═══ -->
-<div id="s-member" style="display:none;position:fixed;inset:0;z-index:999;background:#8B0000;overflow-y:auto;padding:1rem 1rem 5rem;background-image:repeating-linear-gradient(45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px),repeating-linear-gradient(-45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px)">
+<div id="s-member" style="position:fixed;inset:0;z-index:999;background:#8B0000;overflow-y:auto;padding:1rem 1rem 5rem;background-image:repeating-linear-gradient(45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px),repeating-linear-gradient(-45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px)">
   <div class="inner">
     <div style="color:#ffd700;font-size:20px;font-weight:700;text-align:center;padding:20px 0">👑 会员中心</div>
     <div class="top-bar">
@@ -1721,7 +1727,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 <div id="s-admin" style="display:none;position:fixed;inset:0;z-index:999;background:#8B0000;overflow-y:auto;padding:1rem 1rem 5rem">
   <div class="inner">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-top:4px">
-      <div onclick="document.getElementById('s-admin').style.display='none';document.getElementById('s-member').style.display='block';" style="cursor:pointer;color:rgba(255,215,0,.5);font-size:13px">← 返回</div>
+      <div onclick="document.getElementById('s-admin').classList.remove('show');document.getElementById('s-member').classList.add('show');" style="cursor:pointer;color:rgba(255,215,0,.5);font-size:13px">← 返回</div>
       <div style="font-size:18px;font-weight:700;color:#ffd700">后台管理</div>
     </div>
     <div id="admin-gate" style="background:rgba(0,0,0,.4);border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:1.2rem;margin-bottom:14px">
@@ -1993,14 +1999,14 @@ function navTo(tab){
       if(el&&s!=='s-member') el.classList.add('hidden');
     });
     var memberEl=document.getElementById('s-member');
-    if(memberEl){memberEl.style.display='block';memberEl.scrollTop=0;}
+    if(memberEl){memberEl.classList.add('show');memberEl.scrollTop=0;}
     setTimeout(function(){checkMemberStatus();renderMemberPage();},200);
     return;
   }
 
   // Always hide member/admin when going to other tabs
-  var mEl=document.getElementById('s-member');if(mEl)mEl.style.display='none';
-  var aEl=document.getElementById('s-admin');if(aEl)aEl.style.display='none';
+  var mEl=document.getElementById('s-member');if(mEl)mEl.classList.remove('show');
+  var aEl=document.getElementById('s-admin');if(aEl)aEl.classList.remove('show');
 
   if(cur&&cur!==map[tab]){
     goTo(map[tab],cur);
@@ -2500,13 +2506,13 @@ function memberLogout(){
   obProfile={};
   currentUserKey=null;
   // Hide member screen, show ob-overlay
-  document.getElementById('s-member').style.display='none';
+  document.getElementById('s-member').classList.remove('show');
   var ob=document.getElementById('ob-overlay');
   if(ob){ob.classList.remove('hidden');ob.style.display='flex';}
   showToast('已登出','ti-logout');
 }
 function openAdmin(){
-  document.getElementById('s-member').style.display='none';
+  document.getElementById('s-member').classList.remove('show');
   document.getElementById('s-admin').style.display='block';
 }
 
