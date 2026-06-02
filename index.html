@@ -1606,7 +1606,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 
 <!-- ═══ MEMBERSHIP ═══ -->
-<div class="screen hidden" id="s-member">
+<div id="s-member" style="display:none;position:fixed;inset:0;z-index:999;background:#8B0000;overflow-y:auto;padding:1rem 1rem 5rem;background-image:repeating-linear-gradient(45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px),repeating-linear-gradient(-45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px)">
   <div class="inner">
     <div style="color:#ffd700;font-size:20px;font-weight:700;text-align:center;padding:20px 0">👑 会员中心</div>
     <div class="top-bar">
@@ -1709,16 +1709,19 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     </div>
 
     <div style="text-align:center;margin-bottom:80px">
+      <div style="display:flex;gap:10px;justify-content:center;align-items:center">
+      <button onclick="memberLogout()" style="background:rgba(0,0,0,.3);border:1px solid rgba(255,215,0,.2);border-radius:10px;color:rgba(255,215,0,.5);font-size:12px;padding:8px 16px;cursor:pointer;font-family:inherit">登出账号</button>
       <span onclick="openAdmin()" style="font-size:10px;color:rgba(255,215,0,.12);cursor:pointer;letter-spacing:.1em;padding:10px">· · ·</span>
+    </div>
     </div>
   </div>
 </div>
 
 <!-- ═══ ADMIN ═══ -->
-<div class="screen hidden" id="s-admin">
+<div id="s-admin" style="display:none;position:fixed;inset:0;z-index:999;background:#8B0000;overflow-y:auto;padding:1rem 1rem 5rem">
   <div class="inner">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-top:4px">
-      <div onclick="navTo('member')" style="cursor:pointer;color:rgba(255,215,0,.5);font-size:13px">← 返回</div>
+      <div onclick="document.getElementById('s-admin').style.display='none';document.getElementById('s-member').style.display='block';" style="cursor:pointer;color:rgba(255,215,0,.5);font-size:13px">← 返回</div>
       <div style="font-size:18px;font-weight:700;color:#ffd700">后台管理</div>
     </div>
     <div id="admin-gate" style="background:rgba(0,0,0,.4);border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:1.2rem;margin-bottom:14px">
@@ -1984,16 +1987,20 @@ function navTo(tab){
     // Force hide ob-overlay
     var obEl=document.getElementById('ob-overlay');if(obEl)obEl.classList.add('hidden');
     // Hide all screens, show s-member
-    var allScreens=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-member','s-admin'];
+    var allScreens=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
     allScreens.forEach(function(s){
       var el=document.getElementById(s);
       if(el&&s!=='s-member') el.classList.add('hidden');
     });
     var memberEl=document.getElementById('s-member');
-    if(memberEl){memberEl.classList.remove('hidden');memberEl.scrollTop=0;}
+    if(memberEl){memberEl.style.display='block';memberEl.scrollTop=0;}
     setTimeout(function(){checkMemberStatus();renderMemberPage();},200);
     return;
   }
+
+  // Always hide member/admin when going to other tabs
+  var mEl=document.getElementById('s-member');if(mEl)mEl.style.display='none';
+  var aEl=document.getElementById('s-admin');if(aEl)aEl.style.display='none';
 
   if(cur&&cur!==map[tab]){
     goTo(map[tab],cur);
@@ -2484,7 +2491,24 @@ function sendMsg(){
 
 // ── Admin ──
 var adminLoggedIn = false;
-function openAdmin(){ goTo('s-admin','s-member'); }
+
+function memberLogout(){
+  if(!confirm('确定要登出吗？')) return;
+  localStorage.removeItem('destiny_profile');
+  localStorage.removeItem('tmr_member');
+  memberData={isPro:false,credits:0,usageCount:0,lastAdTime:0,lastLoginBonus:''};
+  obProfile={};
+  currentUserKey=null;
+  // Hide member screen, show ob-overlay
+  document.getElementById('s-member').style.display='none';
+  var ob=document.getElementById('ob-overlay');
+  if(ob){ob.classList.remove('hidden');ob.style.display='flex';}
+  showToast('已登出','ti-logout');
+}
+function openAdmin(){
+  document.getElementById('s-member').style.display='none';
+  document.getElementById('s-admin').style.display='block';
+}
 
 function adminLogin(){
   var pw = document.getElementById('admin-pw').value;
