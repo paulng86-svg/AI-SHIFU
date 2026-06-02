@@ -1991,17 +1991,17 @@ function navTo(tab){
   var cur=null;all.forEach(function(s){var el=document.getElementById(s);if(el&&!el.classList.contains('hidden'))cur=s;});
 
   if(tab==='member'){
-    // Force hide ob-overlay
-    var obEl=document.getElementById('ob-overlay');if(obEl)obEl.classList.add('hidden');
-    // Hide all screens, show s-member
-    var allScreens=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
-    allScreens.forEach(function(s){
-      var el=document.getElementById(s);
-      if(el&&s!=='s-member') el.classList.add('hidden');
-    });
-    var memberEl=document.getElementById('s-member');
-    if(memberEl){memberEl.style.display='block';memberEl.scrollTop=0;}
-    setTimeout(function(){checkMemberStatus();renderMemberPage();},200);
+    try{
+      var obEl=document.getElementById('ob-overlay');if(obEl)obEl.classList.add('hidden');
+      var allScreens=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
+      allScreens.forEach(function(s){var el=document.getElementById(s);if(el)el.classList.add('hidden');});
+      var memberEl=document.getElementById('s-member');
+      if(memberEl){
+        memberEl.style.cssText='display:block;position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto';
+        memberEl.scrollTop=0;
+      }else{alert('s-member not found!');}
+      setTimeout(function(){try{checkMemberStatus();renderMemberPage();}catch(e){console.error('render error:',e);}},200);
+    }catch(e){alert('Member nav error: '+e.message);}
     return;
   }
 
