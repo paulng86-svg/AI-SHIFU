@@ -33,7 +33,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-color:#8B0000}
 
 /* ══ SCREENS ══ */
-.screen{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;
+.screen{position:fixed;inset:0;z-index:400;display:flex;flex-direction:column;align-items:center;
   overflow-y:auto;overflow-x:hidden;padding:1.25rem 1.25rem 5.5rem;
   transition:opacity .4s;background:transparent}
 .screen.hidden{opacity:0;pointer-events:none;display:none}
@@ -368,7 +368,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .ob::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:repeating-linear-gradient(45deg,rgba(255,180,0,.04) 0,rgba(255,180,0,.04) 1px,transparent 1px,transparent 12px),
     repeating-linear-gradient(-45deg,rgba(255,180,0,.04) 0,rgba(255,180,0,.04) 1px,transparent 1px,transparent 12px)}
-.ob.hidden{opacity:0;pointer-events:none;transform:translateY(20px);display:none}
+.ob.hidden{opacity:0!important;pointer-events:none!important;display:none!important;visibility:hidden!important}
 .ob-inner{width:100%;max-width:420px;min-height:100vh;display:flex;flex-direction:column;position:relative;z-index:1}
 .ob-splash{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:2.5rem 1.5rem;text-align:center}
@@ -1981,6 +1981,8 @@ function navTo(tab){
   var cur=null;all.forEach(function(s){var el=document.getElementById(s);if(el&&!el.classList.contains('hidden'))cur=s;});
 
   if(tab==='member'){
+    // Force hide ob-overlay
+    var obEl=document.getElementById('ob-overlay');if(obEl)obEl.classList.add('hidden');
     // Hide all screens, show s-member
     var allScreens=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-member','s-admin'];
     allScreens.forEach(function(s){
