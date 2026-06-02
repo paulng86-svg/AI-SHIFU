@@ -4072,7 +4072,29 @@ function resetBaziPair(){
   var prev=document.getElementById('sx-bazi-preview');if(prev)prev.style.display='none';
   baziSelSC={z:null,sx:null};
 }
+
+// ── BOTTOM NAV ──
+(function createNav(){
+  if(document.getElementById('app-bottom-nav')) return;
+  var nav = document.createElement('div');
+  nav.id = 'app-bottom-nav';
+  nav.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#3a0000;border-top:2px solid rgba(255,215,0,.4);z-index:2147483647;display:flex;justify-content:space-around;align-items:center;padding:.5rem 0 .4rem';
+  var tabs=[{id:'home',icon:'🏠',label:'首页',active:true},{id:'destiny',icon:'🔮',label:'命运'},{id:'tarot',icon:'🎴',label:'塔罗'},{id:'zodiac',icon:'⭐',label:'星座'},{id:'shengxiao',icon:'🐉',label:'生肖'},{id:'member',icon:'👑',label:'会员'}];
+  tabs.forEach(function(t){
+    var btn=document.createElement('button');
+    btn.setAttribute('data-tab',t.id);
+    btn.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;padding:.3rem 0;color:'+(t.active?'#ffd700':'rgba(255,215,0,.4)')+';font-size:9px;font-family:inherit';
+    btn.innerHTML='<span style="font-size:20px;display:block;line-height:1">'+t.icon+'</span>'+t.label;
+    btn.onclick=function(){
+      navTo(t.id);
+      document.querySelectorAll('#app-bottom-nav button').forEach(function(b){b.style.color=b.getAttribute('data-tab')===t.id?'#ffd700':'rgba(255,215,0,.4)';});
+    };
+    nav.appendChild(btn);
+  });
+  document.body.appendChild(nav);
+  // Add bottom padding to all screens
+  document.querySelectorAll('.screen').forEach(function(s){s.style.paddingBottom='5rem';});
+})();
 </script>
-<div style="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#3a0000;border-top:2px solid rgba(255,215,0,.4)"><div style="display:flex;justify-content:space-around;align-items:center;padding:.6rem 0 .5rem;max-width:480px;margin:0 auto"><button onclick="navTo('home')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:#ffd700;font-size:9px"><i class="ti ti-home" style="font-size:22px;display:block"></i>首页</button><button onclick="navTo('destiny')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:rgba(255,215,0,.4);font-size:9px"><span style="font-size:21px">🔮</span>命运</button><button onclick="navTo('tarot')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:rgba(255,215,0,.4);font-size:9px"><span style="font-size:21px">🎴</span>塔罗</button><button onclick="navTo('zodiac')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:rgba(255,215,0,.4);font-size:9px"><span style="font-size:21px">⭐</span>星座</button><button onclick="navTo('shengxiao')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:rgba(255,215,0,.4);font-size:9px"><span style="font-size:21px">🐉</span>生肖</button><button onclick="navTo('member')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;cursor:pointer;color:rgba(255,215,0,.4);font-size:9px"><span style="font-size:21px">👑</span>会员</button></div></div>
 </body>
 </html>
