@@ -581,8 +581,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 ::-webkit-scrollbar-thumb{background:rgba(255,215,0,.2);border-radius:100px}
 
 /* Member page */
-#s-member{position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto;display:none}
-#s-member.show{display:block}
+#s-member{position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto}
 #s-admin{position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto;display:none !important}
 #s-admin.show{display:block !important}
 </style>
@@ -1612,8 +1611,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 
 <!-- ═══ MEMBERSHIP ═══ -->
-<div id="s-member">
-  <div style="background:yellow;color:red;font-size:40px;font-weight:900;padding:20px;text-align:center;position:sticky;top:0;z-index:999">会员页面已加载</div>
+<div id="s-member" style="display:none">
   <div style="max-width:420px;margin:0 auto;padding:1rem 1rem 80px">
 
     <!-- Title -->
@@ -1997,16 +1995,17 @@ function navTo(tab){
       allScreens.forEach(function(s){var el=document.getElementById(s);if(el)el.classList.add('hidden');});
       var memberEl=document.getElementById('s-member');
       if(memberEl){
-        memberEl.style.cssText='display:block;position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto';
+        memberEl.style.removeProperty('display');
+        memberEl.style.display='block';
         memberEl.scrollTop=0;
-      }else{alert('s-member not found!');}
-      setTimeout(function(){try{checkMemberStatus();renderMemberPage();}catch(e){console.error('render error:',e);}},200);
-    }catch(e){alert('Member nav error: '+e.message);}
+      }
+      setTimeout(function(){try{checkMemberStatus();renderMemberPage();}catch(e){}},200);
+    }catch(e){}
     return;
   }
 
   // Always hide member/admin when going to other tabs
-  var mEl=document.getElementById('s-member');if(mEl)mEl.style.display='none';
+  var mEl=document.getElementById('s-member');if(mEl){mEl.style.display='none';}
   var aEl=document.getElementById('s-admin');if(aEl)aEl.style.display='none';
 
   if(cur&&cur!==map[tab]){
@@ -4143,4 +4142,4 @@ function resetBaziPair(){
 })();
 </script>
 </body>
-</html> 
+</html>
