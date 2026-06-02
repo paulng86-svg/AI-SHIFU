@@ -363,7 +363,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .sc-item-stars{font-size:10px;color:rgba(255,215,0,.5)}
 
 /* ══ ONBOARDING ══ */
-.ob{position:fixed;inset:0;z-index:300;background:#8B0000;display:flex;
+.ob{position:fixed;inset:0;z-index:500;background:#8B0000;display:flex;
   flex-direction:column;align-items:center;overflow-y:auto;transition:opacity .4s}
 .ob::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:repeating-linear-gradient(45deg,rgba(255,180,0,.04) 0,rgba(255,180,0,.04) 1px,transparent 1px,transparent 12px),
@@ -580,11 +580,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(255,215,0,.2);border-radius:100px}
 
-/* Member page hidden by default */
-#s-member { display: none !important; }
-#s-member.show { display: block !important; }
-#s-admin { display: none !important; }
-#s-admin.show { display: block !important; }
+/* Member page */
+#s-member{position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto;padding:1rem 1rem 5rem;display:none !important;
+  background-image:repeating-linear-gradient(45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px),repeating-linear-gradient(-45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px)}
+#s-member.show{display:block !important}
+#s-admin{position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto;padding:1rem 1rem 5rem;display:none !important}
+#s-admin.show{display:block !important}
 </style>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -1612,7 +1613,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 
 <!-- ═══ MEMBERSHIP ═══ -->
-<div id="s-member" style="position:fixed;inset:0;z-index:999;background:#8B0000;overflow-y:auto;padding:1rem 1rem 5rem;background-image:repeating-linear-gradient(45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px),repeating-linear-gradient(-45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px)">
+<div id="s-member" style="position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto;padding:1rem 1rem 5rem;background-image:repeating-linear-gradient(45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px),repeating-linear-gradient(-45deg,rgba(120,0,0,.5) 0,rgba(120,0,0,.5) 1px,transparent 1px,transparent 8px)">
   <div class="inner">
     <div style="color:#ffd700;font-size:20px;font-weight:700;text-align:center;padding:20px 0">👑 会员中心</div>
     <div class="top-bar">
