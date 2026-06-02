@@ -2013,6 +2013,12 @@ function navTo(tab){
     goTo(map[tab],cur);
     if(tab==='zodiac'){setTimeout(autoRunZodiac,450);}
     if(tab==='shengxiao'){setTimeout(autoRunSX,450);}
+  } else if(!cur&&map[tab]){
+    // No current screen visible - just show the target
+    var t=document.getElementById(map[tab]);
+    if(t){t.classList.remove('hidden');t.scrollTop=0;}
+    if(tab==='zodiac'){setTimeout(autoRunZodiac,200);}
+    if(tab==='shengxiao'){setTimeout(autoRunSX,200);}
   }
 }
 
