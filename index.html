@@ -860,7 +860,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 
 <!-- ═══ HOME ═══ -->
-<div class="screen" id="s-home">
+<div class="screen hidden" id="s-home">
   <div class="inner">
     <div class="top-bar">
       <div class="brand">
@@ -3547,6 +3547,7 @@ function obSetRelStatus(status,el){
       // Skip splash → go straight to app with profile loaded
       obApplyProfileToApp(p);
       document.getElementById('ob-overlay').classList.add('hidden');
+      document.getElementById('s-home').classList.remove('hidden');
       // Preload userData for destiny analysis
       userData={
         bday:p.year+'-'+pad2(p.month)+'-'+pad2(p.day),
@@ -3679,6 +3680,7 @@ function obLoginConfirm(){
     relStatus:obProfile.relStatus||'未填写'
   };
   document.getElementById('ob-overlay').classList.add('hidden');
+  document.getElementById('s-home').classList.remove('hidden');
   showToast('欢迎回来，'+obProfile.name+'！','ti-sparkles');
 }
 
@@ -3822,6 +3824,7 @@ function obEnterApp(){
     relStatus:obProfile.relStatus||'未填写'
   };
   document.getElementById('ob-overlay').classList.add('hidden');
+  document.getElementById('s-home').classList.remove('hidden');
   showToast('欢迎来到命运馆，'+obProfile.name+'！','ti-sparkles');
 }
 
