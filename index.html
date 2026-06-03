@@ -363,7 +363,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .sc-item-stars{font-size:10px;color:rgba(255,215,0,.5)}
 
 /* ══ ONBOARDING ══ */
-.ob{position:fixed;inset:0;z-index:500;background:#8B0000;display:flex;
+.ob{position:fixed;inset:0;z-index:10000;background:#8B0000;display:flex;
   flex-direction:column;align-items:center;overflow-y:auto;transition:opacity .4s}
 .ob::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:repeating-linear-gradient(45deg,rgba(255,180,0,.04) 0,rgba(255,180,0,.04) 1px,transparent 1px,transparent 12px),
@@ -2519,11 +2519,25 @@ function memberLogout(){
   memberData={isPro:false,credits:0,usageCount:0,lastAdTime:0,lastLoginBonus:''};
   obProfile={};
   currentUserKey=null;
-  // Hide member screen, show ob-overlay
+  // Hide ALL screens
+  ['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'].forEach(function(s){
+    var el=document.getElementById(s);if(el)el.classList.add('hidden');
+  });
   document.getElementById('s-member').style.display='none';
+  // Show login splash screen
   var ob=document.getElementById('ob-overlay');
   if(ob){ob.classList.remove('hidden');ob.style.display='flex';}
-  showToast('已登出','ti-logout');
+  // Reset ob to splash page
+  var splash=document.getElementById('ob-splash');
+  var login=document.getElementById('ob-login');
+  var form=document.getElementById('ob-form');
+  var preview=document.getElementById('ob-preview');
+  if(splash){splash.style.display='flex';}
+  if(login){login.classList.remove('show');login.style.display='none';}
+  if(form){form.classList.remove('show');form.style.display='none';}
+  if(preview){preview.style.display='none';}
+  // Reload page - cleanest way to show login
+  setTimeout(function(){window.location.reload();},500);
 }
 function openAdmin(){
   document.getElementById('s-member').style.display='none';
