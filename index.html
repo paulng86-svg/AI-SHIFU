@@ -1872,6 +1872,24 @@ function autoRunSX(){
 }
 
 function navTo(tab){
+  // Check login - if no profile, show ob-overlay
+  if(tab !== 'member'){
+    var hasProfile = obProfile && obProfile.name;
+    if(!hasProfile){
+      try{ var saved=localStorage.getItem('destiny_profile'); if(saved){ var p=JSON.parse(saved); hasProfile=p&&p.name; } }catch(e){}
+    }
+    if(!hasProfile){
+      // Not logged in - show login screen
+      var ob=document.getElementById('ob-overlay');
+      if(ob){ob.classList.remove('hidden');ob.style.display='flex';}
+      // Hide all screens
+      ['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'].forEach(function(s){
+        var el=document.getElementById(s);if(el)el.classList.add('hidden');
+      });
+      showToast('请先登入','ti-lock');
+      return;
+    }
+  }
   document.querySelectorAll('.nav-item').forEach(function(b){
     b.classList.remove('active');
     b.style.color='rgba(255,215,0,.35)';
