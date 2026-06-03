@@ -2282,6 +2282,17 @@ function initFirebaseUser(){
       name: obProfile.name,
       contact: obProfile.contact || obProfile.phone || '',
       pwHash: obProfile.pwHash || '',
+      gender: obProfile.gender || '',
+      year: obProfile.year || '',
+      month: obProfile.month || '',
+      day: obProfile.day || '',
+      shichenIdx: obProfile.shichenIdx !== undefined ? obProfile.shichenIdx : null,
+      concern: obProfile.concern || '',
+      relStatus: obProfile.relStatus || '',
+      tags: obProfile.tags || [],
+      zodiac: obProfile.zodiac || null,
+      sx: obProfile.sx || null,
+      gz: obProfile.gz || null,
       lastSeen: Date.now()
     });
 
@@ -3712,13 +3723,15 @@ function obSearchProfile(){
         // Load full profile from Firebase
         db.ref('users/'+found.userKey).once('value').then(function(usnap){
           var udata=usnap.val()||{};
-          var fullProfile=Object.assign({},udata.profile||{},{userKey:found.userKey});
-          // Try to get full profile with bday etc from saved keys
-          var allKeys=Object.keys(localStorage);
-          allKeys.forEach(function(k){
-            try{var lp=JSON.parse(localStorage.getItem(k));if(lp&&lp.name&&lp.name.toLowerCase().includes(q)){fullProfile=Object.assign(lp,fullProfile);}}catch(e){}
-          });
-          showFound(fullProfile);
+          var fp = udata.profile || {};
+          fp.userKey = found.userKey;
+          // Restore shichen from index
+          if(fp.shichenIdx !== null && fp.shichenIdx !== undefined && typeof OB_SHICHEN !== 'undefined'){
+            fp.shichen = OB_SHICHEN[fp.shichenIdx] || null;
+          }
+          // Save to localStorage for next time
+          localStorage.setItem('destiny_profile', JSON.stringify(fp));
+          showFound(fp);
         });
       } else {
         notFound.classList.add('show');newBtn.style.display='flex';
