@@ -582,7 +582,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 /* Member page */
 #s-member{position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto}
-#s-admin{position:fixed;inset:0;z-index:9999;background:#8B0000;overflow-y:auto;color:#fff}
+#s-admin{position:fixed;inset:0;z-index:9999;background:#8B0000;overflow-y:auto;color:#fff;display:none}
 #s-admin.show{display:block !important}
 </style>
   <!-- Firebase -->
@@ -1154,10 +1154,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     </div>
 
     <!-- Profile linked banner (shown when profile exists) -->
-    <div id="z-profile-banner" style="display:none;background:rgba(14,165,233,.08);border:1.5px solid rgba(14,165,233,.25);border-radius:14px;padding:.85rem 1.1rem;margin-bottom:12px;display:none;align-items:center;gap:10px">
+    <div id="z-profile-banner" style="display:none;background:rgba(139,0,0,.15);border:1.5px solid rgba(255,215,0,.25);border-radius:14px;padding:.85rem 1.1rem;margin-bottom:12px;display:none;align-items:center;gap:10px">
       <i class="ti ti-link" style="font-size:16px;color:rgba(255,215,0,.7);flex-shrink:0"></i>
       <div style="flex:1">
-        <div style="font-size:11px;font-weight:600;color:rgba(14,165,233,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">已连接你的命盘</div>
+        <div style="font-size:11px;font-weight:600;color:rgba(255,215,0,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">已连接你的命盘</div>
         <div id="z-profile-info" style="font-size:13px;font-weight:500;color:#fff"></div>
       </div>
       <div style="font-size:11px;color:rgba(255,255,255,.3);cursor:pointer;text-decoration:underline" onclick="zShowManual()">换一个</div>
@@ -1165,7 +1165,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
     <!-- Mode Toggle -->
     <div style="display:flex;background:rgba(120,0,0,.15);border:1.5px solid rgba(220,30,0,.2);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
-      <div id="z-mode-solo" onclick="switchZMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(14,165,233,.18);border:1px solid rgba(14,165,233,.4);color:rgba(14,165,233,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-stars"></i>运势分析</div>
+      <div id="z-mode-solo" onclick="switchZMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(139,0,0,.3);border:1px solid rgba(255,215,0,.4);color:rgba(255,215,0,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-stars"></i>运势分析</div>
       <div id="z-mode-pair" onclick="switchZMode('pair')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-heart"></i>星座配对</div>
     </div>
 
@@ -1181,7 +1181,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
       </div>
 
-      <button class="big-btn" id="z-main-btn" style="background:linear-gradient(135deg,#0ea5e9,#ee5500);box-shadow:0 4px 20px rgba(14,165,233,.35)" onclick="runZodiac()">
+      <button class="big-btn" id="z-main-btn" style="background:linear-gradient(135deg,#8B0000,#cc3300,#ff6600);box-shadow:0 4px 20px rgba(139,0,0,.4)" onclick="runZodiac()">
         <i class="ti ti-stars"></i>查看星座运势
       </button>
     </div>
@@ -3007,7 +3007,7 @@ function renderZodiac(z){
   // scores
   var sEl=document.getElementById('z-scores');sEl.innerHTML='';
   var sLabels={love:'感情',career:'事业',money:'财运',health:'健康'};
-  var sColors={love:'rgba(244,114,182,1)',career:'rgba(96,165,250,1)',money:'rgba(250,204,21,1)',health:'rgba(34,197,94,1)'};
+  var sColors={love:'rgba(255,215,0,1)',career:'rgba(255,215,0,1)',money:'rgba(255,215,0,1)',health:'rgba(255,215,0,1)'};
   Object.keys(zodiacData.scores).forEach(function(k){
     var v=zodiacData.scores[k];
     var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:10px';
