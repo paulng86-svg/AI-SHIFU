@@ -3688,6 +3688,8 @@ function obSearchProfile(){
   var newBtn=document.getElementById('ob-new-from-login');
   foundCard.classList.remove('show');notFound.classList.remove('show');
   loginBtn.style.display='none';newBtn.style.display='none';
+
+  // Require at least 2 chars AND must be letters (not just numbers)
   if(q.length<2)return;
 
   function showFound(p){
@@ -3703,54 +3705,36 @@ function obSearchProfile(){
     obProfile=p;
   }
 
-  // Step 1: check localStorage first
+  // Search by NAME only (not contact/phone)
   try{
     var saved=localStorage.getItem('destiny_profile');
     if(saved){
       var p=JSON.parse(saved);
-      var nameMatch=p.name&&p.name.toLowerCase().includes(q);
-      var contactMatch=p.contact&&p.contact.toLowerCase().includes(q);
-      if(nameMatch||contactMatch){showFound(p);return;}
+      if(p.name&&p.name.toLowerCase().includes(q)){showFound(p);return;}
     }
   }catch(e){}
 
-  // Step 2: search Firebase
-  if(typeof db !== 'undefined'){
+  // Search Firebase by name only
+  if(typeof db!=='undefined'){
     db.ref('users').once('value').then(function(snap){
-      var found=null;
+      var found=null,foundKey=null;
       snap.forEach(function(child){
-        var profile=child.val().profile;
-        if(!profile)return;
-        var nm=profile.name?profile.name.toLowerCase():'';
-        var ct=profile.contact?profile.contact.toLowerCase():'';
-        if(nm.includes(q)||ct.includes(q)){
-          // Merge profile with full data
-          found=Object.assign({},child.val().profile,{userKey:child.key});
-          // Get full profile from localStorage key pattern
-        }
+        var prof=child.val().profile;
+        if(!prof||!prof.name)return;
+        if(prof.name.toLowerCase().includes(q)){found=prof;foundKey=child.key;}
       });
       if(found){
-        // Load full profile from Firebase
-        db.ref('users/'+found.userKey).once('value').then(function(usnap){
-          var udata=usnap.val()||{};
-          var fp = udata.profile || {};
-          fp.userKey = found.userKey;
-          // Restore shichen from index
-          if(fp.shichenIdx !== null && fp.shichenIdx !== undefined && typeof OB_SHICHEN !== 'undefined'){
-            fp.shichen = OB_SHICHEN[fp.shichenIdx] || null;
-          }
-          // Save to localStorage for next time
-          localStorage.setItem('destiny_profile', JSON.stringify(fp));
-          showFound(fp);
-        });
-      } else {
-        notFound.classList.add('show');newBtn.style.display='flex';
+        found.userKey=foundKey;
+        localStorage.setItem('destiny_profile',JSON.stringify(found));
+        showFound(found);
+      }else{
+        if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
       }
     }).catch(function(){
-      notFound.classList.add('show');newBtn.style.display='flex';
+      if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
     });
-  } else {
-    notFound.classList.add('show');newBtn.style.display='flex';
+  }else{
+    if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
   }
 }
 
