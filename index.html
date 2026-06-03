@@ -582,7 +582,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 /* Member page */
 #s-member{position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto}
-#s-admin{position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto;display:none !important}
+#s-admin{position:fixed;inset:0;z-index:9999;background:#8B0000;overflow-y:auto;color:#fff}
 #s-admin.show{display:block !important}
 </style>
   <!-- Firebase -->
@@ -1610,7 +1610,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 <!-- ═══ MEMBERSHIP ═══ -->
 <div id="s-member" style="display:none;position:fixed;inset:0;z-index:9999;background:#8B0000;overflow-y:auto;padding:1rem;color:#fff;font-family:Noto Serif SC,Inter,sans-serif"></div>
-<div id="s-admin" style="display:none;position:fixed;inset:0;z-index:999;background:#8B0000;overflow-y:auto;padding:1rem 1rem 5rem">
+<div id="s-admin">
   <div class="inner">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-top:4px">
       <div onclick="document.getElementById('s-admin').style.display='none';document.getElementById('s-member').style.display='block';" style="cursor:pointer;color:rgba(255,215,0,.5);font-size:13px">← 返回</div>
@@ -2501,7 +2501,8 @@ function memberLogout(){
 }
 function openAdmin(){
   document.getElementById('s-member').style.display='none';
-  document.getElementById('s-admin').style.display='block';
+  var adm=document.getElementById('s-admin');
+  adm.style.cssText='display:block;position:fixed;inset:0;z-index:9999;background:#8B0000;overflow-y:auto;color:#fff;padding:1rem 1rem 5rem';
 }
 
 function adminLogin(){
