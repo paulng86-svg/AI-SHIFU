@@ -1656,6 +1656,22 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 <div class="toast" id="toast"><i class="ti ti-info-circle" id="toast-icon"></i><span id="toast-msg"></span></div>
 
 <script>
+
+// ── ADMIN URL DETECTION ──
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  if(params.get('admin') === 'tomorrow2024'){
+    // Store admin flag
+    sessionStorage.setItem('is_admin', '1');
+    // Clean URL
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+  if(sessionStorage.getItem('is_admin') === '1'){
+    // Show admin button on member page load
+    window.isAdmin = true;
+  }
+})();
+
 // ── STAR FIELD ──
 (function(){
   var c=document.getElementById('starCanvas');
@@ -2331,7 +2347,7 @@ function buildMemberPage(){
     // Logout
     '<div style="display:flex;justify-content:center;gap:12px;padding-bottom:20px">' +
       '<button onclick="memberLogout()" style="background:rgba(0,0,0,.3);border:1px solid rgba(255,215,0,.2);border-radius:8px;color:rgba(255,215,0,.6);font-size:12px;padding:8px 16px;cursor:pointer">🚪 登出</button>' +
-      '<span onclick="openAdmin()" style="color:rgba(255,215,0,.15);font-size:11px;cursor:pointer;padding:8px">· · ·</span>' +
+      '<!-- admin entry hidden -->' +
     '</div>' +
   '</div>';
   
