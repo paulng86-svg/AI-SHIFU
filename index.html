@@ -3745,25 +3745,39 @@ function obSearchProfile(){
 }
 
 function obLoginConfirm(){
-  // MUST check password FIRST before doing anything
-  var savedPwHash = obProfile.pwHash || '';
   var pwEl = document.getElementById('ob-login-password');
   var pw = pwEl ? pwEl.value.trim() : '';
 
+  // Always require password input
+  if(!pw){showToast('请输入密码','ti-lock');return;}
+
+  var savedPwHash = obProfile.pwHash || '';
+
   if(savedPwHash){
-    // Profile has password - must verify
-    if(!pw){showToast('请输入密码','ti-lock');return;}
+    // Verify against stored hash
     var inputHash = btoa(unescape(encodeURIComponent(pw))).substring(0,20);
     if(inputHash !== savedPwHash){showToast('密码错误，请重试','ti-lock');return;}
   } else {
-    // No password set - still require one if input has value
-    // Old accounts without password can still login
-    if(pw){
-      // User typed something but no hash stored - ignore
+    // No hash stored - check Firebase directly
+    if(typeof db !== 'undefined' && obProfile.userKey){
+      db.ref('users/'+obProfile.userKey+'/profile/pwHash').once('value').then(function(snap){
+        var fbHash = snap.val()||'';
+        if(fbHash){
+          var inputHash2 = btoa(unescape(encodeURIComponent(pw))).substring(0,20);
+          if(inputHash2 !== fbHash){showToast('密码错误，请重试','ti-lock');return;}
+        }
+        obProfile.pwHash = fbHash;
+        doEnterApp();
+      });
+      return;
     }
+    // Old account with no password - allow but warn
+    showToast('此账号未设密码，直接进入','ti-info-circle');
   }
+  doEnterApp();
+}
 
-  // Password OK - enter app
+function doEnterApp(){
   obApplyProfileToApp(obProfile);
   userData={
     bday:obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day),
