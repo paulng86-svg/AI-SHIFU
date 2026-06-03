@@ -3667,33 +3667,67 @@ function obSearchProfile(){
   var newBtn=document.getElementById('ob-new-from-login');
   foundCard.classList.remove('show');notFound.classList.remove('show');
   loginBtn.style.display='none';newBtn.style.display='none';
-  if(q.length<1)return;
+  if(q.length<2)return;
+
+  function showFound(p){
+    document.getElementById('ob-found-avatar').textContent=p.name?p.name.charAt(0):'？';
+    document.getElementById('ob-found-name').textContent=p.name||'—';
+    document.getElementById('ob-found-sub').textContent=(p.year?p.year+'年':'')+(p.month?p.month+'月':'')+(p.day?p.day+'日':'')+(p.zodiac?' · '+p.zodiac.zh:'')+(p.sx?' · 属'+p.sx.name:'');
+    var chips=document.getElementById('ob-found-chips');chips.innerHTML='';
+    if(p.gender){chips.innerHTML+='<div class="ob-pchip">'+p.gender+'命</div>';}
+    if(p.zodiac){chips.innerHTML+='<div class="ob-pchip">'+p.zodiac.zh+'</div>';}
+    if(p.sx){chips.innerHTML+='<div class="ob-pchip">属'+p.sx.name+'</div>';}
+    foundCard.classList.add('show');
+    loginBtn.style.display='flex';
+    obProfile=p;
+  }
+
+  // Step 1: check localStorage first
   try{
     var saved=localStorage.getItem('destiny_profile');
-    if(!saved){
-      if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
-      return;
+    if(saved){
+      var p=JSON.parse(saved);
+      var nameMatch=p.name&&p.name.toLowerCase().includes(q);
+      var contactMatch=p.contact&&p.contact.toLowerCase().includes(q);
+      if(nameMatch||contactMatch){showFound(p);return;}
     }
-    var p=JSON.parse(saved);
-    var nameMatch=p.name&&p.name.toLowerCase().includes(q);
-    var contactMatch=p.contact&&p.contact.toLowerCase().includes(q);
-    if(nameMatch||contactMatch){
-      // Show found card
-      document.getElementById('ob-found-avatar').textContent=p.name?p.name.charAt(0):'？';
-      document.getElementById('ob-found-name').textContent=p.name||'—';
-      document.getElementById('ob-found-sub').textContent=(p.year?p.year+'年':'')+(p.month?p.month+'月':'')+(p.day?p.day+'日':'')+(p.zodiac?' · '+p.zodiac.zh:'')+(p.sx?' · 属'+p.sx.name:'');
-      var chips=document.getElementById('ob-found-chips');chips.innerHTML='';
-      if(p.gender){chips.innerHTML+='<div class="ob-pchip">'+p.gender+'命</div>';}
-      if(p.zodiac){chips.innerHTML+='<div class="ob-pchip">'+p.zodiac.zh+'</div>';}
-      if(p.sx){chips.innerHTML+='<div class="ob-pchip">属'+p.sx.name+'</div>';}
-      foundCard.classList.add('show');
-      loginBtn.style.display='flex';
-      obProfile=p;
-    } else {
-      if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
-    }
-  }catch(e){
-    if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
+  }catch(e){}
+
+  // Step 2: search Firebase
+  if(typeof db !== 'undefined'){
+    db.ref('users').once('value').then(function(snap){
+      var found=null;
+      snap.forEach(function(child){
+        var profile=child.val().profile;
+        if(!profile)return;
+        var nm=profile.name?profile.name.toLowerCase():'';
+        var ct=profile.contact?profile.contact.toLowerCase():'';
+        if(nm.includes(q)||ct.includes(q)){
+          // Merge profile with full data
+          found=Object.assign({},child.val().profile,{userKey:child.key});
+          // Get full profile from localStorage key pattern
+        }
+      });
+      if(found){
+        // Load full profile from Firebase
+        db.ref('users/'+found.userKey).once('value').then(function(usnap){
+          var udata=usnap.val()||{};
+          var fullProfile=Object.assign({},udata.profile||{},{userKey:found.userKey});
+          // Try to get full profile with bday etc from saved keys
+          var allKeys=Object.keys(localStorage);
+          allKeys.forEach(function(k){
+            try{var lp=JSON.parse(localStorage.getItem(k));if(lp&&lp.name&&lp.name.toLowerCase().includes(q)){fullProfile=Object.assign(lp,fullProfile);}}catch(e){}
+          });
+          showFound(fullProfile);
+        });
+      } else {
+        notFound.classList.add('show');newBtn.style.display='flex';
+      }
+    }).catch(function(){
+      notFound.classList.add('show');newBtn.style.display='flex';
+    });
+  } else {
+    notFound.classList.add('show');newBtn.style.display='flex';
   }
 }
 
