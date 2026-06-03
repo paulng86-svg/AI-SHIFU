@@ -3745,8 +3745,26 @@ function obSearchProfile(){
 }
 
 function obLoginConfirm(){
+  // MUST check password FIRST before doing anything
+  var savedPwHash = obProfile.pwHash || '';
+  var pwEl = document.getElementById('ob-login-password');
+  var pw = pwEl ? pwEl.value.trim() : '';
+
+  if(savedPwHash){
+    // Profile has password - must verify
+    if(!pw){showToast('请输入密码','ti-lock');return;}
+    var inputHash = btoa(unescape(encodeURIComponent(pw))).substring(0,20);
+    if(inputHash !== savedPwHash){showToast('密码错误，请重试','ti-lock');return;}
+  } else {
+    // No password set - still require one if input has value
+    // Old accounts without password can still login
+    if(pw){
+      // User typed something but no hash stored - ignore
+    }
+  }
+
+  // Password OK - enter app
   obApplyProfileToApp(obProfile);
-  // preload userData
   userData={
     bday:obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day),
     gender:obProfile.gender,
@@ -3754,15 +3772,6 @@ function obLoginConfirm(){
     shichen:obProfile.shichen||null,
     relStatus:obProfile.relStatus||'未填写'
   };
-  // Check password if profile has one
-  var savedPwHash = obProfile.pwHash || '';
-  if(savedPwHash){
-    var pwEl = document.getElementById('ob-login-password');
-    var pw = pwEl ? pwEl.value.trim() : '';
-    if(!pw){showToast('请输入你的密码','ti-lock');return;}
-    var inputHash = btoa(unescape(encodeURIComponent(pw))).substring(0,20);
-    if(inputHash !== savedPwHash){showToast('密码错误，请重试','ti-lock');return;}
-  }
   document.getElementById('ob-overlay').classList.add('hidden');
   document.getElementById('s-home').classList.remove('hidden');
   showToast('欢迎回来，'+obProfile.name+'！','ti-sparkles');
