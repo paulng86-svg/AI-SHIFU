@@ -3583,7 +3583,17 @@ function obSetRelStatus(status,el){
     if(saved){
       var p=JSON.parse(saved);
       obProfile=p;
-      // Skip splash → go straight to app with profile loaded
+      // Don't auto-login - show login screen with name pre-filled
+      // User must enter password
+      var loginSec=document.getElementById('ob-login');
+      var splash=document.getElementById('ob-splash');
+      if(splash)splash.style.display='none';
+      if(loginSec){loginSec.classList.add('show');loginSec.style.display='flex';}
+      // Pre-fill the search
+      var loginInput=document.getElementById('ob-login-input');
+      if(loginInput){loginInput.value=p.name||'';obSearchProfile();}
+      return;
+      // (old auto-login code below - disabled)
       obApplyProfileToApp(p);
       document.getElementById('ob-overlay').classList.add('hidden');
       document.getElementById('s-home').classList.remove('hidden');
