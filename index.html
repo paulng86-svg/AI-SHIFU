@@ -3741,34 +3741,36 @@ function obSearchProfile(){
 function obLoginConfirm(){
   var pwEl = document.getElementById('ob-login-password');
   var pw = pwEl ? pwEl.value.trim() : '';
-
-  // Always require password input
   if(!pw){showToast('请输入密码','ti-lock');return;}
 
   var savedPwHash = obProfile.pwHash || '';
 
+  function checkHash(hash, password){
+    if(!hash) return true; // no password set - allow
+    return btoa(unescape(encodeURIComponent(password))).substring(0,20) === hash;
+  }
+
   if(savedPwHash){
-    // Verify against stored hash
-    var inputHash = btoa(unescape(encodeURIComponent(pw))).substring(0,20);
-    if(inputHash !== savedPwHash){showToast('密码错误，请重试','ti-lock');return;}
-  } else {
-    // No hash stored - check Firebase directly
-    if(typeof db !== 'undefined' && obProfile.userKey){
-      db.ref('users/'+obProfile.userKey+'/profile/pwHash').once('value').then(function(snap){
-        var fbHash = snap.val()||'';
-        if(fbHash){
-          var inputHash2 = btoa(unescape(encodeURIComponent(pw))).substring(0,20);
-          if(inputHash2 !== fbHash){showToast('密码错误，请重试','ti-lock');return;}
-        }
-        obProfile.pwHash = fbHash;
-        doEnterApp();
-      });
+    // Hash already in memory - verify immediately
+    if(!checkHash(savedPwHash, pw)){
+      showToast('密码错误，请重试','ti-lock');
       return;
     }
-    // Old account with no password - allow but warn
-    showToast('此账号未设密码，直接进入','ti-info-circle');
+    doEnterApp();
+  } else if(typeof db !== 'undefined' && obProfile.userKey){
+    // Fetch hash from Firebase
+    db.ref('users/'+obProfile.userKey+'/profile/pwHash').once('value').then(function(snap){
+      var fbHash = snap.val()||'';
+      if(fbHash && !checkHash(fbHash, pw)){
+        showToast('密码错误，请重试','ti-lock');
+        return; // stops here - doEnterApp NOT called
+      }
+      obProfile.pwHash = fbHash;
+      doEnterApp();
+    });
+  } else {
+    doEnterApp();
   }
-  doEnterApp();
 }
 
 function doEnterApp(){
@@ -3919,7 +3921,6 @@ function obBuildPreview(){
 // ENTER APP - apply profile and close overlay
 function obEnterApp(){
   obApplyProfileToApp(obProfile);
-  // set userData for destiny tab
   userData={
     bday:obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day),
     gender:obProfile.gender,
@@ -3927,6 +3928,29 @@ function obEnterApp(){
     shichen:obProfile.shichen||null,
     relStatus:obProfile.relStatus||'未填写'
   };
+  // Save full profile to Firebase immediately
+  currentUserKey = getUserKey(obProfile);
+  if(typeof db !== 'undefined' && currentUserKey){
+    db.ref('users/'+currentUserKey+'/profile').set({
+      name: obProfile.name,
+      contact: obProfile.contact||'',
+      pwHash: obProfile.pwHash||'',
+      gender: obProfile.gender||'',
+      year: obProfile.year||'',
+      month: obProfile.month||'',
+      day: obProfile.day||'',
+      shichenIdx: obProfile.shichenIdx!==undefined?obProfile.shichenIdx:null,
+      concern: obProfile.concern||'',
+      relStatus: obProfile.relStatus||'',
+      zodiac: obProfile.zodiac||null,
+      sx: obProfile.sx||null,
+      gz: obProfile.gz||null,
+      createdAt: obProfile.createdAt||new Date().toISOString(),
+      lastSeen: Date.now()
+    });
+  }
+  // Save to localStorage
+  try{localStorage.setItem('destiny_profile',JSON.stringify(obProfile));}catch(e){}
   document.getElementById('ob-overlay').classList.add('hidden');
   document.getElementById('s-home').classList.remove('hidden');
   showToast('欢迎来到命运馆，'+obProfile.name+'！','ti-sparkles');
