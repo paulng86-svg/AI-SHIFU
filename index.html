@@ -3864,8 +3864,15 @@ function obNextStep(){
     };
 
     if(typeof db!=='undefined'){
-      db.ref('users').orderByChild('profile/name').equalTo(name).once('value').then(function(snap){
-        checkDone(snap.exists());
+      db.ref('users').once('value').then(function(snap){
+        var exists=false;
+        snap.forEach(function(child){
+          var prof=child.val().profile;
+          if(prof&&prof.name&&prof.name.toLowerCase()===name.toLowerCase()){
+            exists=true;
+          }
+        });
+        checkDone(exists);
       }).catch(function(){checkDone(false);});
     } else {
       checkDone(false);
