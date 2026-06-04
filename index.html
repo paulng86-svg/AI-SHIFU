@@ -3842,9 +3842,35 @@ function obNextStep(){
     var name=document.getElementById('ob-name').value.trim();
     if(!name){showToast('请先填写你的名字','ti-user');return;}
     if(!obGender){showToast('请选择性别','ti-gender-bigender');return;}
-    obProfile.name=name;obProfile.gender=obGender;
-    obProfile.contact=document.getElementById('ob-contact').value.trim();
-    obStep=2;obUpdateStep();
+    var pw=document.getElementById('ob-password').value.trim();
+    var pw2=document.getElementById('ob-password2').value.trim();
+    if(!pw||pw.length<6){showToast('密码至少6位','ti-lock');return;}
+    if(pw!==pw2){showToast('两次密码不一致','ti-lock');return;}
+
+    // Check Firebase for duplicate name
+    var btn=document.querySelector('.ob-fnext');
+    if(btn){btn.disabled=true;btn.textContent='检查中...';}
+    
+    var checkDone=function(exists){
+      if(btn){btn.disabled=false;btn.innerHTML='<i class="ti ti-arrow-right"></i>继续';}
+      if(exists){
+        showToast('此名字已被注册，请使用其他名字','ti-user-x');
+        return;
+      }
+      obProfile.name=name;obProfile.gender=obGender;
+      obProfile.contact=document.getElementById('ob-contact').value.trim();
+      obProfile.password=pw;
+      obStep=2;obUpdateStep();
+    };
+
+    if(typeof db!=='undefined'){
+      db.ref('users').orderByChild('profile/name').equalTo(name).once('value').then(function(snap){
+        checkDone(snap.exists());
+      }).catch(function(){checkDone(false);});
+    } else {
+      checkDone(false);
+    }
+    return;
   } else if(obStep===2){
     var y=parseInt(document.getElementById('ob-year').value);
     var m=parseInt(document.getElementById('ob-month').value);
@@ -3863,9 +3889,11 @@ function obNextStep(){
     obProfile.tags=obTags.slice();
     obProfile.relStatus=obRelStatus||'未填写';
     obProfile.createdAt=new Date().toISOString();
-    // Simple hash for password storage
-    obProfile.pwHash=btoa(unescape(encodeURIComponent(obProfile.password||''))).substring(0,20);
-    delete obProfile.password; // don't store plain text
+    // Hash password (set in step 1)
+    if(obProfile.password){
+      obProfile.pwHash=btoa(unescape(encodeURIComponent(obProfile.password))).substring(0,20);
+      delete obProfile.password;
+    }
     try{localStorage.setItem('destiny_profile',JSON.stringify(obProfile));}catch(e){}
     obShowPreview();
   }
