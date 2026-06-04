@@ -647,8 +647,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
         </div>
         <div class="ob-login-title">欢迎回来</div>
         <div class="ob-login-sub">输入你的名字或联系方式，系统马上找到你</div>
-        <input class="ob-fi" id="ob-login-input" type="text" placeholder="输入名字 / WhatsApp / Email" oninput="obSearchProfile()"/>
-      <input class="ob-fi" id="ob-login-password" type="password" placeholder="输入你的密码" style="margin-top:8px" id="ob-login-password"/>
+        <input class="ob-fi" id="ob-login-input" type="text" placeholder="输入名字" oninput="obSearchProfile()" autocomplete="off"/>
+      <input class="ob-fi" id="ob-login-password" type="password" placeholder="输入密码" autocomplete="new-password" style="margin-top:8px" id="ob-login-password"/>
         <div class="ob-profile-found" id="ob-found-card">
           <div class="ob-pf-head">
             <div class="ob-avatar" id="ob-found-avatar">？</div>
@@ -3928,29 +3928,40 @@ function obEnterApp(){
     shichen:obProfile.shichen||null,
     relStatus:obProfile.relStatus||'未填写'
   };
-  // Save full profile to Firebase immediately
-  currentUserKey = getUserKey(obProfile);
-  if(typeof db !== 'undefined' && currentUserKey){
-    db.ref('users/'+currentUserKey+'/profile').set({
-      name: obProfile.name,
+
+  // Generate userKey and save to localStorage
+  var uKey = getUserKey(obProfile);
+  currentUserKey = uKey;
+  obProfile.userKey = uKey;
+  try{localStorage.setItem('destiny_profile', JSON.stringify(obProfile));}catch(e){}
+
+  // Save full profile to Firebase
+  if(typeof db !== 'undefined' && uKey){
+    var profileData = {
+      name: obProfile.name||'',
       contact: obProfile.contact||'',
       pwHash: obProfile.pwHash||'',
       gender: obProfile.gender||'',
       year: obProfile.year||'',
       month: obProfile.month||'',
       day: obProfile.day||'',
-      shichenIdx: obProfile.shichenIdx!==undefined?obProfile.shichenIdx:null,
+      shichenIdx: (obProfile.shichenIdx!==undefined&&obProfile.shichenIdx!==null)?obProfile.shichenIdx:null,
       concern: obProfile.concern||'',
       relStatus: obProfile.relStatus||'',
       zodiac: obProfile.zodiac||null,
       sx: obProfile.sx||null,
       gz: obProfile.gz||null,
+      userKey: uKey,
       createdAt: obProfile.createdAt||new Date().toISOString(),
       lastSeen: Date.now()
+    };
+    db.ref('users/'+uKey+'/profile').set(profileData).then(function(){
+      console.log('Profile saved to Firebase:', uKey);
+    }).catch(function(e){
+      console.error('Firebase save error:', e);
     });
   }
-  // Save to localStorage
-  try{localStorage.setItem('destiny_profile',JSON.stringify(obProfile));}catch(e){}
+
   document.getElementById('ob-overlay').classList.add('hidden');
   document.getElementById('s-home').classList.remove('hidden');
   showToast('欢迎来到命运馆，'+obProfile.name+'！','ti-sparkles');
