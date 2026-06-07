@@ -3324,7 +3324,12 @@ function switchZMode(m){
     var p=document.getElementById('z-mode-pair');p.style.background='rgba(244,114,182,.15)';p.style.border='1px solid rgba(244,114,182,.4)';p.style.color='rgba(244,114,182,1)';p.style.fontWeight='600';
     if(pairSec)pairSec.style.display='block';
     btn.innerHTML='<i class="ti ti-heart"></i>开始星座配对';
-    if(inputCard)inputCard.style.display='block';
+    // Always show input card in pair mode
+    if(inputCard){inputCard.style.display='block';}
+    // Hide result, show input
+    var zr=document.getElementById('zodiac-result');if(zr)zr.style.display='none';
+    var zpr=document.getElementById('zodiac-pair-result');if(zpr)zpr.style.display='none';
+    var zl=document.getElementById('zodiac-loading');if(zl)zl.style.display='none';
     if(!document.getElementById('zodiac-grid-b').children.length)buildZGridB();
     // 如果有 profile，自己的星座已选好，直接隐藏 "选择你的星座" label 并显示对方选择
     var selfLabel=inputCard?inputCard.querySelector('.fl-label'):null;
@@ -3363,8 +3368,10 @@ function runZodiacPair(){
   if(selZodiac===null){showToast('请先选择你的星座','ti-stars');return;}
   if(selZodiacB===null){showToast('请选择对方的星座','ti-heart');return;}
   var zA=ZODIACS[selZodiac], zB=ZODIACS[selZodiacB];
-  document.getElementById('zodiac-input-card').style.display='none';
-  document.getElementById('zodiac-loading').style.display='block';
+  var ic=document.getElementById('zodiac-input-card');
+  if(ic)ic.style.display='none';
+  var zl=document.getElementById('zodiac-loading');
+  if(zl)zl.style.display='block';
   callZodiacPairAI(zA,zB);
 }
 
