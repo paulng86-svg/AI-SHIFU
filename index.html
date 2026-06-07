@@ -2420,18 +2420,76 @@ function watchAd(){
     showToast('请等待 '+left+' 分钟后再看广告','ti-clock');
     return;
   }
-  var btn = document.getElementById('watch-ad-btn');
-  if(btn){btn.innerHTML='⏳ 广告播放中... (5秒)';btn.style.opacity='.6';btn.style.pointerEvents='none';}
-  setTimeout(function(){
-    memberData.credits += 1;
-    memberData.lastAdTime = Date.now();
-    saveMemberData();
-    var cd = document.getElementById('credit-display');
-    if(cd) cd.textContent = memberData.credits;
-    if(btn){btn.innerHTML='<span style="font-size:18px">▶</span> 立即看广告 +1 CREDIT';btn.style.opacity='1';btn.style.pointerEvents='auto';}
-    showToast('+1 CREDIT 已到账！','ti-coin');
-    checkAdCooldown();
-  }, 5000);
+
+  // Show ad modal
+  var modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML =
+    '<div style="width:100%;max-width:360px;background:#1a1a1a;border-radius:16px;overflow:hidden">' +
+    // Ad header
+    '<div style="background:#222;padding:10px 14px;display:flex;align-items:center;justify-content:space-between">' +
+      '<div style="font-size:11px;color:rgba(255,255,255,.4)">广告</div>' +
+      '<div id="ad-skip-btn" style="font-size:11px;color:rgba(255,255,255,.3);padding:4px 8px;border:1px solid rgba(255,255,255,.15);border-radius:6px">5秒后可关闭</div>' +
+    '</div>' +
+    // Ad content
+    '<div style="background:linear-gradient(135deg,#1a0535,#0d1b4a);padding:2rem;text-align:center;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">' +
+      '<div style="font-size:48px;animation:pring 1s ease-in-out infinite">⭐</div>' +
+      '<div style="font-size:18px;font-weight:700;color:#fff;letter-spacing:.05em">TOMORROW</div>' +
+      '<div style="font-size:13px;color:rgba(255,255,255,.6)">探索你的命运轨迹</div>' +
+      '<div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:8px">生辰八字 · 塔罗占卜 · 星座生肖</div>' +
+    '</div>' +
+    // Progress bar
+    '<div style="background:#333;height:4px">' +
+      '<div id="ad-progress" style="background:linear-gradient(90deg,#ffd700,#ff6600);height:100%;width:0%;transition:width .1s linear"></div>' +
+    '</div>' +
+    '<div style="padding:12px;background:#111;text-align:center;font-size:12px;color:rgba(255,255,255,.4)">观看完成后自动获得 +1 CREDIT</div>' +
+    '</div>';
+
+  document.body.appendChild(modal);
+
+  // Progress animation
+  var seconds = 5;
+  var elapsed = 0;
+  var interval = setInterval(function(){
+    elapsed += 100;
+    var pct = (elapsed / (seconds*1000)) * 100;
+    var prog = document.getElementById('ad-progress');
+    if(prog) prog.style.width = Math.min(pct,100) + '%';
+    var skipBtn = document.getElementById('ad-skip-btn');
+    var remaining = Math.ceil((seconds*1000 - elapsed)/1000);
+    if(remaining > 0 && skipBtn){
+      skipBtn.textContent = remaining + '秒后可关闭';
+    } else if(skipBtn){
+      skipBtn.textContent = '关闭';
+      skipBtn.style.color = '#ffd700';
+      skipBtn.style.borderColor = 'rgba(255,215,0,.5)';
+      skipBtn.style.cursor = 'pointer';
+      skipBtn.onclick = function(){
+        clearInterval(interval);
+        document.body.removeChild(modal);
+        // Give credit
+        memberData.credits += 1;
+        memberData.lastAdTime = Date.now();
+        saveMemberData();
+        buildMemberPage();
+        showToast('🎉 +1 CREDIT 已到账！','ti-coin');
+        checkAdCooldown();
+      };
+    }
+    if(elapsed >= seconds*1000){
+      clearInterval(interval);
+      // Auto close and give credit
+      setTimeout(function(){
+        if(document.body.contains(modal)) document.body.removeChild(modal);
+        memberData.credits += 1;
+        memberData.lastAdTime = Date.now();
+        saveMemberData();
+        buildMemberPage();
+        showToast('🎉 +1 CREDIT 已到账！','ti-coin');
+        checkAdCooldown();
+      }, 500);
+    }
+  }, 100);
 }
 
 function checkAdCooldown(){
