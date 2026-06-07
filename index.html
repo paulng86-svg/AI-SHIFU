@@ -3408,6 +3408,9 @@ async function callZodiacPairAI(zA,zB){
   var zl=document.getElementById('zodiac-loading');if(zl)zl.style.display='none';
   renderZodiacPair(zA,zB);
   // zodiac-pair-result is inside zodiac-result, so show both
+  // Hide input card and pair section
+  var zic=document.getElementById('zodiac-input-card');if(zic)zic.style.display='none';
+  var zps=document.getElementById('z-pair-section');if(zps)zps.style.display='none';
   // FORCE hide solo result, show ONLY pair result
   var zresEl=document.getElementById('zodiac-result');
   if(zresEl){zresEl.style.display='none';zresEl.style.visibility='hidden';}
