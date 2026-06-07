@@ -3375,6 +3375,33 @@ function buildZGridB(){
   });
 }
 
+
+function showZodiacView(view){
+  // All elements in zodiac screen
+  var elements = {
+    'z-profile-banner': ['input','solo-result'],
+    'z-mode-tabs': ['input'],
+    'zodiac-input-card': ['input'],
+    'zodiac-loading': ['loading'],
+    'zodiac-result': ['solo-result'],
+    'zodiac-pair-result': ['pair-result']
+  };
+  // Show/hide based on view
+  Object.keys(elements).forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.style.display = elements[id].indexOf(view) >= 0 ? 'block' : 'none';
+  });
+  // z-mode-tabs needs flex not block
+  var tabs = document.getElementById('z-mode-tabs');
+  if(tabs && view === 'input') tabs.style.display = 'flex';
+  // z-profile-banner needs flex
+  var banner = document.getElementById('z-profile-banner');
+  if(banner && (view === 'input' || view === 'solo-result')) banner.style.display = 'flex';
+  // z-main-btn always show in input
+  var btn = document.getElementById('z-main-btn');
+  if(btn) btn.style.display = (view === 'input') ? 'flex' : 'none';
+}
 function runZodiac(){
   if(zMode==='bazi'){runBaziPair('z');return;}
   if(zMode==='pair'){
@@ -3391,10 +3418,7 @@ function runZodiacPair(){
   if(selZodiac===null){showToast('请先选择你的星座','ti-stars');return;}
   if(selZodiacB===null){showToast('请选择对方的星座','ti-heart');return;}
   var zA=ZODIACS[selZodiac], zB=ZODIACS[selZodiacB];
-  var ic=document.getElementById('zodiac-input-card');
-  if(ic)ic.style.display='none';
-  var zl=document.getElementById('zodiac-loading');
-  if(zl)zl.style.display='block';
+  showZodiacView('loading');
   callZodiacPairAI(zA,zB);
 }
 
