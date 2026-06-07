@@ -37,6 +37,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   overflow-y:auto;overflow-x:hidden;padding:1.25rem 1.25rem 5.5rem;
   transition:opacity .4s;background:transparent}
 .screen.hidden{opacity:0;pointer-events:none;display:none}
+.zodiac-pair-mode #zodiac-result{display:none!important}
+.zodiac-pair-mode #zodiac-pair-result{display:block!important}
 .screen.exit{opacity:0;pointer-events:none}
 .inner{width:100%;max-width:400px}
 
@@ -3320,6 +3322,7 @@ function switchZMode(m){
   if(m==='solo'){
     var s=document.getElementById('z-mode-solo');s.style.background='rgba(14,165,233,.18)';s.style.border='1px solid rgba(14,165,233,.4)';s.style.color='rgba(14,165,233,1)';s.style.fontWeight='600';
     btn.innerHTML='<i class="ti ti-stars"></i>查看星座运势';
+    var szod=document.getElementById('s-zodiac');if(szod)szod.classList.remove('zodiac-pair-mode');
     if(selZodiac!==null){
       if(inputCard)inputCard.style.display='none';
       if(!zodiacData){setTimeout(function(){runZodiac();},100);}
@@ -3330,8 +3333,9 @@ function switchZMode(m){
   } else if(m==='pair'){
     var p=document.getElementById('z-mode-pair');p.style.background='rgba(244,114,182,.15)';p.style.border='1px solid rgba(244,114,182,.4)';p.style.color='rgba(244,114,182,1)';p.style.fontWeight='600';
     btn.innerHTML='<i class="ti ti-heart"></i>开始星座配对';
-    // Hide results
+    // Hide results and add pair mode class
     var zr=document.getElementById('zodiac-result');if(zr)zr.style.display='none';
+    var szod=document.getElementById('s-zodiac');if(szod)szod.classList.add('zodiac-pair-mode');
     var zpr=document.getElementById('zodiac-pair-result');if(zpr)zpr.style.display='none';
     var zl=document.getElementById('zodiac-loading');if(zl)zl.style.display='none';
     // Show pair selection UI
@@ -3404,9 +3408,11 @@ async function callZodiacPairAI(zA,zB){
   var zl=document.getElementById('zodiac-loading');if(zl)zl.style.display='none';
   renderZodiacPair(zA,zB);
   // zodiac-pair-result is inside zodiac-result, so show both
-  // Hide solo result, show pair result only
-  var zres=document.getElementById('zodiac-result');if(zres)zres.style.display='none';
-  var zpr=document.getElementById('zodiac-pair-result');if(zpr)zpr.style.display='block';
+  // FORCE hide solo result, show ONLY pair result
+  var zresEl=document.getElementById('zodiac-result');
+  if(zresEl){zresEl.style.display='none';zresEl.style.visibility='hidden';}
+  var zprEl=document.getElementById('zodiac-pair-result');
+  if(zprEl){zprEl.style.display='block';zprEl.style.visibility='visible';}
 }
 
 function renderZodiacPair(zA,zB){
