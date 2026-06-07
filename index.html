@@ -3540,9 +3540,14 @@ async function callSXPairAI(sA,sB){
   document.getElementById('sx-loading').style.display='none';
   renderSXPair(sA,sB);
   var sxres=document.getElementById('sx-result');if(sxres)sxres.style.display='block';
-  document.getElementById('sx-pair-result').style.display='block';
-  // Hide solo sections
-  ['sx-header-card','sx-scores-card','sx-main-card'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});;
+  var sxresEl=document.getElementById('sx-result');
+  if(sxresEl){
+    sxresEl.style.display='block';
+    Array.from(sxresEl.children).forEach(function(child){
+      if(child.id==='sx-pair-result'){child.style.display='block';}
+      else{child.style.display='none';}
+    });
+  };
 }
 
 function renderSXPair(sA,sB){
