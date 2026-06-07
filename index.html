@@ -1176,7 +1176,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     </div>
 
     <!-- Mode Toggle -->
-    <div style="display:flex;background:rgba(120,0,0,.15);border:1.5px solid rgba(220,30,0,.2);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
+    <div id="z-mode-tabs" style="display:flex;background:rgba(120,0,0,.15);border:1.5px solid rgba(220,30,0,.2);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
       <div id="z-mode-solo" onclick="switchZMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(139,0,0,.3);border:1px solid rgba(255,215,0,.4);color:rgba(255,215,0,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-stars"></i>运势分析</div>
       <div id="z-mode-pair" onclick="switchZMode('pair')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-heart"></i>星座配对</div>
     </div>
@@ -1360,7 +1360,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     </div>
 
     <!-- Mode Toggle -->
-    <div style="display:flex;background:rgba(120,0,0,.15);border:1.5px solid rgba(220,30,0,.2);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
+    <div id="z-mode-tabs" style="display:flex;background:rgba(120,0,0,.15);border:1.5px solid rgba(220,30,0,.2);border-radius:14px;padding:4px;gap:3px;margin-bottom:12px">
       <div id="sx-mode-solo" onclick="switchSXMode('solo')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.4);color:rgba(245,158,11,1);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-yin-yang"></i>运势分析</div>
       <div id="sx-mode-pair" onclick="switchSXMode('pair')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-heart"></i>生肖配对</div>
       <div id="sx-mode-bazi" onclick="switchSXMode('bazi')" style="flex:1;padding:10px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s"><i class="ti ti-stars"></i>命盘配对</div>
@@ -3394,7 +3394,7 @@ function showZodiacView(view){
   });
   // z-mode-tabs needs flex not block
   var tabs = document.getElementById('z-mode-tabs');
-  if(tabs && view === 'input') tabs.style.display = 'flex';
+  if(tabs) tabs.style.display = (view==='input'||view==='solo-result') ? 'flex' : 'none';
   // z-profile-banner needs flex
   var banner = document.getElementById('z-profile-banner');
   if(banner && (view === 'input' || view === 'solo-result')) banner.style.display = 'flex';
