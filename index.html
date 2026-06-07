@@ -1859,6 +1859,7 @@ function enterSXTab(from){
 
 // 自动运行逻辑
 function autoRunZodiac(){
+  var zpr=document.getElementById('zodiac-pair-result');if(zpr)zpr.style.display='none';
   if(selZodiac!==null&&zMode==='solo'&&!zodiacData){
     var card=document.getElementById('zodiac-input-card');
     if(card)card.style.display='none';
@@ -3440,7 +3441,7 @@ function copyZPair(){if(zPairData&&navigator.clipboard){navigator.clipboard.writ
 function resetZodiac(){
   selZodiac=null;selZodiacB=null;zodiacData=null;zPairData=null;
   document.getElementById('zodiac-result').style.display='none';
-  document.getElementById('zodiac-pair-result').style.display='none';
+  var zpr2=document.getElementById('zodiac-pair-result');if(zpr2)zpr2.style.display='none';
   document.getElementById('zodiac-input-card').style.display='block';
   document.querySelectorAll('#zodiac-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
   document.querySelectorAll('#zodiac-grid-b > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
