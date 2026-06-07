@@ -3322,14 +3322,23 @@ function switchZMode(m){
     }
   } else if(m==='pair'){
     var p=document.getElementById('z-mode-pair');p.style.background='rgba(244,114,182,.15)';p.style.border='1px solid rgba(244,114,182,.4)';p.style.color='rgba(244,114,182,1)';p.style.fontWeight='600';
-    if(pairSec)pairSec.style.display='block';
     btn.innerHTML='<i class="ti ti-heart"></i>开始星座配对';
-    // Always show input card in pair mode
-    if(inputCard){inputCard.style.display='block';}
-    // Hide result, show input
+    // Hide results
     var zr=document.getElementById('zodiac-result');if(zr)zr.style.display='none';
     var zpr=document.getElementById('zodiac-pair-result');if(zpr)zpr.style.display='none';
     var zl=document.getElementById('zodiac-loading');if(zl)zl.style.display='none';
+    // Show pair selection UI
+    if(inputCard){inputCard.style.display='block';}
+    if(pairSec)pairSec.style.display='block';
+    // Hide own zodiac grid - only show partner selection
+    var ownGrid=document.getElementById('zodiac-grid');
+    var ownLabel=inputCard?inputCard.querySelector('.fl-label'):null;
+    if(selZodiac!==null){
+      // Already have own zodiac - hide grid, show label only
+      if(ownGrid)ownGrid.style.display='none';
+      if(ownLabel){ownLabel.textContent='你的星座：'+ZODIACS[selZodiac].sym+' '+ZODIACS[selZodiac].zh+' （已从命盘读取）';}
+    }
+    if(!document.getElementById('zodiac-grid-b').children.length)buildZGridB();
     if(!document.getElementById('zodiac-grid-b').children.length)buildZGridB();
     // 如果有 profile，自己的星座已选好，直接隐藏 "选择你的星座" label 并显示对方选择
     var selfLabel=inputCard?inputCard.querySelector('.fl-label'):null;
