@@ -3394,9 +3394,14 @@ async function callZodiacPairAI(zA,zB){
   }catch(e){
     zPairData=genZPairFallback(zA,zB);
   }
-  document.getElementById('zodiac-loading').style.display='none';
+  var zl=document.getElementById('zodiac-loading');if(zl)zl.style.display='none';
   renderZodiacPair(zA,zB);
-  document.getElementById('zodiac-pair-result').style.display='block';
+  // zodiac-pair-result is inside zodiac-result, so show both
+  var zres=document.getElementById('zodiac-result');if(zres)zres.style.display='block';
+  var zpr=document.getElementById('zodiac-pair-result');if(zpr)zpr.style.display='block';
+  // Hide the solo result sections
+  var solo=['z-header-card','z-scores-card','z-tabs-card','z-char-card'];
+  solo.forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
 }
 
 function renderZodiacPair(zA,zB){
