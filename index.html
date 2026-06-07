@@ -3482,6 +3482,8 @@ function switchSXMode(m){
     // Show input card with partner selection only
     if(inputCard){inputCard.style.display='block';}
     if(pairSec)pairSec.style.display='block';
+    // Build partner grid if empty
+    if(!document.getElementById('sx-grid-b').children.length) buildSXGridB();
     // Hide own SX grid if already have profile SX
     if(selSX!==null){
       var ownGrid=document.getElementById('sx-grid');if(ownGrid)ownGrid.style.display='none';
