@@ -3103,7 +3103,11 @@ async function callZodiacAI(z){
   }
   document.getElementById('zodiac-loading').style.display='none';
   renderZodiac(z);
-  document.getElementById('zodiac-result').style.display='block';
+  // Only show solo result if not in pair mode
+  if(zMode!=='pair'){
+    document.getElementById('zodiac-result').style.display='block';
+    var zpr=document.getElementById('zodiac-pair-result');if(zpr)zpr.style.display='none';
+  }
 }
 
 function renderZodiac(z){
@@ -3319,7 +3323,7 @@ function switchZMode(m){
     if(selZodiac!==null){
       if(inputCard)inputCard.style.display='none';
       if(!zodiacData){setTimeout(function(){runZodiac();},100);}
-      else{document.getElementById('zodiac-result').style.display='block';}
+      else if(zMode!=='pair'){document.getElementById('zodiac-result').style.display='block';}
     } else {
       if(inputCard)inputCard.style.display='block';
     }
@@ -3400,11 +3404,9 @@ async function callZodiacPairAI(zA,zB){
   var zl=document.getElementById('zodiac-loading');if(zl)zl.style.display='none';
   renderZodiacPair(zA,zB);
   // zodiac-pair-result is inside zodiac-result, so show both
-  var zres=document.getElementById('zodiac-result');if(zres)zres.style.display='block';
+  // Hide solo result, show pair result only
+  var zres=document.getElementById('zodiac-result');if(zres)zres.style.display='none';
   var zpr=document.getElementById('zodiac-pair-result');if(zpr)zpr.style.display='block';
-  // Hide the solo result sections
-  var solo=['z-header-card','z-scores-card','z-tabs-card','z-char-card'];
-  solo.forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
 }
 
 function renderZodiacPair(zA,zB){
