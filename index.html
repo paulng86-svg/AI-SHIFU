@@ -39,6 +39,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .screen.hidden{opacity:0;pointer-events:none;display:none}
 .zodiac-pair-mode #zodiac-result{display:none!important}
 .zodiac-pair-mode #zodiac-pair-result{display:block!important}
+.zodiac-pair-mode #z-profile-banner{display:none!important}
+.zodiac-pair-mode #z-mode-tabs{display:none!important}
+.zodiac-pair-mode #z-main-btn{display:none!important}
+.zodiac-pair-mode #zodiac-input-card{display:none!important}
 .screen.exit{opacity:0;pointer-events:none}
 .inner{width:100%;max-width:400px}
 
@@ -3408,9 +3412,19 @@ async function callZodiacPairAI(zA,zB){
   var zl=document.getElementById('zodiac-loading');if(zl)zl.style.display='none';
   renderZodiacPair(zA,zB);
   // zodiac-pair-result is inside zodiac-result, so show both
-  // Hide input card and pair section
-  var zic=document.getElementById('zodiac-input-card');if(zic)zic.style.display='none';
-  var zps=document.getElementById('z-pair-section');if(zps)zps.style.display='none';
+  // Hide all solo UI elements
+  ['zodiac-input-card','z-pair-section','z-profile-banner','z-mode-tabs','z-main-btn'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='none';
+  });
+  // Show back button
+  var backBtn=document.createElement('button');
+  backBtn.style.cssText='background:rgba(0,0,0,.3);border:1px solid rgba(255,215,0,.2);border-radius:8px;color:rgba(255,215,0,.6);font-size:13px;padding:8px 16px;cursor:pointer;margin-bottom:12px;width:100%';
+  backBtn.innerHTML='← 返回重新选择';
+  backBtn.onclick=function(){resetZodiac();switchZMode('pair');};
+  var zprEl2=document.getElementById('zodiac-pair-result');
+  if(zprEl2&&!zprEl2.querySelector('.back-btn')){
+    backBtn.className='back-btn';zprEl2.insertBefore(backBtn,zprEl2.firstChild);
+  }
   // FORCE hide solo result, show ONLY pair result
   var zresEl=document.getElementById('zodiac-result');
   if(zresEl){zresEl.style.display='none';zresEl.style.visibility='hidden';}
