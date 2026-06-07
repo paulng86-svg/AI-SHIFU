@@ -3474,22 +3474,20 @@ function switchSXMode(m){
     }
   } else if(m==='pair'){
     var p=document.getElementById('sx-mode-pair');p.style.background='rgba(244,114,182,.15)';p.style.border='1px solid rgba(244,114,182,.4)';p.style.color='rgba(244,114,182,1)';p.style.fontWeight='600';
-    if(pairSec)pairSec.style.display='block';
     btn.innerHTML='<i class="ti ti-heart"></i>开始生肖配对';
-    btn.onclick=function(){runShengxiao();};
-    if(inputCard)inputCard.style.display='block';
-    document.getElementById('sx-result').style.display='none';
-    document.getElementById('sx-pair-result').style.display='none';
-    if(!document.getElementById('sx-grid-b').children.length)buildSXGridB();
-    var selfLabel=inputCard?inputCard.querySelector('.fl-label'):null;
-    if(selfLabel&&selSX!==null){selfLabel.textContent='你的生肖（已连接命盘）';}
-  } else if(m==='bazi'){
-    var b=document.getElementById('sx-mode-bazi');b.style.background='rgba(220,30,0,.15)';b.style.border='1px solid rgba(220,30,0,.4)';b.style.color='rgba(255,190,30,1)';b.style.fontWeight='600';
-    if(baziSec)baziSec.style.display='block';
-    btn.innerHTML='<i class="ti ti-sparkles"></i>生成命盘配对';
-    btn.onclick=function(){runBaziPair('sx');};
-    if(inputCard)inputCard.style.display='block';
-    initBaziScGrid('sx-bazi-scgrid','sx');
+    btn.onclick=function(){runSXPair();};
+    // Hide results
+    var sr=document.getElementById('sx-result');if(sr)sr.style.display='none';
+    var spr=document.getElementById('sx-pair-result');if(spr)spr.style.display='none';
+    // Show input card with partner selection only
+    if(inputCard){inputCard.style.display='block';}
+    if(pairSec)pairSec.style.display='block';
+    // Hide own SX grid if already have profile SX
+    if(selSX!==null){
+      var ownGrid=document.getElementById('sx-grid');if(ownGrid)ownGrid.style.display='none';
+      var ownLabel=inputCard?inputCard.querySelector('.fl-label'):null;
+      if(ownLabel){ownLabel.textContent='你的生肖：'+SX[selSX].emoji+' 属'+SX[selSX].name+'（已从命盘读取）';}
+    }
   }
 }
 
@@ -3539,7 +3537,10 @@ async function callSXPairAI(sA,sB){
   }
   document.getElementById('sx-loading').style.display='none';
   renderSXPair(sA,sB);
+  var sxres=document.getElementById('sx-result');if(sxres)sxres.style.display='block';
   document.getElementById('sx-pair-result').style.display='block';
+  // Hide solo sections
+  ['sx-header-card','sx-scores-card','sx-main-card'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});;
 }
 
 function renderSXPair(sA,sB){
