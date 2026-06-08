@@ -3394,7 +3394,16 @@ function showZodiacView(view){
     var b=document.getElementById('z-profile-banner');if(b)b.style.display='flex';
     var t=document.getElementById('z-mode-tabs');if(t)t.style.display='flex';
     var ic=document.getElementById('zodiac-input-card');if(ic)ic.style.display='block';
-    var btn=document.getElementById('z-main-btn');if(btn)btn.style.display='flex';
+    var btn=document.getElementById('z-main-btn');if(btn){
+      btn.style.display='flex';
+      if(zMode==='pair'){
+        btn.innerHTML='<i class="ti ti-heart"></i>开始星座配对';
+        btn.onclick=function(){runZodiacPair();};
+      } else {
+        btn.innerHTML='<i class="ti ti-stars"></i>查看星座运势';
+        btn.onclick=function(){runZodiac();};
+      }
+    }
   } else if(view==='loading'){
     var l=document.getElementById('zodiac-loading');if(l)l.style.display='block';
   } else if(view==='solo-result'){
