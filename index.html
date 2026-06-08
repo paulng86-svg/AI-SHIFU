@@ -1864,15 +1864,25 @@ function enterSXTab(from){
 
 // 自动运行逻辑
 function autoRunZodiac(){
-  var zpr=document.getElementById('zodiac-pair-result');if(zpr)zpr.style.display='none';
-  if(selZodiac!==null&&zMode==='solo'&&!zodiacData){
-    var card=document.getElementById('zodiac-input-card');
-    if(card)card.style.display='none';
+  // Restore correct view based on current state
+  if(zMode==='pair'){
+    if(zPairData){
+      showZodiacView('pair-result');
+      renderZodiacPair(ZODIACS[selZodiac], ZODIACS[selZodiacB]);
+    } else {
+      showZodiacView('input');
+    }
+    return;
+  }
+  // Solo mode
+  if(zodiacData){
+    showZodiacView('solo-result');
+    renderZodiac(ZODIACS[selZodiac]);
+  } else if(selZodiac!==null){
+    showZodiacView('loading');
     runZodiac();
-  } else if(selZodiac===null&&zMode==='solo'){
-    // 没有 profile，显示选择卡
-    var card=document.getElementById('zodiac-input-card');
-    if(card)card.style.display='block';
+  } else {
+    showZodiacView('input');
   }
 }
 function autoRunSX(){
