@@ -3377,7 +3377,12 @@ function runZodiac(){
 }
 
 function runZodiacPair(){
-  if(selZodiac===null){showToast('请先选择你的星座','ti-stars');return;}
+  // Auto-get own zodiac from profile if not set
+  if(selZodiac===null && obProfile && obProfile.zodiac){
+    var zIdx = ZODIACS.findIndex(function(z){return z.zh===obProfile.zodiac.zh;});
+    if(zIdx>=0) selZodiac = zIdx;
+  }
+  if(selZodiac===null){showToast('请先连接命盘','ti-stars');return;}
   if(selZodiacB===null){showToast('请选择对方的星座','ti-heart');return;}
   var zA=ZODIACS[selZodiac], zB=ZODIACS[selZodiacB];
   showZodiacView('loading');
