@@ -1848,6 +1848,315 @@ var DECK=[
 ];
 
 // ── UTILS ──
+// ── OB STEP LOGIC ──
+var obStep=1, obProfile={}, obGender=null, obRelStatus=null, obTags=[], obSelSC=null;
+var OB_STEPS=[
+  {tag:'步骤 1 / 3',title:'你叫什么名字？',sub:'让系统记住你，之后每次推算都更精准'},
+  {tag:'步骤 2 / 3',title:'你的生辰是哪天？',sub:'公历生日即可，系统自动转换农历'},
+  {tag:'步骤 3 / 3',title:'最后几个问题',sub:'帮助系统给出更贴近你的解读'}
+];
+var OB_SHICHEN=['子时 23-01','丑时 01-03','寅时 03-05','卯时 05-07','辰时 07-09','巳时 09-11','午时 11-13','未时 13-15','申时 15-17','酉时 17-19','戌时 19-21','亥时 21-23'];
+
+function obUpdateStep(){
+  var s=OB_STEPS[obStep-1];
+  setText('ob-step-tag',s.tag);
+  setText('ob-stitle',s.title);
+  setText('ob-ssub',s.sub);
+  for(var i=1;i<=3;i++){
+    var bar=document.getElementById('ob-prog-'+i);
+    if(bar)bar.style.background=i<=obStep?'rgba(255,215,0,.8)':'rgba(255,255,255,.15)';
+  }
+  // Show/hide steps
+  ['ob-step-1','ob-step-2','ob-step-3'].forEach(function(id,idx){
+    var el=document.getElementById(id);if(el)el.style.display=(idx+1===obStep)?'block':'none';
+  });
+}
+
+function obSelectGender(el,v){
+  obGender=v;
+  document.querySelectorAll('.ob-gender-btn').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+}
+
+function obSelectSC(el,idx){
+  obSelSC=idx;obProfile.shichenIdx=idx;obProfile.shichen=OB_SHICHEN[idx];
+  document.querySelectorAll('.ob-sc-btn').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+  var label=document.getElementById('ob-sc-label');
+  if(label)label.textContent=OB_SHICHEN[idx];
+}
+
+function obSelectRL(el,v){
+  obRelStatus=v;
+  document.querySelectorAll('.ob-rl-btn').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+}
+
+function obToggleTag(el,tag){
+  if(el.classList.contains('on')){el.classList.remove('on');obTags=obTags.filter(function(t){return t!==tag;});}
+  else{el.classList.add('on');obTags.push(tag);}
+}
+
+function obNextStep(){
+  if(obStep===1){
+    var name=document.getElementById('ob-name').value.trim();
+    if(!name){showToast('请先填写你的名字','ti-user');return;}
+    if(!obGender){showToast('请选择性别','ti-gender-bigender');return;}
+    var pw=document.getElementById('ob-password');
+    var pw2=document.getElementById('ob-password2');
+    var pwVal=pw?pw.value.trim():'';
+    var pw2Val=pw2?pw2.value.trim():'';
+    if(!pwVal||pwVal.length<6){showToast('密码至少6位','ti-lock');return;}
+    if(pwVal!==pw2Val){showToast('两次密码不一致','ti-lock');return;}
+
+    // Check duplicate name in Firebase
+    var btn=document.querySelector('.ob-fnext');
+    if(btn){btn.disabled=true;btn.textContent='检查中...';}
+    var proceed=function(exists){
+      if(btn){btn.disabled=false;btn.innerHTML='<i class="ti ti-arrow-right"></i>继续';}
+      if(exists){showToast('此名字已被注册，请使用其他名字','ti-user-x');return;}
+      obProfile.name=name;obProfile.gender=obGender;
+      obProfile.contact=document.getElementById('ob-contact')?document.getElementById('ob-contact').value.trim():'';
+      obProfile.password=pwVal;
+      obStep=2;obUpdateStep();
+    };
+    if(typeof db!=='undefined'){
+      db.ref('users').once('value').then(function(snap){
+        var exists=false;
+        snap.forEach(function(child){
+          var prof=child.val().profile;
+          if(prof&&prof.name&&prof.name.toLowerCase()===name.toLowerCase())exists=true;
+        });
+        proceed(exists);
+      }).catch(function(){proceed(false);});
+    } else {proceed(false);}
+    return;
+  }
+  if(obStep===2){
+    var bdayEl=document.getElementById('ob-bday');
+    if(!bdayEl||!bdayEl.value){showToast('请选择出生日期','ti-calendar');return;}
+    var parts=bdayEl.value.split('-');
+    obProfile.year=parseInt(parts[0]);obProfile.month=parseInt(parts[1]);obProfile.day=parseInt(parts[2]);
+    // Calculate zodiac and SX
+    if(typeof ZODIACS!=='undefined'){
+      var zIdx=obGetZodiac(obProfile.month,obProfile.day);
+      obProfile.zodiac=ZODIACS[zIdx];
+    }
+    if(typeof SX!=='undefined'){
+      obProfile.sx=getSX(obProfile.year);
+    }
+    if(typeof getGZ!=='undefined'){obProfile.gz=getGZ(obProfile.year,obProfile.month,obProfile.day);}
+    obStep=3;obUpdateStep();
+    return;
+  }
+  if(obStep===3){
+    obProfile.relStatus=obRelStatus||'未填写';
+    obProfile.concern=document.getElementById('ob-concern')?document.getElementById('ob-concern').value.trim():'';
+    obProfile.tags=obTags;
+    obProfile.createdAt=new Date().toISOString();
+    if(obProfile.password){
+      obProfile.pwHash=btoa(unescape(encodeURIComponent(obProfile.password))).substring(0,20);
+      delete obProfile.password;
+    }
+    // Save to localStorage
+    try{localStorage.setItem('destiny_profile',JSON.stringify(obProfile));}catch(e){}
+    // Show preview
+    obShowPreview();
+  }
+}
+
+function obPrevStep(){
+  if(obStep>1){obStep--;obUpdateStep();}
+}
+
+function obShowPreview(){
+  var form=document.getElementById('ob-form');if(form)form.style.display='none';
+  var preview=document.getElementById('ob-preview');if(preview)preview.style.display='flex';
+  // Fill preview
+  var pname=document.getElementById('ob-pr-name');if(pname)pname.textContent=obProfile.name||'';
+  var psub=document.getElementById('ob-pr-sub');
+  if(psub)psub.textContent=(obProfile.zodiac?obProfile.zodiac.zh:'')+(obProfile.sx?' · 属'+obProfile.sx.name:'')+(obProfile.year?' · '+obProfile.year+'年':'');
+}
+
+function obGetZodiac(m,d){
+  var idx=0;
+  if(m===1&&d<=19)idx=9;else if(m===1)idx=10;
+  else if(m===2&&d<=18)idx=10;else if(m===2)idx=11;
+  else if(m===3&&d<=20)idx=11;else if(m===3)idx=0;
+  else if(m===4&&d<=19)idx=0;else if(m===4)idx=1;
+  else if(m===5&&d<=20)idx=1;else if(m===5)idx=2;
+  else if(m===6&&d<=20)idx=2;else if(m===6)idx=3;
+  else if(m===7&&d<=22)idx=3;else if(m===7)idx=4;
+  else if(m===8&&d<=22)idx=4;else if(m===8)idx=5;
+  else if(m===9&&d<=22)idx=5;else if(m===9)idx=6;
+  else if(m===10&&d<=22)idx=6;else if(m===10)idx=7;
+  else if(m===11&&d<=21)idx=7;else if(m===11)idx=8;
+  else if(m===12&&d<=21)idx=8;else idx=9;
+  return idx;
+}
+
+// ── SEARCH PROFILE ──
+function obSearchProfile(){
+  var q=document.getElementById('ob-login-input').value.trim().toLowerCase();
+  var foundCard=document.getElementById('ob-found-card');
+  var notFound=document.getElementById('ob-not-found');
+  var loginBtn=document.getElementById('ob-login-btn');
+  var newBtn=document.getElementById('ob-new-from-login');
+  foundCard.classList.remove('show');notFound.classList.remove('show');
+  loginBtn.style.display='none';newBtn.style.display='none';
+  if(q.length<2)return;
+
+  function showFound(p){
+    document.getElementById('ob-found-avatar').textContent=p.name?p.name.charAt(0):'？';
+    document.getElementById('ob-found-name').textContent=p.name||'—';
+    document.getElementById('ob-found-sub').textContent=(p.year?p.year+'年':'')+(p.zodiac?' · '+p.zodiac.zh:'')+(p.sx?' · 属'+p.sx.name:'');
+    var chips=document.getElementById('ob-found-chips');if(chips)chips.innerHTML='';
+    if(p.gender&&chips)chips.innerHTML+='<div class="ob-pchip">'+p.gender+'命</div>';
+    if(p.zodiac&&chips)chips.innerHTML+='<div class="ob-pchip">'+p.zodiac.zh+'</div>';
+    foundCard.classList.add('show');
+    loginBtn.style.display='flex';
+    obProfile=p;
+  }
+
+  try{
+    var saved=localStorage.getItem('destiny_profile');
+    if(saved){
+      var p=JSON.parse(saved);
+      if(p.name&&p.name.toLowerCase().includes(q)){showFound(p);return;}
+    }
+  }catch(e){}
+
+  if(typeof db!=='undefined'){
+    db.ref('users').once('value').then(function(snap){
+      var found=null,foundKey=null;
+      snap.forEach(function(child){
+        var prof=child.val().profile;
+        if(!prof||!prof.name)return;
+        if(prof.name.toLowerCase().includes(q)){found=prof;foundKey=child.key;}
+      });
+      if(found){
+        found.userKey=foundKey;
+        try{localStorage.setItem('destiny_profile',JSON.stringify(found));}catch(e){}
+        showFound(found);
+      } else {
+        if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
+      }
+    }).catch(function(){
+      if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
+    });
+  } else {
+    if(q.length>=2){notFound.classList.add('show');newBtn.style.display='flex';}
+  }
+}
+
+// ── LOGIN CONFIRM ──
+function obLoginConfirm(){
+  var pwEl=document.getElementById('ob-login-password');
+  var pw=pwEl?pwEl.value.trim():'';
+  if(!pw){showToast('请输入密码','ti-lock');return;}
+
+  function checkHash(hash,password){
+    if(!hash)return true;
+    return btoa(unescape(encodeURIComponent(password))).substring(0,20)===hash;
+  }
+
+  var savedPwHash=obProfile.pwHash||'';
+  if(savedPwHash){
+    if(!checkHash(savedPwHash,pw)){showToast('密码错误，请重试','ti-lock');return;}
+    doEnterApp();
+  } else if(typeof db!=='undefined'&&obProfile.userKey){
+    db.ref('users/'+obProfile.userKey+'/profile/pwHash').once('value').then(function(snap){
+      var fbHash=snap.val()||'';
+      if(fbHash&&!checkHash(fbHash,pw)){showToast('密码错误，请重试','ti-lock');return;}
+      obProfile.pwHash=fbHash;
+      doEnterApp();
+    });
+  } else {
+    doEnterApp();
+  }
+}
+
+function doEnterApp(){
+  obApplyProfileToApp(obProfile);
+  userData={
+    bday:obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day),
+    gender:obProfile.gender,
+    worry:obProfile.concern||'',
+    shichen:obProfile.shichen||null,
+    relStatus:obProfile.relStatus||'未填写'
+  };
+  document.getElementById('ob-overlay').classList.add('hidden');
+  document.getElementById('s-home').classList.remove('hidden');
+  showToast('欢迎回来，'+obProfile.name+'！','ti-sparkles');
+  setTimeout(function(){
+    if(obProfile&&obProfile.name)initFirebaseUser();
+  },1000);
+}
+
+// ── ENTER APP (new user) ──
+function obEnterApp(){
+  obApplyProfileToApp(obProfile);
+  userData={
+    bday:obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day),
+    gender:obProfile.gender,
+    worry:obProfile.concern||'',
+    shichen:obProfile.shichen||null,
+    relStatus:obProfile.relStatus||'未填写'
+  };
+  var uKey=getUserKey(obProfile);
+  currentUserKey=uKey;obProfile.userKey=uKey;
+  try{localStorage.setItem('destiny_profile',JSON.stringify(obProfile));}catch(e){}
+  if(typeof db!=='undefined'&&uKey){
+    db.ref('users/'+uKey+'/profile').set({
+      name:obProfile.name||'',contact:obProfile.contact||'',pwHash:obProfile.pwHash||'',
+      gender:obProfile.gender||'',year:obProfile.year||'',month:obProfile.month||'',day:obProfile.day||'',
+      shichenIdx:obProfile.shichenIdx!==undefined?obProfile.shichenIdx:null,
+      concern:obProfile.concern||'',relStatus:obProfile.relStatus||'',
+      zodiac:obProfile.zodiac||null,sx:obProfile.sx||null,gz:obProfile.gz||null,
+      userKey:uKey,createdAt:obProfile.createdAt||new Date().toISOString(),lastSeen:Date.now()
+    });
+  }
+  document.getElementById('ob-overlay').classList.add('hidden');
+  document.getElementById('s-home').classList.remove('hidden');
+  showToast('欢迎来到命运馆，'+obProfile.name+'！','ti-sparkles');
+  setTimeout(function(){initFirebaseUser();},1000);
+}
+
+// ── APPLY PROFILE ──
+function obApplyProfileToApp(p){
+  if(!p)return;
+  if(p.year&&p.month&&p.day){
+    var bday=p.year+'-'+pad2(p.month)+'-'+pad2(p.day);
+    var bdayEl=document.getElementById('a-bday');if(bdayEl)bdayEl.value=bday;
+    var lbday=document.getElementById('l-bday');if(lbday)lbday.value=bday;
+    var fbday=document.getElementById('f-bday');if(fbday)fbday.value=bday;
+  }
+  if(p.gender){
+    gender=p.gender;
+    document.querySelectorAll('.gender-pill').forEach(function(b){
+      b.classList.toggle('on',b.getAttribute('data-v')===p.gender);
+    });
+  }
+  // Link zodiac
+  if(p.zodiac&&typeof ZODIACS!=='undefined'){
+    var zIdx=ZODIACS.findIndex(function(z){return z.zh===p.zodiac.zh;});
+    if(zIdx>=0){
+      selZodiac=zIdx;
+      var zb=document.getElementById('z-profile-banner');
+      if(zb){zb.style.display='flex';var zi=document.getElementById('z-profile-info');if(zi)zi.textContent=p.zodiac.sym+' '+p.zodiac.zh+'（'+p.zodiac.dates+'）· '+p.year+'年'+pad2(p.month)+'月'+pad2(p.day)+'日';}
+    }
+  }
+  // Link SX
+  if(p.sx&&typeof SX!=='undefined'){
+    var sxIdx=SX.findIndex(function(s){return s.name===p.sx.name;});
+    if(sxIdx>=0){
+      selSX=sxIdx;
+      var sb=document.getElementById('sx-profile-banner');
+      if(sb){sb.style.display='flex';var si=document.getElementById('sx-profile-info');if(si)si.textContent=p.sx.emoji+' 属'+p.sx.name+'（'+p.sx.years.slice(0,4).join('/')+'…）· '+p.year+'年';}
+    }
+  }
+}
+
 function pad2(n){return n<10?'0'+n:''+n}
 function setText(id,v){var e=document.getElementById(id);if(e)e.textContent=v}
 function showToast(msg,icon){
