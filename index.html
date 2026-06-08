@@ -1872,9 +1872,9 @@ function obUpdateStep(){
   });
 }
 
-function obSelectGender(el,v){
+function obSetGender(v,el){
   obGender=v;
-  document.querySelectorAll('.ob-gender-btn').forEach(function(b){b.classList.remove('on');});
+  document.querySelectorAll('.ob-sopt').forEach(function(b){b.classList.remove('on');});
   el.classList.add('on');
 }
 
