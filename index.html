@@ -1843,6 +1843,11 @@ function showToast(msg,icon){
 function goTo(to,from){
   var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
   all.forEach(function(s){var el=document.getElementById(s);if(el)el.classList.add('hidden');});
+  // When leaving zodiac, hide pair result
+  if(from==='s-zodiac'||to!=='s-zodiac'){
+    var zpr=document.getElementById('zodiac-pair-result');
+    if(zpr)zpr.style.display='none';
+  }
   var t=document.getElementById(to);
   if(t){t.classList.remove('hidden');t.scrollTop=0;}
 }
