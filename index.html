@@ -1864,17 +1864,15 @@ function enterSXTab(from){
 
 // 自动运行逻辑
 function autoRunZodiac(){
-  // Restore correct view based on current state
   if(zMode==='pair'){
     if(zPairData){
       showZodiacView('pair-result');
-      renderZodiacPair(ZODIACS[selZodiac], ZODIACS[selZodiacB]);
     } else {
       showZodiacView('input');
     }
     return;
   }
-  // Solo mode
+  // Solo mode only
   if(zodiacData){
     showZodiacView('solo-result');
     renderZodiac(ZODIACS[selZodiac]);
@@ -3387,30 +3385,25 @@ function buildZGridB(){
 
 
 function showZodiacView(view){
-  // All elements in zodiac screen
-  var elements = {
-    'z-profile-banner': ['input','solo-result'],
-    'z-mode-tabs': ['input','solo-result'],
-    'zodiac-input-card': ['input'],
-    'zodiac-loading': ['loading'],
-    'zodiac-result': ['solo-result'],
-    'zodiac-pair-result': ['pair-result']
-  };
-  // Show/hide based on view
-  Object.keys(elements).forEach(function(id){
-    var el = document.getElementById(id);
-    if(!el) return;
-    el.style.display = elements[id].indexOf(view) >= 0 ? 'block' : 'none';
-  });
-  // z-mode-tabs needs flex not block
-  var tabs = document.getElementById('z-mode-tabs');
-  if(tabs) tabs.style.display = (view==='input'||view==='solo-result') ? 'flex' : 'none';
-  // z-profile-banner needs flex
-  var banner = document.getElementById('z-profile-banner');
-  if(banner && (view === 'input' || view === 'solo-result')) banner.style.display = 'flex';
-  // z-main-btn always show in input
-  var btn = document.getElementById('z-main-btn');
-  if(btn) btn.style.display = (view === 'input') ? 'flex' : 'none';
+  // First hide EVERYTHING
+  var allIds=['z-profile-banner','z-mode-tabs','zodiac-input-card','zodiac-loading','zodiac-result','zodiac-pair-result','z-main-btn'];
+  allIds.forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
+
+  // Then show what's needed for this view
+  if(view==='input'){
+    var b=document.getElementById('z-profile-banner');if(b)b.style.display='flex';
+    var t=document.getElementById('z-mode-tabs');if(t)t.style.display='flex';
+    var ic=document.getElementById('zodiac-input-card');if(ic)ic.style.display='block';
+    var btn=document.getElementById('z-main-btn');if(btn)btn.style.display='flex';
+  } else if(view==='loading'){
+    var l=document.getElementById('zodiac-loading');if(l)l.style.display='block';
+  } else if(view==='solo-result'){
+    var b2=document.getElementById('z-profile-banner');if(b2)b2.style.display='flex';
+    var t2=document.getElementById('z-mode-tabs');if(t2)t2.style.display='flex';
+    var r=document.getElementById('zodiac-result');if(r)r.style.display='block';
+  } else if(view==='pair-result'){
+    var pr=document.getElementById('zodiac-pair-result');if(pr)pr.style.display='block';
+  }
 }
 function runZodiac(){
   if(zMode==='bazi'){runBaziPair('z');return;}
