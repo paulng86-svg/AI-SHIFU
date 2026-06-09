@@ -1863,7 +1863,7 @@ function obBuildSCGrid(){
   OB_SHICHEN.forEach(function(sc,i){
     var d=document.createElement('div');
     d.className='ob-sc-btn';
-    d.style.cssText='background:rgba(0,0,0,.25);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 4px;text-align:center;cursor:pointer;transition:.2s';
+    d.style.cssText='background:rgba(0,0,0,.25);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 4px;text-align:center;cursor:pointer;transition:.2s;-webkit-tap-highlight-color:rgba(255,215,0,.3)';
     var parts=sc.split(' ');
     d.innerHTML='<div style="font-size:12px;font-weight:600;color:rgba(255,215,0,.8)">'+parts[0]+'</div><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:2px">'+parts[1]+'</div>';
     d.onclick=function(){obSelectSC(this,i);};
@@ -1885,8 +1885,8 @@ function obBdayChange(){
     var zdates=document.getElementById('ob-zdates');if(zdates)zdates.textContent=z.dates;
   }
   if(typeof SX!=='undefined'){
-    var sxList=['猴','鸡','狗','猪','鼠','牛','虎','兔','龙','蛇','马','羊'];
-    var idx=((yr-2020)%12+12)%12;
+    var sxList=['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+    var idx=(yr-1900)%12;
     var sx=SX.find(function(s){return s.name===sxList[idx];});
     if(sx){
       var sxem=document.getElementById('ob-sxem');if(sxem)sxem.textContent=sx.emoji;
