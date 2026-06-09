@@ -1867,6 +1867,7 @@ function obBuildSCGrid(){
     var parts=sc.split(' ');
     d.innerHTML='<div style="font-size:12px;font-weight:600;color:rgba(255,215,0,.8)">'+parts[0]+'</div><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:2px">'+parts[1]+'</div>';
     d.onclick=function(){obSelectSC(this,i);};
+    d.addEventListener('touchstart',function(e){e.preventDefault();obSelectSC(this,i);},{passive:false});
     g.appendChild(d);
   });
 }
