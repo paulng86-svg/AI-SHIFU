@@ -1918,6 +1918,21 @@ function obSelectSC(el,idx){
   if(el.firstChild)el.firstChild.style.color='#ffd700';
 }
 
+function obSetRelStatus(v,el){
+  obRelStatus=v;obProfile.relStatus=v;
+  // Find all sibling ob-sopt buttons in the same ob-seg container
+  var seg=el.parentElement;
+  if(seg){
+    seg.querySelectorAll('.ob-sopt').forEach(function(b){
+      b.classList.remove('on');
+      b.style.background='';b.style.borderColor='';b.style.color='';
+    });
+  }
+  el.classList.add('on');
+  el.style.background='rgba(139,0,0,.4)';
+  el.style.borderColor='rgba(255,215,0,.6)';
+}
+
 function obSelectRL(el,v){
   obRelStatus=v;
   document.querySelectorAll('.ob-rl-btn').forEach(function(b){
