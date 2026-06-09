@@ -1857,6 +1857,45 @@ var OB_STEPS=[
 ];
 var OB_SHICHEN=['子时 23-01','丑时 01-03','寅时 03-05','卯时 05-07','辰时 07-09','巳时 09-11','午时 11-13','未时 13-15','申时 15-17','酉时 17-19','戌时 19-21','亥时 21-23'];
 
+function obBuildSCGrid(){
+  var g=document.getElementById('ob-scgrid');
+  if(!g||g.children.length>0)return;
+  OB_SHICHEN.forEach(function(sc,i){
+    var d=document.createElement('div');
+    d.className='ob-sc-btn';
+    d.style.cssText='background:rgba(0,0,0,.25);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 4px;text-align:center;cursor:pointer;transition:.2s';
+    var parts=sc.split(' ');
+    d.innerHTML='<div style="font-size:12px;font-weight:600;color:rgba(255,215,0,.8)">'+parts[0]+'</div><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:2px">'+parts[1]+'</div>';
+    d.onclick=function(){obSelectSC(this,i);};
+    g.appendChild(d);
+  });
+}
+
+function obBdayChange(){
+  var yr=parseInt(document.getElementById('ob-year').value)||0;
+  var mo=parseInt(document.getElementById('ob-month').value)||0;
+  var dy=parseInt(document.getElementById('ob-day').value)||0;
+  if(yr<1920||yr>2010||mo<1||mo>12||dy<1||dy>31){
+    var auto=document.getElementById('ob-auto');if(auto)auto.style.display='none';return;
+  }
+  if(typeof ZODIACS!=='undefined'&&typeof obGetZodiac==='function'){
+    var zIdx=obGetZodiac(mo,dy);var z=ZODIACS[zIdx];
+    var zsym=document.getElementById('ob-zsym');if(zsym)zsym.textContent=z.sym;
+    var zname=document.getElementById('ob-zname');if(zname)zname.textContent=z.zh;
+    var zdates=document.getElementById('ob-zdates');if(zdates)zdates.textContent=z.dates;
+  }
+  if(typeof SX!=='undefined'){
+    var sxList=['猴','鸡','狗','猪','鼠','牛','虎','兔','龙','蛇','马','羊'];
+    var idx=((yr-2020)%12+12)%12;
+    var sx=SX.find(function(s){return s.name===sxList[idx];});
+    if(sx){
+      var sxem=document.getElementById('ob-sxem');if(sxem)sxem.textContent=sx.emoji;
+      var sxname=document.getElementById('ob-sxname');if(sxname)sxname.textContent='属'+sx.name;
+    }
+  }
+  var auto2=document.getElementById('ob-auto');if(auto2)auto2.style.display='flex';
+}
+
 function obUpdateStep(){
   var s=OB_STEPS[obStep-1];
   setText('ob-step-tag',s.tag);
@@ -1918,7 +1957,7 @@ function obNextStep(){
       obProfile.name=name;obProfile.gender=obGender;
       obProfile.contact=document.getElementById('ob-contact')?document.getElementById('ob-contact').value.trim():'';
       obProfile.password=pwVal;
-      obStep=2;obUpdateStep();
+      obStep=2;obUpdateStep();setTimeout(obBuildSCGrid,100);
     };
     if(typeof db!=='undefined'){
       db.ref('users').once('value').then(function(snap){
