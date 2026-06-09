@@ -1867,7 +1867,7 @@ function obUpdateStep(){
     if(bar)bar.style.background=i<=obStep?'rgba(255,215,0,.8)':'rgba(255,255,255,.15)';
   }
   // Show/hide steps
-  ['ob-step-1','ob-step-2','ob-step-3'].forEach(function(id,idx){
+  ['ob-step1','ob-step2','ob-step3'].forEach(function(id,idx){
     var el=document.getElementById(id);if(el)el.style.display=(idx+1===obStep)?'block':'none';
   });
 }
@@ -1933,19 +1933,28 @@ function obNextStep(){
     return;
   }
   if(obStep===2){
-    var bdayEl=document.getElementById('ob-bday');
-    if(!bdayEl||!bdayEl.value){showToast('请选择出生日期','ti-calendar');return;}
-    var parts=bdayEl.value.split('-');
-    obProfile.year=parseInt(parts[0]);obProfile.month=parseInt(parts[1]);obProfile.day=parseInt(parts[2]);
-    // Calculate zodiac and SX
+    var yearEl=document.getElementById('ob-year');
+    var monthEl=document.getElementById('ob-month');
+    var dayEl=document.getElementById('ob-day');
+    var yr=yearEl?parseInt(yearEl.value):0;
+    var mo=monthEl?parseInt(monthEl.value):0;
+    var dy=dayEl?parseInt(dayEl.value):0;
+    if(!yr||yr<1920||yr>2010){showToast('请填写正确的出生年份','ti-calendar');return;}
+    if(!mo||mo<1||mo>12){showToast('请填写正确的出生月份','ti-calendar');return;}
+    if(!dy||dy<1||dy>31){showToast('请填写正确的出生日期','ti-calendar');return;}
+    obProfile.year=yr;obProfile.month=mo;obProfile.day=dy;
     if(typeof ZODIACS!=='undefined'){
-      var zIdx=obGetZodiac(obProfile.month,obProfile.day);
+      var zIdx=obGetZodiac(mo,dy);
       obProfile.zodiac=ZODIACS[zIdx];
     }
-    if(typeof SX!=='undefined'){
-      obProfile.sx=getSX(obProfile.year);
+    if(typeof getSX==='function'){obProfile.sx=getSX(yr);}
+    else if(typeof SX!=='undefined'){
+      var sxYears=[2020,2008,1996,1984,1972,1960];
+      var animals=['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+      var base=((yr-2020)%12+12)%12;
+      var sxIdx=SX.findIndex(function(s){return s.name===animals[base];});
+      if(sxIdx>=0)obProfile.sx=SX[sxIdx];
     }
-    if(typeof getGZ!=='undefined'){obProfile.gz=getGZ(obProfile.year,obProfile.month,obProfile.day);}
     obStep=3;obUpdateStep();
     return;
   }
