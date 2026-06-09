@@ -789,17 +789,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
             <textarea class="ob-ta" id="ob-concern" placeholder="例：工作压力大，想知道近期有没有转机。想知道今年适不适合投资…&#10;&#10;说越多，推算越精准。"></textarea>
             <div class="ob-hint"><i class="ti ti-lock"></i>只有你看到，系统推算时会参考你的情况</div>
           </div>
-          <div class="ob-field">
-            <div class="ob-label"><i class="ti ti-target"></i>最想了解哪方面？</div>
-            <div class="ob-tags">
-              <div class="ob-tag" onclick="obToggleTag(this,'财运')"><i class="ti ti-coin"></i>财运</div>
-              <div class="ob-tag" onclick="obToggleTag(this,'感情')"><i class="ti ti-heart"></i>感情</div>
-              <div class="ob-tag" onclick="obToggleTag(this,'事业')"><i class="ti ti-briefcase"></i>事业</div>
-              <div class="ob-tag" onclick="obToggleTag(this,'健康')"><i class="ti ti-heartbeat"></i>健康</div>
-              <div class="ob-tag" onclick="obToggleTag(this,'家庭')"><i class="ti ti-home"></i>家庭</div>
-              <div class="ob-tag" onclick="obToggleTag(this,'人生方向')"><i class="ti ti-compass"></i>人生方向</div>
-            </div>
-          </div>
+          
         </div>
 
       </div>
@@ -1930,8 +1920,10 @@ function obSelectSC(el,idx){
 
 function obSelectRL(el,v){
   obRelStatus=v;
-  document.querySelectorAll('.ob-rl-btn').forEach(function(b){b.classList.remove('on');});
-  el.classList.add('on');
+  document.querySelectorAll('.ob-rl-btn').forEach(function(b){
+    b.style.cssText='background:rgba(0,0,0,.2);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:8px 6px;text-align:center;cursor:pointer;font-size:12px;color:rgba(255,255,255,.6)';
+  });
+  el.style.cssText='background:rgba(139,0,0,.5);border:1.5px solid rgba(255,215,0,.7);border-radius:10px;padding:8px 6px;text-align:center;cursor:pointer;font-size:12px;color:#ffd700;box-shadow:0 0 8px rgba(255,215,0,.3)';
 }
 
 function obToggleTag(el,tag){
