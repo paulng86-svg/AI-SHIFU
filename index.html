@@ -1920,10 +1920,12 @@ function obSetGender(v,el){
 
 function obSelectSC(el,idx){
   obSelSC=idx;obProfile.shichenIdx=idx;obProfile.shichen=OB_SHICHEN[idx];
-  document.querySelectorAll('.ob-sc-btn').forEach(function(b){b.classList.remove('on');});
-  el.classList.add('on');
-  var label=document.getElementById('ob-sc-label');
-  if(label)label.textContent=OB_SHICHEN[idx];
+  document.querySelectorAll('.ob-sc-btn').forEach(function(b){
+    b.style.cssText='background:rgba(0,0,0,.25);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 4px;text-align:center;cursor:pointer;transition:.2s';
+    if(b.firstChild)b.firstChild.style.color='rgba(255,215,0,.8)';
+  });
+  el.style.cssText='background:rgba(139,0,0,.5);border:1.5px solid rgba(255,215,0,.7);border-radius:10px;padding:7px 4px;text-align:center;cursor:pointer;transition:.2s;box-shadow:0 0 8px rgba(255,215,0,.3)';
+  if(el.firstChild)el.firstChild.style.color='#ffd700';
 }
 
 function obSelectRL(el,v){
