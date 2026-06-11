@@ -589,6 +589,46 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 #s-member{position:fixed;inset:0;z-index:600;background:#8B0000;overflow-y:auto}
 #s-admin{position:fixed;inset:0;z-index:9999;background:#8B0000;overflow-y:auto;color:#fff;display:none}
 #s-admin.show{display:block !important}
+
+/* ── FATE DAY CARDS ── */
+.day-card{background:rgba(0,0,0,.35);border:1px solid rgba(255,215,0,.15);border-radius:14px;padding:1rem 1.1rem;margin-bottom:10px}
+.dc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem}
+.dc-left{display:flex;align-items:center;gap:10px}
+.dc-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.dc-icon.d0{background:rgba(255,160,0,.15);color:rgba(255,160,0,.8)}
+.dc-icon.d1{background:rgba(99,102,241,.15);color:rgba(99,102,241,.8)}
+.dc-icon.d2{background:rgba(52,211,153,.15);color:rgba(52,211,153,.8)}
+.dc-day-name{font-size:13px;font-weight:700;color:#fff}
+.dc-date{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px}
+.dc-energy{font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;letter-spacing:.06em}
+.dc-energy.high{background:rgba(255,160,0,.15);color:rgba(255,160,0,.9);border:1px solid rgba(255,160,0,.2)}
+.dc-energy.mid{background:rgba(99,102,241,.15);color:rgba(180,183,255,.9);border:1px solid rgba(99,102,241,.2)}
+.dc-energy.low{background:rgba(52,211,153,.1);color:rgba(52,211,153,.8);border:1px solid rgba(52,211,153,.15)}
+.dc-quote{font-size:13px;line-height:1.8;color:rgba(255,255,255,.72);margin-bottom:.6rem}
+.dc-tags{display:flex;flex-wrap:wrap;gap:6px}
+.dc-tag{font-size:10px;padding:3px 8px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.12);border-radius:20px;color:rgba(255,215,0,.5)}
+
+/* ── TODAY SIGN CARD ── */
+.today-sign-card{background:rgba(0,0,0,.4);border:1.5px solid rgba(255,215,0,.25);border-radius:16px;overflow:hidden;margin-bottom:14px;position:relative}
+.tsc-head{background:linear-gradient(135deg,rgba(139,0,0,.5),rgba(60,0,0,.6));padding:.8rem 1.1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,215,0,.1)}
+.tsc-badge{font-size:10px;font-weight:700;letter-spacing:.14em;color:rgba(255,215,0,.6);display:flex;align-items:center;gap:5px}
+.tsc-date-label{font-size:11px;color:rgba(255,255,255,.35)}
+.tsc-sign-wrap{padding:1.1rem 1.2rem}
+.sign-label{font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(255,215,0,.4);margin-bottom:.6rem}
+.sign-quote{font-size:15px;font-weight:500;line-height:1.85;color:#fff;margin-bottom:.8rem}
+.sign-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.8rem}
+.sign-tag{font-size:10px;padding:3px 10px;background:rgba(139,0,0,.3);border:1px solid rgba(255,215,0,.15);border-radius:20px;color:rgba(255,215,0,.6)}
+.sign-score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
+.sc-item{text-align:center}
+.sc-item-label{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:4px}
+.sc-bar{display:flex;gap:3px;justify-content:center}
+.sc-dot{width:8px;height:8px;border-radius:50%}
+.sc-dot-on{background:linear-gradient(135deg,#8B0000,#ffd700)}
+.sc-dot-off{background:rgba(255,255,255,.1)}
+.fate-loading{text-align:center;padding:3rem 0;display:none}
+.fate-loading.show{display:block}
+.fate-spinner{width:40px;height:40px;border:3px solid rgba(255,215,0,.15);border-top-color:rgba(255,215,0,.7);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1rem}
+.fate-loading-text{font-size:13px;color:rgba(255,215,0,.5);letter-spacing:.06em}
 </style>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
