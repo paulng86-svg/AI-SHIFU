@@ -1176,7 +1176,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       <div id="f-next-days"></div>
       <div class="sign-share">
         <div class="ss-btn ss-main" onclick="shareSign()"><i class="ti ti-share"></i>分享今日签语</div>
-        <div class="ss-btn ss-sec" onclick="copySign()"><i class="ti ti-copy"></i>复制文字</div>
+        <div class="ss-btn ss-sec" onclick="navTo('home')"><i class="ti ti-home"></i>返回首页</div>
       </div>
       <div class="disclaimer"><i class="ti ti-info-circle"></i>签语每天自动更新 · 仅供参考</div>
     </div>
@@ -1306,7 +1306,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#8B0000,#cc3300);box-shadow:0 4px 18px rgba(139,0,0,.4);grid-column:span 2" onclick="shareZodiac()"><i class="ti ti-share"></i>分享星座运势</div>
         <div class="sh-btn sh-sec" onclick="copyZodiac()"><i class="ti ti-copy"></i>复制</div>
-        <div class="sh-btn sh-sec" onclick="resetZodiac()"><i class="ti ti-refresh"></i>换星座</div>
+        <div class="sh-btn sh-sec" onclick="showZodiacView('input')"><i class="ti ti-arrow-left"></i>返回</div>
       </div>
     </div>
 
