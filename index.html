@@ -2030,10 +2030,42 @@ function obPrevStep(){
 function obShowPreview(){
   var form=document.getElementById('ob-form');if(form)form.style.display='none';
   var preview=document.getElementById('ob-preview');if(preview)preview.style.display='flex';
-  // Fill preview
-  var pname=document.getElementById('ob-pr-name');if(pname)pname.textContent=obProfile.name||'';
-  var psub=document.getElementById('ob-pr-sub');
-  if(psub)psub.textContent=(obProfile.zodiac?obProfile.zodiac.zh:'')+(obProfile.sx?' · 属'+obProfile.sx.name:'')+(obProfile.year?' · '+obProfile.year+'年':'');
+  var p=obProfile;
+
+  // Greeting
+  var gr=document.getElementById('ob-greeting');if(gr)gr.textContent='你好，'+p.name+'！';
+
+  // Avatar
+  var av=document.getElementById('ob-pfav');if(av)av.textContent=p.name?p.name.charAt(0):'？';
+
+  // Name and date
+  var nm=document.getElementById('ob-pfname');if(nm)nm.textContent=p.name||'';
+  var dt=document.getElementById('ob-pfdate');
+  if(dt)dt.textContent=(p.year?p.year+'年':'')+pad2(p.month)+'月'+pad2(p.day)+'日'+(p.gender?' · '+p.gender+'命':'');
+
+  // Chips
+  var chips=document.getElementById('ob-pfchips');
+  if(chips){
+    chips.innerHTML='';
+    if(p.gender)chips.innerHTML+='<div class="ob-pchip">'+p.gender+'命</div>';
+    if(p.relStatus&&p.relStatus!=='未填写')chips.innerHTML+='<div class="ob-pchip">'+p.relStatus+'</div>';
+    if(p.zodiac)chips.innerHTML+='<div class="ob-pchip">'+p.zodiac.zh+'</div>';
+    if(p.sx)chips.innerHTML+='<div class="ob-pchip">属'+p.sx.name+'</div>';
+  }
+
+  // Zodiac
+  if(p.zodiac){
+    var zsym=document.getElementById('ob-pr-zsym');if(zsym)zsym.textContent=p.zodiac.sym||'';
+    var zname=document.getElementById('ob-pr-zname');if(zname)zname.textContent=p.zodiac.zh||'';
+    var zdates=document.getElementById('ob-pr-zdates');if(zdates)zdates.textContent=p.zodiac.dates||'';
+  }
+
+  // SX
+  if(p.sx){
+    var sxem=document.getElementById('ob-pr-sxem');if(sxem)sxem.textContent=p.sx.emoji||'';
+    var sxname=document.getElementById('ob-pr-sxname');if(sxname)sxname.textContent='属'+p.sx.name;
+    var sxel=document.getElementById('ob-pr-sxelem');if(sxel)sxel.textContent=p.sx.elem?'五行·'+p.sx.elem:'';
+  }
 }
 
 function obGetZodiac(m,d){
