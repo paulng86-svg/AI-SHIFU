@@ -1141,7 +1141,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 <div class="screen hidden" id="s-fate">
   <div class="inner">
     <div class="top-bar">
-      <div class="brand"><div class="brand-mark bm-f"><i class="ti ti-sun"></i></div><div><div class="brand-name">每日签语馆</div><div class="brand-sub">每日命运提示</div></div></div>
+      <div class="brand"><div class="brand-mark bm-f"><i class="ti ti-sun"></i></div><div><div style="display:flex;align-items:center;gap:8px"><div onclick="navTo('home')" style="cursor:pointer;color:rgba(255,215,0,.5);font-size:13px;padding:4px 8px;border:1px solid rgba(255,215,0,.2);border-radius:8px">← 首页</div><div><div class="brand-name">每日签语馆</div><div class="brand-sub">每日命运提示</div></div></div></div></div>
       <div class="time-block">
         <div class="t-date" id="f-date">—</div>
         <div class="t-day" id="f-day">—</div>
@@ -1152,7 +1152,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       <div class="fl-label">出生日期（固定记住）</div>
       <div class="fl-bday-row">
         <input type="date" class="fl-input" id="f-bday" style="color-scheme:dark"/>
-        <div class="mini-btn" onclick="loadFateSign()"><i class="ti ti-wand"></i>生成</div>
+        <button onclick="loadFateSign()" style="background:linear-gradient(135deg,#8B0000,#cc3300,#ff6600);border:none;border-radius:10px;color:#ffd700;font-size:14px;font-weight:700;padding:10px 20px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px"><i class="ti ti-wand"></i>生成今日签语</button>
       </div>
       <div class="saved-pill" id="f-savedPill"><i class="ti ti-check"></i><span>生日已记住</span></div>
     </div>
