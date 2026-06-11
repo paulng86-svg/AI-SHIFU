@@ -3934,6 +3934,26 @@ function showZodiacView(view){
 }
 
 // ── Switch mode ──
+function buildZGridB(){
+  var g=document.getElementById('zodiac-grid-b');
+  if(!g||g.children.length>0)return;
+  ZODIACS.forEach(function(z,i){
+    var d=document.createElement('div');
+    d.style.cssText='background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;transition:.2s';
+    d.innerHTML='<div style="font-size:20px;line-height:1;margin-bottom:4px">'+z.sym+'</div><div style="font-size:10px;font-weight:600;color:rgba(255,255,255,.7)">'+z.zh+'</div>';
+    d.onclick=(function(idx,el){return function(){
+      selZodiacB=idx;
+      document.querySelectorAll('#zodiac-grid-b > div').forEach(function(b){
+        b.style.background='rgba(255,255,255,.05)';
+        b.style.borderColor='rgba(255,255,255,.1)';
+      });
+      el.style.background='rgba(244,114,182,.15)';
+      el.style.borderColor='rgba(244,114,182,.55)';
+    };})(i,d);
+    g.appendChild(d);
+  });
+}
+
 function switchZMode(m){
   zMode=m;
   var btn=document.getElementById('z-main-btn');
