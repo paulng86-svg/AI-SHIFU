@@ -3650,7 +3650,83 @@ var SX=[
   {name:'狗',emoji:'🐶',years:'1970/82/94/2006/18/30',elem:'土',best:'虎、马',clash:'龙',dir:'西北',color:'rgba(180,140,100,1)',cls:'rgba(180,140,100,.1)',bdr:'rgba(180,140,100,.3)'},
   {name:'猪',emoji:'🐷',years:'1971/83/95/2007/19/31',elem:'水',best:'兔、羊',clash:'蛇',dir:'北方',color:'rgba(249,168,212,1)',cls:'rgba(249,168,212,.1)',bdr:'rgba(249,168,212,.3)'}
 ];
-var selSX=null, sxData=null;
+var selSX=null, sxData=null, selSXB=null, sxMode='solo', sxPairData=null;
+
+// ── Build SX grid B (partner selection) ──
+function buildSXGridB(){
+  var g=document.getElementById('sx-grid-b');
+  if(!g||g.children.length>0)return;
+  SX.forEach(function(s,i){
+    var d=document.createElement('div');
+    d.style.cssText='background:rgba(0,0,0,.25);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;transition:.2s';
+    d.innerHTML='<div style="font-size:20px;line-height:1;margin-bottom:4px">'+s.emoji+'</div><div style="font-size:10px;font-weight:600;color:rgba(255,255,255,.7)">属'+s.name+'</div>';
+    d.onclick=(function(idx,el){return function(){
+      selSXB=idx;
+      document.querySelectorAll('#sx-grid-b > div').forEach(function(b){b.style.background='rgba(0,0,0,.25)';b.style.borderColor='rgba(255,255,255,.1)';});
+      el.style.background='rgba(244,114,182,.15)';el.style.borderColor='rgba(244,114,182,.55)';
+    };})(i,d);
+    g.appendChild(d);
+  });
+}
+
+// ── Switch SX mode ──
+function switchSXMode(m){
+  sxMode=m;
+  var btn=document.getElementById('sx-main-btn');
+  var inputCard=document.getElementById('sx-input-card');
+  var pairSec=document.getElementById('sx-pair-section');
+  if(m==='solo'){
+    var s=document.getElementById('sx-mode-solo');
+    if(s){s.style.background='rgba(139,0,0,.3)';s.style.border='1px solid rgba(255,215,0,.4)';s.style.color='rgba(255,215,0,1)';}
+    var p=document.getElementById('sx-mode-pair');
+    if(p){p.style.background='';p.style.border='';p.style.color='rgba(255,255,255,.35)';}
+    if(btn){btn.innerHTML='<i class="ti ti-yin-yang"></i>查看生肖运势';btn.onclick=function(){runShengxiao();};}
+    if(pairSec)pairSec.style.display='none';
+    var ownGrid=document.getElementById('sx-grid');if(ownGrid)ownGrid.style.display='grid';
+    if(inputCard)inputCard.style.display='block';
+  } else {
+    var s2=document.getElementById('sx-mode-solo');
+    if(s2){s2.style.background='';s2.style.border='';s2.style.color='rgba(255,255,255,.35)';}
+    var p2=document.getElementById('sx-mode-pair');
+    if(p2){p2.style.background='rgba(244,114,182,.15)';p2.style.border='1px solid rgba(244,114,182,.4)';p2.style.color='rgba(244,114,182,1)';}
+    if(btn){btn.innerHTML='<i class="ti ti-heart"></i>开始生肖配对';btn.onclick=function(){runSXPair();};}
+    if(inputCard)inputCard.style.display='block';
+    if(pairSec)pairSec.style.display='block';
+    buildSXGridB();
+    // Hide own grid if profile SX exists
+    if(selSX!==null){
+      var ownGrid2=document.getElementById('sx-grid');if(ownGrid2)ownGrid2.style.display='none';
+      var banner=document.getElementById('sx-profile-banner');
+      if(banner)banner.style.display='flex';
+    }
+    // Hide results
+    var sr=document.getElementById('sx-result');if(sr)sr.style.display='none';
+    var spr=document.getElementById('sx-pair-result');if(spr)spr.style.display='none';
+  }
+}
+
+// ── Run SX solo ──
+function runShengxiao(){
+  if(selSX===null){showToast('请先选择生肖','ti-yin-yang');return;}
+  var ic=document.getElementById('sx-input-card');if(ic)ic.style.display='none';
+  var sl=document.getElementById('sx-loading');if(sl)sl.style.display='block';
+  callSXAI(SX[selSX]);
+}
+
+// ── Run SX pair ──
+function runSXPair(){
+  if(selSX===null&&obProfile&&obProfile.sx){
+    var si=SX.findIndex(function(s){return s.name===obProfile.sx.name;});
+    if(si>=0)selSX=si;
+  }
+  if(selSX===null){showToast('请先连接命盘','ti-yin-yang');return;}
+  if(selSXB===null){showToast('请选择对方的生肖','ti-heart');return;}
+  var ic=document.getElementById('sx-input-card');if(ic)ic.style.display='none';
+  var sl=document.getElementById('sx-loading');if(sl)sl.style.display='block';
+  callSXPairAI(SX[selSX],SX[selSXB]);
+}
+
+
 
 (function(){
   var g=document.getElementById('sx-grid');
@@ -3697,6 +3773,46 @@ async function callSXAI(s){
   renderSX(s);
   document.getElementById('sx-result').style.display='block';
 }
+
+async function callSXPairAI(sA, sB){
+  var prompt='你是命理师。分析'+sA.name+'与'+sB.name+'生肖配对。用老傅视角，情绪共鸣风格。只返回JSON：{"score":75,"love":"感情契合描述","dynamic":"相处模式描述","tension":"潜在摩擦","advice":"相处建议","keywords":["词1","词2","词3"]}';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:apiHeaders(),
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    var data=await res.json();
+    var text=data.content[0].text;
+    var clean=text.replace(/```json|```/g,'').trim();
+    sxPairData=JSON.parse(clean);
+  }catch(e){
+    sxPairData=genSXPairFallback(sA,sB);
+  }
+  var sl=document.getElementById('sx-loading');if(sl)sl.style.display='none';
+  renderSXPair(sA,sB);
+  var sxresEl=document.getElementById('sx-result');
+  if(sxresEl){
+    sxresEl.style.display='block';
+    Array.from(sxresEl.children).forEach(function(child){
+      if(child.id==='sx-pair-result')child.style.display='block';
+      else child.style.display='none';
+    });
+  }
+}
+
+function renderSXPair(sA,sB){
+  var d=sxPairData;if(!d)return;
+  setText('sxp-sym-a',sA.emoji);setText('sxp-name-a','属'+sA.name);
+  setText('sxp-sym-b',sB.emoji);setText('sxp-name-b','属'+sB.name);
+  setText('sxp-score-big',(d.score||75)+'%');
+  setText('sxp-love',d.love||'');
+  setText('sxp-dynamic',d.dynamic||'');
+  setText('sxp-tension',d.tension||'');
+  setText('sxp-advice',d.advice||'');
+  var kws=document.getElementById('sxp-kws');
+  if(kws)kws.innerHTML=(d.keywords||[]).map(function(k){return'<span style="font-size:10px;padding:3px 10px;background:rgba(244,114,182,.1);border:1px solid rgba(244,114,182,.2);border-radius:20px;color:rgba(244,114,182,.8)">'+k+'</span>';}).join('');
+}
+
 
 function renderSX(s){
   var yr=new Date().getFullYear();
