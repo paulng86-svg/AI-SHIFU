@@ -3979,6 +3979,25 @@ function switchZMode(m){
 }
 
 // ── Run solo ──
+async function callZodiacPairAI(zA, zB){
+  var prompt='你是命理师老傅。分析'+zA.zh+'与'+zB.zh+'星座配对。情绪共鸣风格，温暖真实。只返回JSON：{"score":75,"love":"感情契合描述","dynamic":"相处模式描述","tension":"潜在摩擦","advice":"相处建议","keywords":["词1","词2","词3"]}';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:apiHeaders(),
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    var data=await res.json();
+    var text=data.content[0].text;
+    var clean=text.replace(/```json|```/g,'').trim();
+    zPairData=JSON.parse(clean);
+  }catch(e){
+    zPairData=genZPairFallback(zA,zB);
+  }
+  var zl=document.getElementById('zodiac-loading');if(zl)zl.style.display='none';
+  renderZodiacPair(zA,zB);
+  showZodiacView('pair-result');
+}
+
 function runZodiac(){
   if(selZodiac===null){showToast('请先选择星座','ti-stars');return;}
   showZodiacView('loading');
