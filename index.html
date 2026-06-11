@@ -2247,6 +2247,15 @@ function obApplyProfileToApp(p){
   }
 }
 
+function apiHeaders(){
+  return {
+    'Content-Type':'application/json',
+    'x-api-key':'',
+    'anthropic-version':'2023-06-01',
+    'anthropic-dangerous-direct-browser-access':'true'
+  };
+}
+
 function pad2(n){return n<10?'0'+n:''+n}
 function setText(id,v){var e=document.getElementById(id);if(e)e.textContent=v}
 function showToast(msg,icon){
