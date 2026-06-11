@@ -2365,6 +2365,7 @@ function navTo(tab){
     goTo(map[tab],cur);
     if(tab==='zodiac'){setTimeout(autoRunZodiac,450);}
     if(tab==='shengxiao'){setTimeout(autoRunSX,450);}
+    if(tab==='fate'){setTimeout(function(){var fb=document.getElementById('f-bday');if(fb&&fb.value&&!fateData){loadFateSign();}},300);}
   } else if(!cur&&map[tab]){
     // No current screen visible - just show the target
     var t=document.getElementById(map[tab]);
