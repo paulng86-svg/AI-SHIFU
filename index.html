@@ -2242,7 +2242,7 @@ function obApplyProfileToApp(p){
     if(sxIdx>=0){
       selSX=sxIdx;
       var sb=document.getElementById('sx-profile-banner');
-      if(sb){sb.style.display='flex';var si=document.getElementById('sx-profile-info');if(si)si.textContent=p.sx.emoji+' 属'+p.sx.name+'（'+p.sx.years.slice(0,4).join('/')+'…）· '+p.year+'年';}
+      if(sb){sb.style.display='flex';var si=document.getElementById('sx-profile-info');if(si)si.textContent=p.sx.emoji+' 属'+p.sx.name+'（'+(Array.isArray(p.sx.years)?p.sx.years.slice(0,4).join('/'):'')+'…）· '+p.year+'年';}
     }
   }
 }
