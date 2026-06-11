@@ -2064,7 +2064,7 @@ function obShowPreview(){
   if(p.sx){
     var sxem=document.getElementById('ob-pr-sxem');if(sxem)sxem.textContent=p.sx.emoji||'';
     var sxname=document.getElementById('ob-pr-sxname');if(sxname)sxname.textContent='属'+p.sx.name;
-    var sxel=document.getElementById('ob-pr-sxelem');if(sxel)sxel.textContent=p.sx.elem?'五行·'+p.sx.elem:'';
+    var sxel=document.getElementById('ob-pr-sxelem');if(sxel)sxel.textContent=(p.sx&&p.sx.elem)?'五行·'+p.sx.elem:'';
   }
 }
 
