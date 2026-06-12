@@ -1406,7 +1406,7 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:#fff;
     </div>
 
     <div class="gcard gcard-glow" id="sx-input-card">
-      <div class="fl-label">选择你的生肖</div>
+      <div id="fl-sx-own-label" class="fl-label">选择你的生肖</div>
       <div id="sx-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px"></div>
 
       <!-- pair mode: partner selection -->
@@ -3712,6 +3712,7 @@ function switchSXMode(m){
     // Hide own grid if profile SX exists
     if(selSX!==null){
       var ownGrid2=document.getElementById('sx-grid');if(ownGrid2)ownGrid2.style.display='none';
+      var ownLabel=document.getElementById('fl-sx-own-label');if(ownLabel)ownLabel.style.display='none';
       var banner=document.getElementById('sx-profile-banner');
       if(banner)banner.style.display='flex';
     }
@@ -3806,6 +3807,8 @@ async function callSXPairAI(sA, sB){
   }
   var sl=document.getElementById('sx-loading');if(sl)sl.style.display='none';
   renderSXPair(sA,sB);
+  var sl2=document.getElementById('sx-loading');if(sl2)sl2.style.display='none';
+  var sxIc=document.getElementById('sx-input-card');if(sxIc)sxIc.style.display='none';
   var sxresEl=document.getElementById('sx-result');
   if(sxresEl){
     sxresEl.style.display='block';
@@ -3814,6 +3817,7 @@ async function callSXPairAI(sA, sB){
       else child.style.display='none';
     });
   }
+  var spr=document.getElementById('sx-pair-result');if(spr)spr.style.display='block';
 }
 
 function renderSXPair(sA,sB){
