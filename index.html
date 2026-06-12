@@ -1587,7 +1587,7 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:#fff;
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#f59e0b,#ef4444);grid-column:span 2" onclick="shareSXPair()"><i class="ti ti-share"></i>分享配对结果</div>
         <div class="sh-btn sh-sec" onclick="copySXPair()"><i class="ti ti-copy"></i>复制</div>
-        <div class="sh-btn sh-sec" onclick="resetSX()"><i class="ti ti-refresh"></i>重新配对</div>
+        <div class="sh-btn sh-sec" onclick="var ic=document.getElementById('sx-input-card');if(ic)ic.style.display='block';var pr=document.getElementById('sx-pair-result');if(pr)pr.style.display='none';var sr=document.getElementById('sx-result');if(sr)sr.style.display='none';buildSXGridB();"><i class="ti ti-arrow-left"></i>返回重新选择</div>
       </div>
     </div>
 
