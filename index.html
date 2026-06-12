@@ -3822,13 +3822,13 @@ async function callSXPairAI(sA, sB){
 
 function renderSXPair(sA,sB){
   var d=sxPairData;if(!d)return;
-  setText('sxp-sym-a',sA.emoji);setText('sxp-name-a','属'+sA.name);
-  setText('sxp-sym-b',sB.emoji);setText('sxp-name-b','属'+sB.name);
+  setText('sxp-em-a',sA.emoji);setText('sxp-name-a','属'+sA.name);
+  setText('sxp-em-b',sB.emoji);setText('sxp-name-b','属'+sB.name);
   setText('sxp-score-big',(d.score||75)+'%');
   setText('sxp-love',d.love||'');
-  setText('sxp-dynamic',d.dynamic||'');
-  setText('sxp-tension',d.tension||'');
-  setText('sxp-advice',d.advice||'');
+  setText('sxp-career',d.dynamic||d.career||'');
+  setText('sxp-daily',d.tension||d.daily||'');
+  setText('sxp-tip',d.advice||d.tip||'');
   var kws=document.getElementById('sxp-kws');
   if(kws)kws.innerHTML=(d.keywords||[]).map(function(k){return'<span style="font-size:10px;padding:3px 10px;background:rgba(244,114,182,.1);border:1px solid rgba(244,114,182,.2);border-radius:20px;color:rgba(244,114,182,.8)">'+k+'</span>';}).join('');
 }
