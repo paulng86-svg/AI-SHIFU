@@ -2366,13 +2366,23 @@ function autoRunZodiac(){
   }
 }
 function autoRunSX(){
-  if(selSX!==null&&sxMode==='solo'&&!sxData){
-    var card=document.getElementById('sx-input-card');
-    if(card)card.style.display='none';
-    runShengxiao();
-  } else if(selSX===null&&sxMode==='solo'){
-    var card=document.getElementById('sx-input-card');
-    if(card)card.style.display='block';
+  // Auto-get SX from profile if not set
+  if(selSX===null&&obProfile&&obProfile.sx&&typeof SX!=='undefined'){
+    var si=SX.findIndex(function(s){return s.name===obProfile.sx.name;});
+    if(si>=0)selSX=si;
+  }
+  if(sxMode==='solo'){
+    if(selSX!==null&&sxData){
+      // Already have result - show it
+      var card=document.getElementById('sx-input-card');if(card)card.style.display='none';
+      var sr=document.getElementById('sx-result');if(sr)sr.style.display='block';
+    } else if(selSX!==null&&!sxData){
+      // Have SX but no data - auto run
+      var card2=document.getElementById('sx-input-card');if(card2)card2.style.display='none';
+      runShengxiao();
+    } else {
+      var card3=document.getElementById('sx-input-card');if(card3)card3.style.display='block';
+    }
   }
 }
 
