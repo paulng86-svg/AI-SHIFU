@@ -1090,6 +1090,7 @@ body{background:#f5f0e6!important}
       </div>
     </div>
     <div class="home-eyebrow">传承命理 · 多维度命运解读</div>
+    <div id="home-greeting" style="text-align:center;margin:8px 0 12px;font-size:18px;font-weight:700;color:#9b2020;letter-spacing:.05em"></div>
     <div class="gold-divider"><div class="gold-divider-diamond"></div></div>
     <div style="display:flex;justify-content:center;gap:10px;opacity:.4;font-size:14px;margin-bottom:8px;color:#1a1a1a;letter-spacing:4px">☁ ❈ ☁ ❈ ☁</div>
     <div style="display:flex;justify-content:center;margin-bottom:14px">
@@ -2432,6 +2433,7 @@ function doEnterApp(){
   document.getElementById('ob-overlay').classList.add('hidden');
   document.getElementById('s-home').classList.remove('hidden');
   showToast('欢迎回来，'+obProfile.name+'！','ti-sparkles');
+  setTimeout(updateHomeGreeting,500);
   setTimeout(function(){
     if(obProfile&&obProfile.name)initFirebaseUser();
   },1000);
@@ -2463,6 +2465,7 @@ function obEnterApp(){
   document.getElementById('ob-overlay').classList.add('hidden');
   document.getElementById('s-home').classList.remove('hidden');
   showToast('欢迎来到命运馆，'+obProfile.name+'！','ti-sparkles');
+  setTimeout(updateHomeGreeting,500);
   setTimeout(function(){initFirebaseUser();},1000);
 }
 
@@ -2508,6 +2511,20 @@ function apiHeaders(){
     'anthropic-version':'2023-06-01',
     'anthropic-dangerous-direct-browser-access':'true'
   };
+}
+
+function updateHomeGreeting(){
+  var el=document.getElementById('home-greeting');
+  if(!el)return;
+  var name=obProfile&&obProfile.name?obProfile.name:'';
+  if(!name){el.style.display='none';return;}
+  var h=new Date().getHours();
+  var g;
+  if(h<12)g='早上好 🌅';
+  else if(h<18)g='下午好 ☀️';
+  else g='晚上好 🌙';
+  el.style.display='block';
+  el.textContent=g+'，'+name+'！';
 }
 
 function pad2(n){return n<10?'0'+n:''+n}
@@ -2641,6 +2658,7 @@ function navTo(tab){
     if(tab==='zodiac'){setTimeout(autoRunZodiac,450);}
     if(tab==='shengxiao'){setTimeout(autoRunSX,450);}
     if(tab==='fate'){setTimeout(function(){var fb=document.getElementById('f-bday');if(fb&&fb.value&&!fateData){loadFateSign();}},300);}
+    if(tab==='home'){updateHomeGreeting();}
   } else if(!cur&&map[tab]){
     // No current screen visible - just show the target
     var t=document.getElementById(map[tab]);
