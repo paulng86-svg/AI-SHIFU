@@ -1505,7 +1505,7 @@ body{background:#f5f0e6!important}
           <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(30,30,30,.5);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px">✦ 老傅特别说</div>
           <div id="z-remind" style="font-size:13px;font-weight:400;line-height:1.9;color:#333">
         </div>
-        <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
+        <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between">
           <div style="font-size:11px;font-weight:300;color:rgba(30,30,30,.2)">TOMORROW · 星座</div>
           <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(255,215,0,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-stars" style="font-size:14px;color:rgba(30,30,30,.4)"></i></div>
         </div>
@@ -1610,9 +1610,9 @@ body{background:#f5f0e6!important}
       <div id="sx-bazi-section" style="display:none">
         <div class="fl-label" style="margin-top:4px"><i class="ti ti-calendar" style="font-size:13px;color:rgba(245,158,11,.65)"></i> 对方出生日期<span style="color:rgba(240,100,100,.7)">*</span></div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
-          <input class="fl-input" id="sx-bazi-year" type="number" placeholder="年份" min="1920" max="2010" style="text-align:center;margin-bottom:0"/>
-          <input class="fl-input" id="sx-bazi-month" type="number" placeholder="月" min="1" max="12" style="text-align:center;margin-bottom:0"/>
-          <input class="fl-input" id="sx-bazi-day" type="number" placeholder="日" min="1" max="31" style="text-align:center;margin-bottom:0"/>
+          <input class="fl-input" id="sx-bazi-year" type="number" placeholder="年份" min="1920" max="2025" style="text-align:center;margin-bottom:0" oninput="if(this.value.length>=4){document.getElementById('sx-bazi-month').focus();}sxPreviewBazi();"/>
+          <input class="fl-input" id="sx-bazi-month" type="number" placeholder="月" min="1" max="12" style="text-align:center;margin-bottom:0" oninput="if(this.value.length>=2||(this.value>1&&this.value.length>=1&&this.value>9)){document.getElementById('sx-bazi-day').focus();}sxPreviewBazi();"/>
+          <input class="fl-input" id="sx-bazi-day" type="number" placeholder="日" min="1" max="31" style="text-align:center;margin-bottom:0" oninput="sxPreviewBazi();"/>
         </div>
         <div class="fl-label"><i class="ti ti-clock" style="font-size:13px;color:rgba(245,158,11,.65)"></i> 对方出生时辰 <span style="font-size:9px;color:#999;font-weight:400;text-transform:none;letter-spacing:0">（选填）</span></div>
         <div id="sx-bazi-scgrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px"></div>
@@ -1675,13 +1675,13 @@ body{background:#f5f0e6!important}
           </div>
         </div>
         <!-- scores -->
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:6px"><i class="ti ti-chart-bar" style="font-size:13px"></i>今年运势指数</div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9b2020;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:6px"><i class="ti ti-chart-bar" style="font-size:13px"></i>今年运势指数</div>
           <div id="sx-scores" style="display:flex;flex-direction:column;gap:8px"></div>
         </div>
         <!-- sections -->
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-trending-up" style="font-size:13px"></i>今年整体运势</div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9b2020;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-trending-up" style="font-size:13px"></i>今年整体运势</div>
           <div id="sx-overall" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.7)"></div>
         </div>
         <!-- hidden emotion -->
@@ -1694,21 +1694,21 @@ body{background:#f5f0e6!important}
           <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(30,30,30,.5);text-transform:uppercase;margin-bottom:.7rem">✦ 老傅特别说</div>
           <div id="sx-remind" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.7)">
         </div>
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-coin" style="font-size:13px"></i>事业财运</div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9b2020;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-coin" style="font-size:13px"></i>事业财运</div>
           <div id="sx-career" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.7)"></div>
         </div>
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-heart" style="font-size:13px"></i>性格与感情</div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9b2020;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-heart" style="font-size:13px"></i>性格与感情</div>
           <div id="sx-love" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.7)"></div>
         </div>
         <!-- 相合相冲 -->
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:6px"><i class="ti ti-arrows-exchange" style="font-size:13px"></i>与各生肖相处</div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9b2020;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:6px"><i class="ti ti-arrows-exchange" style="font-size:13px"></i>与各生肖相处</div>
           <div id="sx-compat" style="display:flex;flex-direction:column;gap:7px"></div>
         </div>
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-bulb" style="font-size:13px"></i>今年重点提醒</div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9b2020;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-bulb" style="font-size:13px"></i>今年重点提醒</div>
           <div id="sx-advice" style="font-size:13px;font-weight:400;line-height:1.9;color:rgba(255,255,255,.7)"></div>
           <div id="sx-kws" style="display:flex;gap:5px;margin-top:9px;flex-wrap:wrap"></div>
         </div>
@@ -1726,52 +1726,52 @@ body{background:#f5f0e6!important}
 
     <!-- SX PAIR RESULT -->
     <div id="sx-pair-result" style="display:none">
-      <div style="background:rgba(20,10,5,.92);border:1.5px solid rgba(245,158,11,.3);border-radius:20px;overflow:hidden;margin-bottom:12px;position:relative">
+      <div style="background:#fff;border:1.5px solid rgba(155,32,32,.2);border-radius:20px;overflow:hidden;margin-bottom:12px;position:relative">
         <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.8),rgba(239,68,68,.7),transparent)"></div>
         <!-- pair header -->
-        <div style="padding:1.1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;gap:16px">
+        <div style="padding:1.1rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;gap:16px">
           <div style="text-align:center">
             <div id="sxp-em-a" style="font-size:40px;line-height:1;margin-bottom:4px"></div>
-            <div id="sxp-name-a" style="font-size:13px;font-weight:600;color:#fff"></div>
+            <div id="sxp-name-a" style="font-size:13px;font-weight:600;color:#1a1a1a"></div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
             <i class="ti ti-yin-yang" style="font-size:20px;color:rgba(245,158,11,.8)"></i>
-            <div id="sxp-score-big" style="font-size:28px;font-weight:700;color:#fff"></div>
+            <div id="sxp-score-big" style="font-size:28px;font-weight:700;color:#9b2020"></div>
             <div style="font-size:9px;font-weight:500;letter-spacing:.1em;color:#888;text-transform:uppercase">缘分指数</div>
           </div>
           <div style="text-align:center">
             <div id="sxp-em-b" style="font-size:40px;line-height:1;margin-bottom:4px"></div>
-            <div id="sxp-name-b" style="font-size:13px;font-weight:600;color:#fff"></div>
+            <div id="sxp-name-b" style="font-size:13px;font-weight:600;color:#1a1a1a"></div>
           </div>
         </div>
         <!-- compat badge -->
-        <div style="padding:.8rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:center;gap:10px">
+        <div style="padding:.8rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06);display:flex;justify-content:center;gap:10px">
           <div id="sxp-compat-badge" style="font-size:13px;font-weight:600;padding:6px 20px;border-radius:100px"></div>
         </div>
         <!-- score bars -->
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
           <div id="sxp-bars" style="display:flex;flex-direction:column;gap:8px"></div>
         </div>
         <!-- sections -->
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-heart" style="font-size:13px"></i>感情缘分</div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9b2020;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-heart" style="font-size:13px"></i>感情缘分</div>
           <div id="sxp-love" style="font-size:13px;font-weight:400;line-height:1.9;color:#333"></div>
         </div>
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-briefcase" style="font-size:13px"></i>事业合作</div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9b2020;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-briefcase" style="font-size:13px"></i>事业合作</div>
           <div id="sxp-career" style="font-size:13px;font-weight:400;line-height:1.9;color:#333"></div>
         </div>
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-home" style="font-size:13px"></i>日常相处</div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9b2020;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-home" style="font-size:13px"></i>日常相处</div>
           <div id="sxp-daily" style="font-size:13px;font-weight:400;line-height:1.9;color:#333"></div>
         </div>
-        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(245,158,11,.6);text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-bulb" style="font-size:13px"></i>相处秘诀</div>
+        <div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9b2020;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:6px"><i class="ti ti-bulb" style="font-size:13px"></i>相处秘诀</div>
           <div id="sxp-tip" style="font-size:13px;font-weight:400;line-height:1.9;color:#333"></div>
         </div>
         <div style="padding:.8rem 1.2rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap" id="sxp-kws"></div>
-        <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:11px;font-weight:300;color:#aaa">命运馆 · 生肖配对</div>
+        <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:11px;font-weight:300;color:rgba(0,0,0,.4)">命运馆 · 生肖配对</div>
           <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-yin-yang" style="font-size:14px;color:rgba(245,158,11,.4)"></i></div>
         </div>
       </div>
@@ -1836,7 +1836,7 @@ body{background:#f5f0e6!important}
           <div id="sx-bp-advice" style="font-size:13px;line-height:1.9;color:#333"></div>
         </div>
         <div style="padding:.8rem 1.2rem;display:flex;gap:8px;flex-wrap:wrap" id="sx-bp-kws"></div>
-        <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between">
+        <div style="padding:.8rem 1.2rem;border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between">
           <div style="font-size:11px;color:rgba(255,255,255,.18)">TOMORROW · 命盘配对</div>
           <div style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(220,30,0,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-sparkles" style="font-size:13px;color:rgba(220,30,0,.4)"></i></div>
         </div>
