@@ -458,8 +458,8 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:#fff;
 .ob-sopt{background:rgba(0,0,0,.35);border:1.5px solid rgba(255,215,0,.15);border-radius:11px;
   padding:13px 10px;text-align:center;cursor:pointer;transition:all .2s;
   display:flex;flex-direction:column;align-items:center;gap:5px}
-.ob-sopt i{font-size:22px;color:rgba(255,255,255,.28)}
-.ob-sopt span{font-size:13px;font-weight:500;color:rgba(255,255,255,.4)}
+.ob-sopt i{font-size:22px;color:#9b2020}
+.ob-sopt span{font-size:13px;font-weight:600;color:#3d2a10}
 .ob-sopt.on{background:rgba(192,57,43,.35);border-color:rgba(30,30,30,.45)}
 .ob-sopt.on i{color:#1a1a1a}
 .ob-sopt.on span{color:#1a1a1a}
@@ -3480,6 +3480,7 @@ function adminLogin(){
     document.getElementById('admin-gate').style.display = 'none';
     document.getElementById('admin-dash').style.display = 'block';
     loadAdminData();
+    loadAdminChats();
   } else {
     showToast('密码错误','ti-lock');
   }
