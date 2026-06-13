@@ -637,9 +637,9 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:#fff;
   --bg: #f5f0e6;
   --bg2: #ede8d8;
   --card: #ffffff;
-  --text: #3d2a10;
-  --text2: #7a5c30;
-  --text3: #a07840;
+  --text: #ffffff;
+  --text2: rgba(255,240,210,.85);
+  --text3: rgba(255,220,160,.7);
   --gold: #c8940a;
   --gold2: #e6b830;
   --red: #9b2020;
@@ -651,7 +651,7 @@ body{background:#f5f0e6!important}
 /* Screens */
 .screen{
   background:#f5f0e6!important;
-  color:#3d2a10!important;
+  color:#fff!important;
   background-image:
     radial-gradient(circle at 20% 20%, rgba(200,148,10,.06) 0%, transparent 50%),
     radial-gradient(circle at 80% 80%, rgba(155,32,32,.05) 0%, transparent 50%)!important;
@@ -660,11 +660,11 @@ body{background:#f5f0e6!important}
 /* Onboarding */
 .ob{
   background:#f5f0e6!important;
-  color:#3d2a10!important;
+  color:#fff!important;
 }
 
 /* Member/Admin */
-#s-member,#s-admin{background:#f5f0e6!important;color:#3d2a10!important}
+#s-member,#s-admin{background:#f5f0e6!important;color:#fff!important}
 
 /* Top bar */
 .top-bar{
@@ -673,11 +673,11 @@ body{background:#f5f0e6!important}
   backdrop-filter:blur(6px);
 }
 .brand-name{color:#9b2020!important;font-weight:700!important}
-.brand-sub{color:#a07840!important}
+.brand-sub{color:rgba(255,200,140,.7)!important}
 .brand-mark{background:linear-gradient(135deg,#9b2020,#c8940a)!important;color:#fff!important}
 
 /* Clock */
-#clock-date{color:#7a5c30!important}
+#clock-date{color:rgba(255,220,180,.85)!important}
 #clock-time{color:#9b2020!important}
 
 /* Cards */
@@ -685,9 +685,9 @@ body{background:#f5f0e6!important}
   background:#fff!important;
   border:1px solid rgba(180,140,60,.25)!important;
   box-shadow:0 2px 12px rgba(155,32,32,.06)!important;
-  color:#3d2a10!important;
+  color:#fff!important;
 }
-.gcard *,.gcard-glow *{color:#3d2a10!important}
+.gcard *,.gcard-glow *{color:#fff!important}
 
 /* Feature cards */
 .feat-card{
@@ -695,8 +695,8 @@ body{background:#f5f0e6!important}
   border:1px solid rgba(180,140,60,.2)!important;
   box-shadow:0 2px 8px rgba(155,32,32,.06)!important;
 }
-.feat-title{color:#3d2a10!important;font-weight:700!important}
-.feat-sub{color:#7a5c30!important}
+.feat-title{color:#fff!important;font-weight:700!important}
+.feat-sub{color:rgba(255,220,180,.85)!important}
 .feat-card i{color:#9b2020!important}
 
 /* Buttons */
@@ -719,21 +719,21 @@ body{background:#f5f0e6!important}
 .ob-fi,.fl-input,.ob-ta{
   background:#fff!important;
   border:1.5px solid rgba(180,140,60,.3)!important;
-  color:#3d2a10!important;
+  color:#fff!important;
 }
-.ob-fi::placeholder,.fl-input::placeholder,.ob-ta::placeholder{color:rgba(61,42,16,.35)!important}
-.ob-fi:focus,.fl-input:focus{border-color:rgba(155,32,32,.5)!important}
+.ob-fi::placeholder,.fl-input::placeholder,.ob-ta::placeholder{color:rgba(255,255,255,.4)!important}
+.ob-fi:focus,.fl-input:focus{border-border-color:rgba(255,150,100,.5)!important}
 
 /* Labels */
-.ob-stitle,.fl-label{color:#3d2a10!important;font-weight:700!important}
-.ob-ssub,.ob-hint{color:#7a5c30!important}
-.ob-label{color:#3d2a10!important;font-weight:600!important}
+.ob-stitle,.fl-label{color:#fff!important;font-weight:700!important}
+.ob-ssub,.ob-hint{color:rgba(255,220,180,.85)!important}
+.ob-label{color:#fff!important;font-weight:600!important}
 
 /* Ob step buttons */
 .ob-sopt{
   background:#fff!important;
   border:1.5px solid rgba(180,140,60,.25)!important;
-  color:#3d2a10!important;
+  color:#fff!important;
 }
 .ob-sopt.on{
   background:linear-gradient(135deg,rgba(155,32,32,.1),rgba(200,148,10,.1))!important;
@@ -753,7 +753,7 @@ body{background:#f5f0e6!important}
   border-top:1px solid rgba(180,140,60,.25)!important;
   box-shadow:0 -2px 12px rgba(155,32,32,.08)!important;
 }
-#app-bottom-nav button{color:rgba(61,42,16,.4)!important}
+#app-bottom-nav button{color:rgba(255,255,255,.4)!important}
 
 /* Score bars */
 .rcs-bar,.sc-bar-fill{
@@ -764,7 +764,7 @@ body{background:#f5f0e6!important}
 .sign-tag,.dc-tag,.ob-pchip{
   background:rgba(200,148,10,.1)!important;
   border-color:rgba(200,148,10,.25)!important;
-  color:#7a5c30!important;
+  color:rgba(255,220,180,.85)!important;
 }
 
 /* Section dividers */
@@ -786,7 +786,7 @@ body{background:#f5f0e6!important}
 .ob-sc-btn{
   background:#fff!important;
   border:1.5px solid rgba(180,140,60,.2)!important;
-  color:#3d2a10!important;
+  color:#fff!important;
 }
 
 /* Member page */
