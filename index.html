@@ -1934,8 +1934,22 @@ body{background:#f5f0e6!important}
   var params = new URLSearchParams(window.location.search);
   if(params.get('admin') === 'tomorrow2024'){
     sessionStorage.setItem('is_admin', '1');
+    // Show admin panel directly after page loads
+    window.addEventListener('DOMContentLoaded', function(){
+      setTimeout(function(){
+        // Hide ob-overlay
+        var ob=document.getElementById('ob-overlay');
+        if(ob)ob.classList.add('hidden');
+        // Show s-admin directly
+        var admin=document.getElementById('s-admin');
+        if(admin){admin.style.display='block';admin.classList.remove('hidden');}
+        // Hide all screens
+        document.querySelectorAll('.screen').forEach(function(s){s.classList.add('hidden');});
+      }, 300);
+    });
   }
 })();
+
 
 
 // ── ONBOARDING NAVIGATION ──
@@ -3452,8 +3466,10 @@ function memberLogout(){
 }
 function openAdmin(){
   document.getElementById('s-member').style.display='none';
+  // Hide ob overlay if showing
+  var ob=document.querySelector('.ob');if(ob)ob.style.display='none';
   var adm=document.getElementById('s-admin');
-  adm.style.cssText='display:block;position:fixed;inset:0;z-index:9999;background:#c0392b;overflow-y:auto;color:#fff;padding:1rem 1rem 5rem';
+  adm.style.cssText='display:block;position:fixed;inset:0;z-index:9999;background:#f5f0e6;overflow-y:auto;color:#1a1a1a;padding:1rem 1rem 5rem';
 }
 
 function adminLogin(){
