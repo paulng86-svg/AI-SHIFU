@@ -1482,7 +1482,7 @@ body{background:#f5f0e6!important}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#c0392b,#cc3300);box-shadow:0 4px 18px rgba(192,57,43,.4);grid-column:span 2" onclick="shareZodiac()"><i class="ti ti-share"></i>分享星座运势</div>
         <div class="sh-btn sh-sec" onclick="copyZodiac()"><i class="ti ti-copy"></i>复制</div>
-        <div class="sh-btn sh-sec" onclick="showZodiacView('input')"><i class="ti ti-arrow-left"></i>返回</div>
+        <div class="sh-btn sh-sec" onclick="navTo('home')" style="color:#fff"><i class="ti ti-arrow-left"></i>返回首页</div>
       </div>
     </div>
 
@@ -2506,19 +2506,21 @@ function enterSXTab(from){
 
 // 自动运行逻辑
 function autoRunZodiac(){
+  // Auto-get zodiac from profile if not set
+  if(selZodiac===null&&obProfile&&obProfile.zodiac&&typeof ZODIACS!=='undefined'){
+    var zi=ZODIACS.findIndex(function(z){return z.zh===obProfile.zodiac.zh;});
+    if(zi>=0)selZodiac=zi;
+  }
   if(zMode==='pair'){
-    if(zPairData){
-      showZodiacView('pair-result');
-    } else {
-      showZodiacView('input');
-    }
+    if(zPairData) showZodiacView('pair-result');
+    else showZodiacView('input');
     return;
   }
-  // Solo mode only
-  if(zodiacData){
+  // Solo mode
+  if(selZodiac!==null&&zodiacData){
     showZodiacView('solo-result');
     renderZodiac(ZODIACS[selZodiac]);
-  } else if(selZodiac!==null){
+  } else if(selZodiac!==null&&!zodiacData){
     showZodiacView('loading');
     runZodiac();
   } else {
