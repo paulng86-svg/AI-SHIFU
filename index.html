@@ -1886,6 +1886,32 @@ body{background:#f5f0e6!important}
           <div style="text-align:center;font-size:12px;color:rgba(255,255,255,.25);padding:1rem 0">暂无留言</div>
         </div>
       </div>
+      <!-- LiveChat Admin -->
+      <div style="background:#fff;border:1px solid rgba(155,32,32,.15);border-radius:14px;overflow:hidden;margin-bottom:14px">
+        <div style="background:linear-gradient(135deg,#9b2020,#c8940a);padding:.8rem 1.1rem;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:13px;font-weight:700;color:#fff">💬 LiveChat 回复</div>
+          <div onclick="loadAdminChats()" style="font-size:11px;color:rgba(255,255,255,.7);cursor:pointer;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:3px 8px">刷新</div>
+        </div>
+        <!-- Chat list -->
+        <div id="admin-chat-list" style="max-height:180px;overflow-y:auto;border-bottom:1px solid rgba(0,0,0,.06)">
+          <div style="padding:1rem;text-align:center;font-size:12px;color:rgba(0,0,0,.3)">加载中...</div>
+        </div>
+        <!-- Selected chat messages -->
+        <div id="admin-chat-window" style="display:none;flex-direction:column">
+          <div style="padding:8px 12px;background:#f9f6f0;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:8px">
+            <div onclick="closeAdminChat()" style="cursor:pointer;color:#9b2020;font-size:12px">← 返回</div>
+            <div id="admin-chat-title" style="font-size:13px;font-weight:600;color:#333"></div>
+          </div>
+          <div id="admin-chat-msgs" style="height:200px;overflow-y:auto;padding:12px;background:#f9f6f0;display:flex;flex-direction:column;gap:8px"></div>
+          <div style="padding:8px 10px;background:#fff;border-top:1px solid rgba(0,0,0,.06);display:flex;gap:8px">
+            <input id="admin-reply-input" placeholder="输入回复..." style="flex:1;border:1px solid rgba(155,32,32,.2);border-radius:20px;padding:7px 12px;font-size:12px;outline:none;font-family:inherit;color:#333;background:#f9f6f0" onkeydown="if(event.key==='Enter')adminSendReply()">
+            <div onclick="adminSendReply()" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#9b2020,#c8940a);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+              <i class="ti ti-send" style="font-size:13px;color:#fff"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div style="background:rgba(0,0,0,.4);border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:1rem 1.1rem;margin-bottom:14px">
         <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:10px">✅ 手动批准会员</div>
         <div style="display:flex;gap:8px">
@@ -3431,6 +3457,7 @@ function openAdmin(){
 }
 
 function adminLogin(){
+
   var pw = document.getElementById('admin-pw').value;
   if(pw === ADMIN_PASSWORD){
     adminLoggedIn = true;
