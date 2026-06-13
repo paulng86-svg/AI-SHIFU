@@ -2283,7 +2283,7 @@ function obNextStep(){
     var yr=yearEl?parseInt(yearEl.value):0;
     var mo=monthEl?parseInt(monthEl.value):0;
     var dy=dayEl?parseInt(dayEl.value):0;
-    if(!yr||yr<1920||yr>2010){showToast('请填写正确的出生年份','ti-calendar');return;}
+    if(!yr||yr<1920||yr>2025){showToast('请填写正确的出生年份','ti-calendar');return;}
     if(!mo||mo<1||mo>12){showToast('请填写正确的出生月份','ti-calendar');return;}
     if(!dy||dy<1||dy>31){showToast('请填写正确的出生日期','ti-calendar');return;}
     obProfile.year=yr;obProfile.month=mo;obProfile.day=dy;
