@@ -1106,7 +1106,7 @@ body{background:#f5f0e6!important}
         <div class="feat-desc">每日能量<br>未来3天预测</div>
         <div class="feat-arrow" style="position:absolute;bottom:10px;right:12px;color:rgba(30,30,30,.5);font-size:14px">→</div>
       </div>
-      <div class="feat-card dc" onclick="goTo('s-input','s-home')">
+      <div class="feat-card dc" onclick="autoStartDestiny()">
         <div class="fiw fiw-p">🔮</div>
         <div class="feat-title">命运分析</div>
         <div class="feat-desc">30天运势<br>生辰八字推算</div>
@@ -2689,6 +2689,32 @@ function enterSXTab(from){
 }
 
 // 自动运行逻辑
+function autoStartDestiny(){
+  // If we have profile data, skip input and go straight to analysis
+  if(obProfile&&obProfile.year&&obProfile.month&&obProfile.day){
+    // Fill in the data
+    var bday=obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day);
+    var bdayEl=document.getElementById('a-bday');if(bdayEl)bdayEl.value=bday;
+    var lbday=document.getElementById('l-bday');if(lbday)lbday.value=bday;
+    if(obProfile.gender){
+      gender=obProfile.gender;
+      document.querySelectorAll('.gender-pill').forEach(function(b){
+        b.classList.toggle('on',b.getAttribute('data-v')===obProfile.gender);
+      });
+    }
+    if(obProfile.concern){
+      var worry=document.getElementById('a-worry');if(worry)worry.value=obProfile.concern;
+    }
+    if(obProfile.shichenIdx!==undefined&&obProfile.shichenIdx!==null){
+      selectedShichen=obProfile.shichenIdx;
+    }
+    // Go straight to loading and analysis
+    startAnalysis();
+  } else {
+    goTo('s-input','s-home');
+  }
+}
+
 function autoRunZodiac(){
   // Auto-get zodiac from profile if not set
   if(selZodiac===null&&obProfile&&obProfile.zodiac&&typeof ZODIACS!=='undefined'){
