@@ -797,6 +797,14 @@ body{background:#f5f0e6!important}
 
 /* Result cards background */
 .sh-result,.sx-result-wrap{background:#fff!important;border-color:rgba(180,140,60,.2)!important}
+
+/* Dark cards - white text */
+.gcard[style*="rgba(0,0,0"]{color:#fff!important}
+.gcard[style*="rgba(10,8"]{color:#fff!important}
+.sh-btn{color:#fff!important}
+.sh-sec{color:#fff!important}
+.sh-pri{color:#fff!important}
+.redo-link{color:#fff!important}
 </style>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -1681,7 +1689,7 @@ body{background:#f5f0e6!important}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#f59e0b,#ef4444);box-shadow:0 4px 18px rgba(245,158,11,.3);grid-column:span 2" onclick="shareSX()"><i class="ti ti-share"></i>分享生肖运势</div>
         <div class="sh-btn sh-sec" onclick="copySX()"><i class="ti ti-copy"></i>复制</div>
-        <div class="sh-btn sh-sec" onclick="navTo('home')"><i class="ti ti-arrow-left"></i>返回首页</div>
+        <div class="sh-btn sh-sec" onclick="navTo('home')" style="color:#fff"><i class="ti ti-arrow-left"></i>返回首页</div>
       </div>
     </div>
 
