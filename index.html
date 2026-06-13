@@ -1880,6 +1880,12 @@ body{background:#f5f0e6!important}
 
 
 // ── ONBOARDING NAVIGATION ──
+function obShowSplash(){
+  var splash=document.getElementById('ob-splash');if(splash)splash.style.display='flex';
+  var login=document.getElementById('ob-login');if(login){login.style.display='none';login.classList.remove('show');}
+  var form=document.getElementById('ob-form');if(form){form.style.display='none';form.classList.remove('show');}
+}
+
 function obShowForm(){
   document.getElementById('ob-splash').style.display='none';
   var login=document.getElementById('ob-login');if(login){login.style.display='none';}
