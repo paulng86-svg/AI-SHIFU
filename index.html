@@ -4720,6 +4720,30 @@ function runZodiacPair(){
   callZodiacPairAI(ZODIACS[selZodiac],ZODIACS[selZodiacB]);
 }
 
+
+function loadAdminChats(){
+  if(typeof db==='undefined')return;
+  db.ref('livechat').on('value',function(snap){
+    var list=document.getElementById('admin-chat-list');
+    if(!list)return;
+    if(!snap||!snap.val()){
+      list.innerHTML='<div style="padding:1rem;text-align:center;font-size:12px;color:rgba(0,0,0,.3)">暂无聊天</div>';
+      return;
+    }
+    list.innerHTML='';
+    snap.forEach(function(child){
+      var info=child.val().info||{};
+      var chatKey=child.key;
+      var div=document.createElement('div');
+      div.style.cssText='padding:10px 12px;border-bottom:1px solid rgba(0,0,0,.06);cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:#fff';
+      div.innerHTML='<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#333">'+(info.name||chatKey)+'</div><div style="font-size:11px;color:rgba(0,0,0,.4);margin-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:200px">'+(info.lastMsg||'点击查看')+'</div></div>'+(info.unread?'<div style="width:8px;height:8px;border-radius:50%;background:#e74c3c;flex-shrink:0;margin-left:8px"></div>':'');
+      div.onmouseover=function(){this.style.background='#f9f6f0';}
+      div.onmouseout=function(){this.style.background='#fff';}
+      div.onclick=(function(k,n){return function(){openAdminChat(k,n);};})(chatKey,info.name||chatKey);
+      list.appendChild(div);
+    });
+  });
+}
 </script>
 
 <!-- ── LIVECHAT ── -->
@@ -4876,33 +4900,3 @@ function runZodiacPair(){
   </div>
 </div>
 </body>
-
-function loadAdminChats(){
-  if(typeof db==='undefined'){console.log('db not ready');return;}
-  db.ref('livechat').on('value',function(snap){
-    var list=document.getElementById('admin-chat-list');
-    if(!list)return;
-    if(!snap||!snap.val()){
-      list.innerHTML='<div style="padding:1rem;text-align:center;font-size:12px;color:rgba(0,0,0,.3)">暂无聊天</div>';
-      return;
-    }
-    list.innerHTML='';
-    var unreadCount=0;
-    snap.forEach(function(child){
-      var data=child.val();
-      var info=data.info||{};
-      var chatKey=child.key;
-      if(info.unread)unreadCount++;
-      var div=document.createElement('div');
-      div.style.cssText='padding:10px 12px;border-bottom:1px solid rgba(0,0,0,.06);cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:#fff';
-      div.innerHTML='<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#333">'+(info.name||chatKey)+'</div><div style="font-size:11px;color:rgba(0,0,0,.4);margin-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:200px">'+(info.lastMsg||'点击查看')+'</div></div>'+(info.unread?'<div style="width:8px;height:8px;border-radius:50%;background:#e74c3c;flex-shrink:0;margin-left:8px"></div>':'');
-      div.onmouseover=function(){this.style.background='#f9f6f0';}
-      div.onmouseout=function(){this.style.background='#fff';}
-      div.onclick=(function(k,n){return function(){openAdminChat(k,n);};})(chatKey,info.name||chatKey);
-      list.appendChild(div);
-    });
-    var sp=document.getElementById('stat-pending');if(sp)sp.textContent=unreadCount;
-  });
-}
-
->
