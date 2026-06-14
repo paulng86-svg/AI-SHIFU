@@ -4876,7 +4876,8 @@ function runZodiacPair(){
   </div>
 </div>
 </body>
-</htmlfunction loadAdminChats(){
+
+function loadAdminChats(){
   if(typeof db==='undefined'){console.log('db not ready');return;}
   db.ref('livechat').on('value',function(snap){
     var list=document.getElementById('admin-chat-list');
