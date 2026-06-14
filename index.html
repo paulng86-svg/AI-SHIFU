@@ -1913,9 +1913,20 @@ body{background:#f5f0e6!important}
 
       <div style="background:rgba(255,255,255,.9);border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:1rem 1.1rem;margin-bottom:14px">
         <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:10px">✅ 手动批准会员</div>
+
+        <!-- VIP Requests from users -->
+        <div id="vip-requests-section" style="margin-bottom:12px">
+          <div style="font-size:11px;color:#888;margin-bottom:6px">📩 用户申请列表（点击一键批准）</div>
+          <div id="vip-requests-list" style="display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:11px;color:#aaa">加载中...</div>
+          </div>
+        </div>
+
+        <!-- Manual approve by name -->
+        <div style="font-size:11px;color:#888;margin-bottom:6px">或手动输入用户名批准：</div>
         <div style="display:flex;gap:8px">
           <input id="approve-name" type="text" placeholder="用户名字 / 联系方式" style="flex:1;background:rgba(255,255,255,.9);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:9px 12px;color:#333;font-size:13px;font-family:inherit;outline:none"/>
-          <button onclick="adminApprove()" style="background:linear-gradient(135deg,#c0392b,#cc3300);border:1px solid rgba(255,215,0,.3);border-radius:10px;color:#1a1a1a;padding:9px 14px;cursor:pointer;font-weight:600;font-size:13px">批准</button>
+          <button onclick="adminApprove()" style="background:linear-gradient(135deg,#c0392b,#cc3300);border:1px solid rgba(255,215,0,.3);border-radius:10px;color:#fff;padding:9px 14px;cursor:pointer;font-weight:600;font-size:13px">批准</button>
         </div>
         <div id="approved-list" style="margin-top:10px;display:flex;flex-direction:column;gap:6px"></div>
       </div>
@@ -4805,6 +4816,47 @@ function adminSendReply(){
 function escapeHtml(str){
   if(!str)return'';
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function loadVIPRequests(){
+  if(typeof db==='undefined')return;
+  db.ref('admin/vip_requests').on('value',function(snap){
+    var list=document.getElementById('vip-requests-list');
+    if(!list)return;
+    if(!snap||!snap.val()){
+      list.innerHTML='<div style="font-size:11px;color:#aaa">暂无申请</div>';
+      return;
+    }
+    list.innerHTML='';
+    snap.forEach(function(child){
+      var req=child.val();
+      if(req.status==='approved')return;
+      var div=document.createElement('div');
+      div.style.cssText='display:flex;align-items:center;justify-content:space-between;background:#f9f6f0;border-radius:8px;padding:8px 10px;border:1px solid rgba(155,32,32,.1)';
+      div.innerHTML='<div><div style="font-size:12px;font-weight:600;color:#333">'+req.name+'</div><div style="font-size:10px;color:#888">积分：'+(req.credits||0)+' · '+new Date(req.ts).toLocaleDateString('zh-MY')+'</div></div>'+
+        '<button style="background:linear-gradient(135deg,#9b2020,#c8940a);border:none;border-radius:6px;color:#fff;font-size:11px;font-weight:600;padding:6px 10px;cursor:pointer;font-family:inherit">批准VIP</button>';
+      div.querySelector('button').onclick=(function(userKey,name,key){
+        return function(){
+          // Grant VIP
+          db.ref('users/'+userKey+'/member').update({
+            isVIP:true,
+            vipExpiry:Date.now()+(30*24*60*60*1000),
+            vipGrantedBy:'admin',
+            vipGrantedAt:Date.now()
+          });
+          // Mark request as approved
+          db.ref('admin/vip_requests/'+key+'/status').set('approved');
+          // Also save in approved list
+          db.ref('approved/'+name.replace(/[^a-zA-Z0-9一-鿿]/g,'_')).set({
+            name:name,approvedAt:Date.now(),
+            expiry:Date.now()+(30*24*60*60*1000)
+          });
+          showToast('✓ 已批准 '+name+' 为VIP会员 30天','ti-crown');
+        };
+      })(req.userKey||child.key, req.name, child.key);
+      list.appendChild(div);
+    });
+  });
 }
 </script>
 
