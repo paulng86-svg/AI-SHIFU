@@ -5057,14 +5057,12 @@ function loadAllUsers(){
       <button onclick="requestVIP()" style="width:100%;margin-top:8px;background:#fff;border:1.5px solid rgba(155,32,32,.3);border-radius:10px;color:#9b2020;font-size:13px;font-weight:600;padding:12px;cursor:pointer;font-family:inherit">
         📩 申请 VIP（发送请求给管理员）
       </button>
+      <button onclick="document.getElementById('s-member').style.display='none';toggleChat();" style="width:100%;margin-top:8px;background:#fff;border:1.5px solid rgba(37,211,102,.3);border-radius:10px;color:#25d366;font-size:13px;font-weight:600;padding:12px;cursor:pointer;font-family:inherit">
+        💬 实时联系顾问（LiveChat）
+      </button>
     </div>
 
-    <!-- Consultant Message -->
-    <div style="background:#fff;border-radius:14px;padding:1rem 1.1rem;margin-bottom:14px;border:1px solid rgba(155,32,32,.1)">
-      <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:10px">💬 联系顾问</div>
-      <textarea id="mem-msg" placeholder="有问题想问命理顾问？留言吧..." style="width:100%;height:80px;background:#f9f6f0;border:1px solid rgba(155,32,32,.15);border-radius:10px;padding:10px;font-size:13px;color:#333;outline:none;resize:none;font-family:inherit;box-sizing:border-box"></textarea>
-      <button onclick="sendConsultMsg()" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#9b2020,#c8940a);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:600;padding:12px;cursor:pointer;font-family:inherit">发送留言</button>
-    </div>
+
 
   </div>
 </div>
