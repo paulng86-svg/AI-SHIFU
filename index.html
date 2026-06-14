@@ -1931,7 +1931,7 @@ body{background:#f5f0e6!important}
 // ── ADMIN URL DETECTION ──
 (function(){
   var params = new URLSearchParams(window.location.search);
-  if(params.get('admin') === 'tomorrow2024'){
+  if(params.get('admin') === '123789'){
     sessionStorage.setItem('is_admin', '1');
     // Show admin panel directly after page loads
     window.addEventListener('DOMContentLoaded', function(){
@@ -3289,7 +3289,7 @@ function selectMode(m){
 // ══════════════════════════════════════════
 //  MEMBERSHIP & CREDIT SYSTEM (Firebase)
 // ══════════════════════════════════════════
-var ADMIN_PASSWORD = 'tomorrow2024';
+var ADMIN_PASSWORD = '123789';
 var memberData = {isPro:false, credits:0, usageCount:0, lastAdTime:0, lastLoginBonus:''};
 var currentUserKey = null;
 
