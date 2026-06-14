@@ -1926,6 +1926,19 @@ body{background:#f5f0e6!important}
 
 <script>
 
+// ── AUTO LOGIN ──
+window.addEventListener('DOMContentLoaded', function(){
+  try{
+    var savedName=localStorage.getItem('destiny_saved_name');
+    if(savedName&&savedName.length>0){
+      // Auto search and show login
+      setTimeout(function(){
+        obShowLogin();
+      }, 800);
+    }
+  }catch(e){}
+});
+
 // ── ADMIN URL DETECTION ──
 (function(){
   var params = new URLSearchParams(window.location.search);
@@ -1969,8 +1982,16 @@ function obShowLogin(){
   var form=document.getElementById('ob-form');if(form){form.style.display='none';}
   var login=document.getElementById('ob-login');
   if(login){login.style.display='flex';login.classList.add('show');}
-  // Clear search
-  var inp=document.getElementById('ob-login-input');if(inp)inp.value='';
+  // Auto-fill saved name
+  var inp=document.getElementById('ob-login-input');
+  if(inp){
+    var savedName='';
+    try{savedName=localStorage.getItem('destiny_saved_name')||'';}catch(e){}
+    inp.value=savedName;
+    if(savedName){
+      setTimeout(function(){obSearchProfile();},300);
+    }
+  }
   var pw=document.getElementById('ob-login-password');if(pw)pw.value='';
   var fc=document.getElementById('ob-found-card');if(fc)fc.classList.remove('show');
   var nf=document.getElementById('ob-not-found');if(nf)nf.classList.remove('show');
@@ -2459,6 +2480,13 @@ function obLoginConfirm(){
 }
 
 function doEnterApp(){
+  // Save name if remember me checked
+  var rememberMe=document.getElementById('ob-remember-me');
+  if(rememberMe&&rememberMe.checked){
+    try{localStorage.setItem('destiny_saved_name',obProfile.name||'');}catch(e){}
+  } else {
+    try{localStorage.removeItem('destiny_saved_name');}catch(e){}
+  }
   obApplyProfileToApp(obProfile);
   userData={
     bday:obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day),
@@ -4722,6 +4750,7 @@ function runZodiacPair(){
 function loadAdminChats(){
   if(typeof db==='undefined')return;
   db.ref('livechat').on('value',function(snap){
+    checkNewAdminMsgs(snap);
     var list=document.getElementById('admin-chat-list');
     if(!list)return;
     if(!snap||!snap.val()){
@@ -4894,6 +4923,52 @@ function loadAllUsers(){
     });
     var ct=document.getElementById('stat-users');if(ct)ct.textContent=count;
   });
+}
+
+// ── ADMIN NOTIFICATION SOUND ──
+function playNotifSound(){
+  try{
+    var ctx=new(window.AudioContext||window.webkitAudioContext)();
+    // Play two-tone chime
+    [523.25, 659.25].forEach(function(freq, i){
+      var osc=ctx.createOscillator();
+      var gain=ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value=freq;
+      osc.type='sine';
+      gain.gain.setValueAtTime(0,ctx.currentTime+i*0.15);
+      gain.gain.linearRampToValueAtTime(0.3,ctx.currentTime+i*0.15+0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.15+0.4);
+      osc.start(ctx.currentTime+i*0.15);
+      osc.stop(ctx.currentTime+i*0.15+0.4);
+    });
+  }catch(e){}
+}
+
+var adminLastMsgCount={};
+
+function checkNewAdminMsgs(snap){
+  if(!snap||!snap.val())return;
+  var hasNew=false;
+  snap.forEach(function(child){
+    var chatKey=child.key;
+    var msgs=child.val().messages||{};
+    var info=child.val().info||{};
+    var count=Object.keys(msgs).length;
+    if(adminLastMsgCount[chatKey]!==undefined && count>adminLastMsgCount[chatKey]){
+      // New message from user
+      var lastMsg=Object.values(msgs).pop();
+      if(lastMsg&&lastMsg.from==='user'){
+        hasNew=true;
+      }
+    }
+    adminLastMsgCount[chatKey]=count;
+  });
+  if(hasNew){
+    playNotifSound();
+    showToast('💬 有新消息！','ti-message-circle');
+  }
 }
 </script>
 
