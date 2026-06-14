@@ -4744,6 +4744,68 @@ function loadAdminChats(){
     });
   });
 }
+
+var adminCurChat=null, adminChatListener=null;
+
+function openAdminChat(chatKey,name){
+  adminCurChat=chatKey;
+  var list=document.getElementById('admin-chat-list');if(list)list.style.display='none';
+  var win=document.getElementById('admin-chat-window');if(win)win.style.display='flex';
+  var title=document.getElementById('admin-chat-title');if(title)title.textContent=name;
+  if(typeof db!=='undefined'){
+    db.ref('livechat/'+chatKey+'/info/unread').set(false);
+  }
+  if(adminChatListener&&typeof db!=='undefined'){
+    db.ref('livechat/'+adminCurChat+'/messages').off('value',adminChatListener);
+    adminChatListener=null;
+  }
+  var msgs=document.getElementById('admin-chat-msgs');if(!msgs)return;
+  msgs.innerHTML='';
+  if(typeof db==='undefined')return;
+  adminChatListener=db.ref('livechat/'+chatKey+'/messages').limitToLast(50).on('value',function(snap){
+    msgs.innerHTML='';
+    snap.forEach(function(child){
+      var msg=child.val();
+      var isUser=msg.from==='user';
+      if(isUser){
+        msgs.innerHTML+='<div style="display:flex;justify-content:flex-end;margin-bottom:6px"><div style="background:linear-gradient(135deg,#9b2020,#c8940a);border-radius:12px 12px 0 12px;padding:7px 11px;max-width:80%;font-size:12px;color:#fff;line-height:1.5">'+escapeHtml(msg.text)+'</div></div>';
+      } else {
+        msgs.innerHTML+='<div style="display:flex;gap:6px;align-items:flex-end;margin-bottom:6px"><div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#9b2020,#c8940a);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;color:#fff">☯</div><div style="background:#fff;border-radius:12px 12px 12px 0;padding:7px 11px;max-width:80%;font-size:12px;color:#333;box-shadow:0 1px 3px rgba(0,0,0,.08);line-height:1.5">'+escapeHtml(msg.text)+'</div></div>';
+      }
+    });
+    msgs.scrollTop=msgs.scrollHeight;
+  });
+}
+
+function closeAdminChat(){
+  if(adminChatListener&&typeof db!=='undefined'&&adminCurChat){
+    db.ref('livechat/'+adminCurChat+'/messages').off('value',adminChatListener);
+    adminChatListener=null;
+  }
+  adminCurChat=null;
+  var list=document.getElementById('admin-chat-list');if(list)list.style.display='block';
+  var win=document.getElementById('admin-chat-window');if(win)win.style.display='none';
+}
+
+function adminSendReply(){
+  if(!adminCurChat)return;
+  var inp=document.getElementById('admin-reply-input');
+  var text=inp?inp.value.trim():'';
+  if(!text)return;
+  inp.value='';
+  if(typeof db==='undefined')return;
+  db.ref('livechat/'+adminCurChat+'/messages').push({
+    from:'admin',text:text,ts:Date.now()
+  });
+  db.ref('livechat/'+adminCurChat+'/info').update({
+    lastMsg:'[回复] '+text,lastTs:Date.now()
+  });
+}
+
+function escapeHtml(str){
+  if(!str)return'';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 </script>
 
 <!-- ── LIVECHAT ── -->
