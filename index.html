@@ -4668,19 +4668,21 @@ function showZodiacView(view){
   var ids=['z-profile-banner','z-mode-tabs','zodiac-input-card','zodiac-loading','zodiac-result','zodiac-pair-result','z-main-btn'];
   ids.forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
   if(view==='input'){
+    // Reset pair selection
+    selZodiacB=null;zPairData=null;
+    // Reset grid B highlights
+    document.querySelectorAll('#zodiac-grid-b > div').forEach(function(b){
+      b.style.background='#fff';b.style.borderColor='rgba(155,32,32,.15)';
+    });
+    // Rebuild grid B if needed
+    var gb=document.getElementById('zodiac-grid-b');
+    if(gb&&gb.children.length===0)buildZGridB();
     var b=document.getElementById('z-profile-banner');if(b)b.style.display='flex';
     var t=document.getElementById('z-mode-tabs');if(t)t.style.display='flex';
     var ic=document.getElementById('zodiac-input-card');if(ic)ic.style.display='block';
     var btn=document.getElementById('z-main-btn');
     if(btn){
-      btn.style.display='flex';
-      if(zMode==='pair'){
-        btn.innerHTML='<i class="ti ti-heart"></i>开始星座配对';
-        btn.onclick=function(){runZodiacPair();};
-      } else {
-        btn.innerHTML='<i class="ti ti-stars"></i>查看星座运势';
-        btn.onclick=function(){runZodiac();};
-      }
+      btn.style.display='none'; // hide button, auto-trigger on selection
     }
   } else if(view==='loading'){
     var l=document.getElementById('zodiac-loading');if(l)l.style.display='block';
