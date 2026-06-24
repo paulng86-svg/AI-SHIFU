@@ -807,10 +807,6 @@ body{background:#f5f0e6!important}
 @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes pulse-glow{0%,100%{box-shadow:0 0 8px rgba(155,32,32,.15)}50%{box-shadow:0 0 16px rgba(155,32,32,.4)}}
 @keyframes sparkle{0%,100%{opacity:.2}50%{opacity:1}}
-
-#s-home .inner{position:relative;z-index:1}
-#s-home::before{content:'';position:absolute;inset:0;background:rgba(245,240,230,.88);z-index:0}
-#s-home{position:relative;overflow:hidden}
 </style>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -1082,7 +1078,7 @@ body{background:#f5f0e6!important}
 
 
 <!-- ═══ HOME ═══ -->
-<div class="screen hidden" id="s-home" style="background-image:url('https://i.imgur.com/Sx4oFmA.jpeg');background-size:cover;background-position:center;background-attachment:scroll">
+<div class="screen hidden" id="s-home">
   <div class="inner">
     <div class="top-bar">
       <div class="brand">
