@@ -803,6 +803,10 @@ body{background:#f5f0e6!important}
 .gcard[style*="rgba(10,8"]{color:#fff!important}
 
 .redo-link{color:#fff!important}
+
+@keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 8px rgba(155,32,32,.15)}50%{box-shadow:0 0 16px rgba(155,32,32,.4)}}
+@keyframes sparkle{0%,100%{opacity:.2}50%{opacity:1}}
 </style>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -1093,6 +1097,9 @@ body{background:#f5f0e6!important}
     <!-- Daily sign banner -->
     <div onclick="goTo('s-fate','s-home')" style="border-radius:16px;background:linear-gradient(135deg,#9b2020,#c8940a);padding:14px 16px;margin-bottom:14px;position:relative;overflow:hidden;cursor:pointer">
       <div style="position:absolute;right:-10px;top:-10px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.08)"></div>
+      <div style="position:absolute;top:10px;right:16px;font-size:13px;color:rgba(255,255,255,.6);animation:sparkle 2s ease-in-out infinite">✦</div>
+      <div style="position:absolute;top:24px;right:32px;font-size:9px;color:rgba(255,255,255,.5);animation:sparkle 2s ease-in-out infinite .4s">✦</div>
+      <div style="position:absolute;bottom:14px;right:50px;font-size:11px;color:rgba(255,255,255,.5);animation:sparkle 2s ease-in-out infinite .8s">✦</div>
       <div style="font-size:11px;color:rgba(255,255,255,.7);margin-bottom:3px" id="home-sign-greet">今日签语</div>
       <div style="font-size:13px;color:#fff;font-weight:600;line-height:1.5" id="home-sign-preview">点击查看今日能量与未来3天预测 ✦</div>
       <div style="display:flex;gap:5px;margin-top:8px">
@@ -1104,7 +1111,7 @@ body{background:#f5f0e6!important}
     <!-- Taiji divider -->
     <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px">
       <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(155,32,32,.3))"></div>
-      <div style="width:46px;height:46px;border-radius:50%;border:2px solid #c8940a;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;color:#9b2020">☯</div>
+      <div style="width:46px;height:46px;border-radius:50%;border:2px solid #c8940a;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;color:#9b2020;animation:spin-slow 8s linear infinite">☯</div>
       <div style="flex:1;height:1px;background:linear-gradient(270deg,transparent,rgba(155,32,32,.3))"></div>
     </div>
     <div class="home-h1">探索你的<em>命运轨迹</em></div>
@@ -1114,26 +1121,26 @@ body{background:#f5f0e6!important}
     <!-- Feature grid with outline icons -->
     <div class="feat-grid">
       <div class="feat-card fc" onclick="goTo('s-fate','s-home')">
-        <div class="fiw fiw-a" style="display:flex;align-items:center;justify-content:center"><i class="ti ti-scroll" style="font-size:20px;color:#9b2020"></i></div>
+        <div class="fiw fiw-a" style="display:flex;align-items:center;justify-content:center;animation:pulse-glow 3s ease-in-out infinite"><i class="ti ti-scroll" style="font-size:20px;color:#9b2020"></i></div>
         <div class="feat-title">每日签语</div>
         <div class="feat-desc">每日能量<br>未来3天预测</div>
         <div class="feat-arrow" style="position:absolute;bottom:10px;right:12px;color:rgba(30,30,30,.5);font-size:14px">→</div>
       </div>
       <div class="feat-card dc" onclick="autoStartDestiny()">
-        <div class="fiw fiw-p" style="display:flex;align-items:center;justify-content:center"><i class="ti ti-moon-stars" style="font-size:20px;color:#9b2020"></i></div>
+        <div class="fiw fiw-p" style="display:flex;align-items:center;justify-content:center;animation:pulse-glow 3s ease-in-out infinite .5s"><i class="ti ti-moon-stars" style="font-size:20px;color:#9b2020"></i></div>
         <div class="feat-title">命运分析</div>
         <div class="feat-desc">30天运势<br>生辰八字推算</div>
         <div class="feat-arrow" style="position:absolute;bottom:10px;right:12px;color:rgba(30,30,30,.5);font-size:14px">→</div>
       </div>
       <div class="feat-card tc" onclick="goTo('s-tarot','s-home')">
-        <div class="fiw fiw-t" style="display:flex;align-items:center;justify-content:center"><i class="ti ti-cards" style="font-size:20px;color:#9b2020"></i></div>
+        <div class="fiw fiw-t" style="display:flex;align-items:center;justify-content:center;animation:pulse-glow 3s ease-in-out infinite 1s"><i class="ti ti-cards" style="font-size:20px;color:#9b2020"></i></div>
         <div class="feat-title">塔罗占卜</div>
         <div class="feat-desc">三种牌阵<br>深度解读</div>
         <div class="feat-arrow" style="position:absolute;bottom:10px;right:12px;color:rgba(30,30,30,.5);font-size:14px">→</div>
       </div>
       <div class="feat-card" style="border-color:rgba(30,30,30,.22)" onclick="enterZodiacTab('s-home')">
         <div style="position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.5),transparent)"></div>
-        <div class="fiw fiw-p" style="display:flex;align-items:center;justify-content:center"><i class="ti ti-stars" style="font-size:20px;color:#9b2020"></i></div>
+        <div class="fiw fiw-p" style="display:flex;align-items:center;justify-content:center;animation:pulse-glow 3s ease-in-out infinite 1.5s"><i class="ti ti-stars" style="font-size:20px;color:#9b2020"></i></div>
         <div class="feat-title">星座运势</div>
         <div class="feat-desc">今日/本周/本月<br>性格配对解读</div>
         <div class="feat-arrow" style="position:absolute;bottom:10px;right:12px;color:rgba(30,30,30,.5);font-size:14px">→</div>
@@ -1148,7 +1155,8 @@ body{background:#f5f0e6!important}
     </div>
 
     <!-- VIP banner -->
-    <div onclick="openMember()" style="background:linear-gradient(135deg,#9b2020,#c8940a);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:14px">
+    <div onclick="openMember()" style="background:linear-gradient(135deg,#9b2020,#c8940a);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:14px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:6px;right:60px;font-size:10px;color:rgba(255,255,255,.5);animation:sparkle 2.2s ease-in-out infinite .3s">✦</div>
       <div style="display:flex;align-items:center;gap:8px">
         <i class="ti ti-crown" style="color:#fff;font-size:16px"></i>
         <div>
