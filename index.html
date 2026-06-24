@@ -2197,7 +2197,7 @@ function obBdayChange(){
     var idx=(yr-1900)%12;
     var sx=SX.find(function(s){return s.name===sxList[idx];});
     if(sx){
-      var sxem=document.getElementById('ob-sxem');if(sxem)sxem.textContent=sx.emoji;
+      var sxem=document.getElementById('ob-sxem');if(sxem)sxem.innerHTML=sxBadge(sx,36);
       var sxname=document.getElementById('ob-sxname');if(sxname)sxname.textContent='属'+sx.name;
     }
   }
@@ -2379,7 +2379,7 @@ function obShowPreview(){
 
   // SX
   if(p.sx){
-    var sxem=document.getElementById('ob-pr-sxem');if(sxem)sxem.textContent=p.sx.emoji||'';
+    var sxem=document.getElementById('ob-pr-sxem');if(sxem)sxem.innerHTML=p.sx?sxBadge(p.sx,32):'';
     var sxname=document.getElementById('ob-pr-sxname');if(sxname)sxname.textContent='属'+p.sx.name;
     var sxel=document.getElementById('ob-pr-sxelem');if(sxel)sxel.textContent=(p.sx&&p.sx.elem)?'五行·'+p.sx.elem:'';
   }
@@ -2568,7 +2568,7 @@ function obApplyProfileToApp(p){
     if(sxIdx>=0){
       selSX=sxIdx;
       var sb=document.getElementById('sx-profile-banner');
-      if(sb){sb.style.display='flex';var si=document.getElementById('sx-profile-info');if(si)si.textContent=p.sx.emoji+' 属'+p.sx.name+'（'+(Array.isArray(p.sx.years)?p.sx.years.slice(0,4).join('/'):'')+'…）· '+p.year+'年';}
+      if(sb){sb.style.display='flex';var si=document.getElementById('sx-profile-info');if(si)si.textContent='属'+p.sx.name+'（'+(Array.isArray(p.sx.years)?p.sx.years.slice(0,4).join('/'):'')+'…）· '+p.year+'年';}
     }
   }
 }
@@ -4271,15 +4271,17 @@ var selSX=null, sxData=null, selSXB=null, sxMode='solo', sxPairData=null;
 // ── Build SX grid B (partner selection) ──
 function buildSXGridB(){
   var g=document.getElementById('sx-grid-b');
-  if(!g||g.children.length>0)return;
+  if(!g)return;
+  g.innerHTML='';
   SX.forEach(function(s,i){
     var d=document.createElement('div');
-    d.style.cssText='background:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;transition:.2s';
-    d.innerHTML='<div style="font-size:20px;line-height:1;margin-bottom:4px">'+s.emoji+'</div><div style="font-size:10px;font-weight:600;color:rgba(255,255,255,.7)">属'+s.name+'</div>';
+    d.style.cssText='background:#fff;border:1.5px solid rgba(155,32,32,.15);border-radius:12px;padding:10px 4px;text-align:center;cursor:pointer;transition:.2s;display:flex;flex-direction:column;align-items:center;gap:6px';
+    d.innerHTML=sxBadge(s,40)+'<div style="font-size:10px;font-weight:600;color:#3d2a10">属'+s.name+'</div>';
     d.onclick=(function(idx,el){return function(){
       selSXB=idx;
-      document.querySelectorAll('#sx-grid-b > div').forEach(function(b){b.style.background='rgba(0,0,0,.25)';b.style.borderColor='rgba(255,255,255,.1)';});
-      el.style.background='rgba(244,114,182,.15)';el.style.borderColor='rgba(244,114,182,.55)';
+      document.querySelectorAll('#sx-grid-b > div').forEach(function(b){b.style.background='#fff';b.style.borderColor='rgba(155,32,32,.15)';});
+      el.style.background='rgba(155,32,32,.08)';el.style.borderColor='#9b2020';
+      var btn=document.getElementById('sx-main-btn');if(btn)btn.style.display='flex';
     };})(i,d);
     g.appendChild(d);
   });
@@ -4343,7 +4345,7 @@ function sxPreviewBazi(){
   var prev=document.getElementById('sx-bazi-preview');
   if(!prev)return;
   prev.style.display='block';
-  var em=document.getElementById('sx-pr-em');if(em)em.textContent=sx?sx.emoji:'';
+  var em=document.getElementById('sx-pr-em');if(em)em.innerHTML=sx?sxBadge(sx,32):'';
   var nm=document.getElementById('sx-pr-name');if(nm)nm.textContent='属'+sxName;
 }
 
@@ -4423,11 +4425,11 @@ function runSXPair(){
   var g=document.getElementById('sx-grid');
   SX.forEach(function(s,i){
     var d=document.createElement('div');
-    d.style.cssText='background:rgba(169,50,38,.15);border:1.5px solid rgba(220,30,0,.2);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;transition:all .2s';
-    d.innerHTML='<div style="font-size:22px;line-height:1;margin-bottom:4px">'+s.emoji+'</div><div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.75)">'+s.name+'</div>';
+    d.style.cssText='background:#fff;border:1.5px solid rgba(155,32,32,.15);border-radius:12px;padding:10px 4px;text-align:center;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:6px';
+    d.innerHTML=sxBadge(s,40)+'<div style="font-size:11px;font-weight:600;color:#3d2a10">'+s.name+'</div>';
     d.onclick=function(){
-      document.querySelectorAll('#sx-grid > div').forEach(function(b){b.style.background='rgba(255,255,255,.05)';b.style.borderColor='rgba(255,255,255,.1)';});
-      d.style.background='rgba(245,158,11,.15)';d.style.borderColor='rgba(245,158,11,.55)';
+      document.querySelectorAll('#sx-grid > div').forEach(function(b){b.style.background='#fff';b.style.borderColor='rgba(155,32,32,.15)';});
+      d.style.background='rgba(155,32,32,.08)';d.style.borderColor='#9b2020';
       selSX=i;
     };
     g.appendChild(d);
@@ -4496,8 +4498,8 @@ async function callSXPairAI(sA, sB){
 
 function renderSXPair(sA,sB){
   var d=sxPairData;if(!d)return;
-  setText('sxp-em-a',sA.emoji);setText('sxp-name-a','属'+sA.name);
-  setText('sxp-em-b',sB.emoji);setText('sxp-name-b','属'+sB.name);
+  document.getElementById('sxp-em-a').innerHTML=sxBadge(sA,44);setText('sxp-name-a','属'+sA.name);
+  document.getElementById('sxp-em-b').innerHTML=sxBadge(sB,44);setText('sxp-name-b','属'+sB.name);
   setText('sxp-score-big',(d.score||75)+'%');
   setText('sxp-love',d.love||'');
   setText('sxp-career',d.dynamic||d.career||'');
@@ -4510,7 +4512,7 @@ function renderSXPair(sA,sB){
 
 function renderSX(s){
   var yr=new Date().getFullYear();
-  document.getElementById('sx-emoji').textContent=s.emoji;
+  document.getElementById('sx-emoji').innerHTML=sxBadge(s,56);
   document.getElementById('sx-name').textContent='属'+s.name;
   document.getElementById('sx-years').textContent=s.years;
   var eb=document.getElementById('sx-element-badge');
@@ -4978,6 +4980,13 @@ function checkNewAdminMsgs(snap){
     playNotifSound();
     showToast('💬 有新消息！','ti-message-circle');
   }
+}
+
+// ── SX badge helper (outline character + gold ring) ──
+function sxBadge(s, size){
+  size = size || 54;
+  var fontSize = Math.round(size*0.44);
+  return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:#fff;border:2px solid #c8940a;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-size:'+fontSize+'px;font-weight:700;color:#9b2020;font-family:\'Noto Serif SC\',serif">'+s.name+'</span></div>';
 }
 </script>
 
