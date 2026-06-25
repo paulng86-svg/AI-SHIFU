@@ -884,7 +884,10 @@ body{background:#f5f0e6!important}
         <div class="ob-login-title">欢迎回来</div>
         <div class="ob-login-sub">输入你的名字或联系方式，系统马上找到你</div>
         <input class="ob-fi" id="ob-login-input" type="text" placeholder="输入名字" oninput="obSearchProfile()" autocomplete="off"/>
-      <input class="ob-fi" id="ob-login-password" type="password" placeholder="输入密码" autocomplete="new-password" style="margin-top:8px" id="ob-login-password"/>
+      <div style="position:relative;margin-top:8px">
+        <input class="ob-fi" id="ob-login-password" type="password" placeholder="输入密码" autocomplete="new-password" style="padding-right:42px"/>
+        <div onclick="obTogglePw('ob-login-password',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:rgba(0,0,0,.4);font-size:18px"><i class="ti ti-eye"></i></div>
+      </div>
         <div class="ob-profile-found" id="ob-found-card">
           <div class="ob-pf-head">
             <div class="ob-avatar" id="ob-found-avatar">？</div>
@@ -943,14 +946,20 @@ body{background:#f5f0e6!important}
             </div>
           </div>
           <div class="ob-field">
-            <div class="ob-label"><i class="ti ti-device-mobile"></i>WhatsApp 号码 <span style="font-size:10px;color:rgba(0,0,0,.4);font-weight:400">（选填）</span></div>
+            <div class="ob-label"><i class="ti ti-device-mobile"></i>WhatsApp 号码<span class="ob-req">*</span></div>
             <input class="ob-fi" id="ob-contact" type="tel" placeholder="012-3456789" maxlength="15" oninput="this.value=this.value.replace(/[^0-9-]/g,'')"/>
             <div class="ob-hint"><i class="ti ti-lock"></i>资料只用于你的命盘，不会分享给第三方</div>
           </div>
           <div class="ob-field">
             <div class="ob-label"><i class="ti ti-lock"></i>设置密码 <span class="ob-req">*</span></div>
-            <input class="ob-fi" id="ob-password" type="password" placeholder="设置你的登入密码（至少6位）" maxlength="20"/>
-            <input class="ob-fi" id="ob-password2" type="password" placeholder="再输入一次密码确认" maxlength="20"/>
+            <div style="position:relative">
+              <input class="ob-fi" id="ob-password" type="password" placeholder="设置你的登入密码（至少6位）" maxlength="20" style="padding-right:42px"/>
+              <div onclick="obTogglePw('ob-password',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:rgba(0,0,0,.4);font-size:18px"><i class="ti ti-eye"></i></div>
+            </div>
+            <div style="position:relative;margin-top:8px">
+              <input class="ob-fi" id="ob-password2" type="password" placeholder="再输入一次密码确认" maxlength="20" style="padding-right:42px"/>
+              <div onclick="obTogglePw('ob-password2',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:rgba(0,0,0,.4);font-size:18px"><i class="ti ti-eye"></i></div>
+            </div>
             <div class="ob-hint"><i class="ti ti-shield-check"></i>密码用于保护你的账号，请记好</div>
           </div>
         </div>
@@ -2311,11 +2320,25 @@ function obToggleTag(el,tag){
   else{el.classList.add('on');obTags.push(tag);}
 }
 
+function obTogglePw(id, el){
+  var inp = document.getElementById(id);
+  if(!inp) return;
+  if(inp.type === 'password'){
+    inp.type = 'text';
+    el.innerHTML = '<i class="ti ti-eye-off"></i>';
+  } else {
+    inp.type = 'password';
+    el.innerHTML = '<i class="ti ti-eye"></i>';
+  }
+}
+
 function obNextStep(){
   if(obStep===1){
     var name=document.getElementById('ob-name').value.trim();
     if(!name){showToast('请先填写你的名字','ti-user');return;}
     if(!obGender){showToast('请选择性别','ti-gender-bigender');return;}
+    var contactVal=document.getElementById('ob-contact')?document.getElementById('ob-contact').value.trim():'';
+    if(!contactVal||contactVal.length<8){showToast('请填写正确的WhatsApp号码','ti-device-mobile');return;}
     var pw=document.getElementById('ob-password');
     var pw2=document.getElementById('ob-password2');
     var pwVal=pw?pw.value.trim():'';
