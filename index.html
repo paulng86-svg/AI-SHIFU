@@ -1930,7 +1930,7 @@ body{background:#f5f0e6!important}
           <div onclick="loadAdminChats()" style="font-size:11px;color:rgba(255,255,255,.7);cursor:pointer;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:3px 8px">刷新</div>
         </div>
         <!-- Chat list -->
-        <div id="admin-chat-list" style="max-height:180px;overflow-y:auto;border-bottom:1px solid rgba(0,0,0,.06)">
+        <div id="admin-chat-list" style="max-height:320px;overflow-y:auto;border-bottom:1px solid rgba(0,0,0,.06);min-height:60px">
           <div style="padding:1rem;text-align:center;font-size:12px;color:rgba(0,0,0,.3)">加载中...</div>
         </div>
         <!-- Selected chat messages -->
@@ -3767,7 +3767,12 @@ function adminLogin(){
     document.getElementById('admin-gate').style.display = 'none';
     document.getElementById('admin-dash').style.display = 'block';
     loadAdminData();
-    loadAdminChats();
+    setTimeout(loadAdminChats, 100);
+    setTimeout(loadAdminChats, 800);
+    // Safety net: re-check every 5s in case realtime listener missed something
+    setInterval(function(){
+      if(adminLoggedIn) loadAdminChats();
+    }, 5000);
   } else {
     showToast('密码错误','ti-lock');
   }
