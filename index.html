@@ -1154,7 +1154,7 @@ body{background:#f5f0e6!important}
         <div class="feat-desc">30天运势<br>生辰八字推算</div>
         <div class="feat-arrow" style="position:absolute;bottom:10px;right:12px;color:rgba(30,30,30,.5);font-size:14px">→</div>
       </div>
-      <div class="feat-card tc" onclick="goTo('s-tarot','s-home')">
+      <div class="feat-card tc" onclick="if(checkVIPAccess('tarot'))goTo('s-tarot','s-home')">
         <div class="fiw fiw-t" style="display:flex;align-items:center;justify-content:center;animation:pulse-glow 3s ease-in-out infinite 1s"><i class="ti ti-cards" style="font-size:20px;color:#9b2020"></i></div>
         <div class="feat-title">塔罗占卜</div>
         <div class="feat-desc">三种牌阵<br>深度解读</div>
@@ -2821,8 +2821,9 @@ function renderMemberUI(){
   }
   
   // Lock icons
-  var fl=document.getElementById('mem-fate-lock');if(fl)fl.textContent=isVIP?'✅':'🔒';
-  var tl=document.getElementById('mem-tarot-lock');if(tl)tl.textContent=isVIP?'✅':'🔒';
+  var fl=document.getElementById('mem-fate-lock');if(fl)fl.innerHTML=isVIP?'<i class="ti ti-check" style="color:#2a9d5c"></i>':'<i class="ti ti-lock"></i>';
+  var tl=document.getElementById('mem-tarot-lock');if(tl)tl.innerHTML=isVIP?'<i class="ti ti-check" style="color:#2a9d5c"></i>':'<i class="ti ti-lock"></i>';
+  var pl=document.getElementById('mem-pair-lock');if(pl)pl.innerHTML=isVIP?'<i class="ti ti-check" style="color:#2a9d5c"></i>':'<i class="ti ti-lock"></i>';
 }
 
 function doCheckin(){
@@ -2924,6 +2925,7 @@ function sendConsultMsg(){
 }
 
 function checkVIPAccess(feature){
+  if(sessionStorage.getItem('is_admin')==='1')return true; // admin bypass
   var isVIP=memberData.isVIP&&memberData.vipExpiry>Date.now();
   if(!isVIP){
     showToast('此功能需要 VIP 会员','ti-crown');
@@ -2981,6 +2983,7 @@ function enterSXTab(from){
 
 // 自动运行逻辑
 function autoStartDestiny(){
+  if(!checkVIPAccess('destiny'))return;
   // If we have profile data, skip input and go straight to analysis
   if(obProfile&&obProfile.year&&obProfile.month&&obProfile.day){
     // Fill in the data
@@ -3090,7 +3093,7 @@ function navTo(tab){
         memberEl.style.display='block';
         memberEl.scrollTop=0;
       }
-      setTimeout(function(){try{checkMemberStatus();renderMemberPage();}catch(e){}},200);
+      setTimeout(function(){try{loadMemberData();}catch(e){}},200);
     }catch(e){}
     return;
   }
@@ -3402,363 +3405,42 @@ function getUserKey(profile){
   return raw.replace(/[^a-zA-Z0-9_一-龥]/g,'_').substring(0,40) || 'user_' + Date.now();
 }
 
-function loadMemberData(){
-  try{
-    var saved = localStorage.getItem('tmr_member');
-    if(saved) memberData = JSON.parse(saved);
-  }catch(e){}
-}
 
-function saveMemberData(){
-  try{ localStorage.setItem('tmr_member', JSON.stringify(memberData)); }catch(e){}
-  // Sync to Firebase
-  if(currentUserKey && typeof db !== 'undefined'){
-    db.ref('users/' + currentUserKey + '/member').set({
-      isPro: memberData.isPro,
-      credits: memberData.credits,
-      usageCount: memberData.usageCount,
-      lastAdTime: memberData.lastAdTime,
-      lastLoginBonus: memberData.lastLoginBonus,
-      updatedAt: Date.now()
-    });
-  }
-}
-
-function initFirebaseUser(){
-  if(!obProfile || !obProfile.name) return;
-  currentUserKey = getUserKey(obProfile);
-
-  // Load from Firebase
-  if(typeof db === 'undefined') return;
-  db.ref('users/' + currentUserKey).once('value').then(function(snap){
-    var data = snap.val() || {};
-    var fbMember = data.member || {};
-
-    // Merge with local (Firebase wins for isPro)
-    memberData.isPro = fbMember.isPro || memberData.isPro || false;
-    memberData.credits = Math.max(fbMember.credits||0, memberData.credits||0);
-    memberData.usageCount = fbMember.usageCount || memberData.usageCount || 0;
-    memberData.lastAdTime = fbMember.lastAdTime || memberData.lastAdTime || 0;
-    memberData.lastLoginBonus = fbMember.lastLoginBonus || memberData.lastLoginBonus || '';
-
-    // Daily login bonus
-    var today = new Date().toDateString();
-    if(memberData.lastLoginBonus !== today){
-      memberData.credits += 1;
-      memberData.lastLoginBonus = today;
-      saveMemberData();
-      showToast('+1 CREDIT · 每日登入奖励','ti-coin');
-    }
-
-    // Save profile info to Firebase
-    db.ref('users/' + currentUserKey + '/profile').set({
-      name: obProfile.name,
-      contact: obProfile.contact || obProfile.phone || '',
-      pwHash: obProfile.pwHash || '',
-      gender: obProfile.gender || '',
-      year: obProfile.year || '',
-      month: obProfile.month || '',
-      day: obProfile.day || '',
-      shichenIdx: obProfile.shichenIdx !== undefined ? obProfile.shichenIdx : null,
-      concern: obProfile.concern || '',
-      relStatus: obProfile.relStatus || '',
-      tags: obProfile.tags || [],
-      zodiac: obProfile.zodiac || null,
-      sx: obProfile.sx || null,
-      gz: obProfile.gz || null,
-      lastSeen: Date.now()
-    });
-
-    saveMemberData();
-  }).catch(function(e){ console.log('Firebase load error:', e); });
-}
-
-
-function buildMemberPage(){
-  var el = document.getElementById('s-member');
-  if(!el) return;
-  loadMemberData();
-  var isPro = memberData.isPro;
-  var credits = memberData.credits || 0;
-  
-  el.innerHTML = '<div style="max-width:440px;margin:0 auto;padding-bottom:80px">' +
-    '<div style="text-align:center;padding:1.5rem 0 1rem">' +
-      '<div style="font-size:22px;font-weight:700;color:#1a1a1a">👑 会员中心</div>' +
-    '</div>' +
-    
-    // Status
-    '<div style="background:rgba(255,255,255,.9);border:1px solid rgba(255,215,0,.3);border-radius:14px;padding:1rem;margin-bottom:12px">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
-        '<div style="color:#1a1a1a;font-weight:700;font-size:16px">' + (isPro?'💎 尊享会员':'🌟 免费会员') + '</div>' +
-        '<div style="font-size:24px">' + (isPro?'💎':'🌟') + '</div>' +
-      '</div>' +
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
-        '<div style="background:rgba(255,255,255,.8);border-radius:8px;padding:.6rem;text-align:center">' +
-          '<div style="font-size:10px;color:rgba(30,30,30,.5)">CREDIT</div>' +
-          '<div style="font-size:20px;font-weight:700;color:#1a1a1a">' + credits + '</div>' +
-        '</div>' +
-        '<div style="background:rgba(255,255,255,.8);border-radius:8px;padding:.6rem;text-align:center">' +
-          '<div style="font-size:10px;color:rgba(30,30,30,.5)">本月推算</div>' +
-          '<div style="font-size:20px;font-weight:700;color:#1a1a1a">' + (memberData.usageCount||0) + ' 次</div>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-    
-    // Subscribe
-    '<div style="background:rgba(255,255,255,.9);border:1px solid rgba(255,215,0,.3);border-radius:14px;overflow:hidden;margin-bottom:12px">' +
-      '<div style="background:rgba(145,40,30,.6);padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center">' +
-        '<div><div style="color:#1a1a1a;font-weight:700;font-size:15px">💎 尊享会员</div>' +
-        '<div style="color:rgba(30,30,30,.5);font-size:11px">解锁全部功能</div></div>' +
-        '<div style="color:#1a1a1a;font-weight:700;font-size:20px">RM30<span style="font-size:11px;color:rgba(30,30,30,.5)">/月</span></div>' +
-      '</div>' +
-      '<div style="padding:.8rem 1rem">' +
-        '<div style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:10px;display:flex;flex-direction:column;gap:5px">' +
-          '<div>✦ 无限次命盘推算</div>' +
-          '<div>✦ 塔罗占卜无限次</div>' +
-          '<div>✦ 专属顾问留言回复</div>' +
-        '</div>' +
-        '<button onclick="memberSubscribe()" style="width:100%;background:linear-gradient(135deg,#c0392b,#ff6600);border:1px solid rgba(255,215,0,.4);border-radius:10px;color:#1a1a1a;font-size:14px;font-weight:700;padding:12px;cursor:pointer">立即订阅 RM30/月</button>' +
-      '</div>' +
-    '</div>' +
-
-    // Watch ad
-    '<div style="background:rgba(255,255,255,.9);border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:.8rem 1rem;margin-bottom:12px">' +
-      '<div style="color:#1a1a1a;font-weight:700;font-size:14px;margin-bottom:4px">🎬 看广告得 CREDIT</div>' +
-      '<div style="color:#666;font-size:11px;margin-bottom:10px">看一则广告 +1 CREDIT · 每5分钟一次</div>' +
-      '<button id="watch-ad-btn" onclick="watchAd()" style="width:100%;background:rgba(145,40,30,.5);border:1px solid rgba(255,215,0,.3);border-radius:10px;color:#1a1a1a;font-size:13px;font-weight:600;padding:11px;cursor:pointer">▶ 看广告 +1 CREDIT</button>' +
-      '<div id="ad-cooldown" style="text-align:center;font-size:11px;color:rgba(30,30,30,.3);margin-top:6px">每隔5分钟可看一则</div>' +
-    '</div>' +
-
-    // Messages  
-    '<div style="background:rgba(255,255,255,.9);border:1px solid rgba(255,215,0,.2);border-radius:14px;overflow:hidden;margin-bottom:12px">' +
-      '<div style="padding:.8rem 1rem;border-bottom:1px solid rgba(255,215,0,.1);display:flex;justify-content:space-between;align-items:center">' +
-        '<div><div style="color:#1a1a1a;font-weight:700;font-size:14px">💬 问顾问</div>' +
-        '<div style="color:#666;font-size:11px">尊享会员专属</div></div>' +
-        '<div>' + (isPro?'🔓':'🔒') + '</div>' +
-      '</div>' +
-      '<div style="padding:.8rem 1rem">' +
-        '<div id="msg-list" style="max-height:180px;overflow-y:auto;margin-bottom:8px;font-size:12px;color:#666;text-align:center;padding:.5rem 0">' +
-          (isPro?'发送你的问题给顾问':'成为尊享会员后即可发问') +
-        '</div>' +
-        '<div style="display:flex;gap:6px;' + (isPro?'':'opacity:.4;pointer-events:none') + '">' +
-          '<input id="msg-input" type="text" placeholder="输入你的问题..." style="flex:1;background:rgba(255,255,255,.9);border:1px solid rgba(255,215,0,.2);border-radius:8px;padding:9px 10px;color:#333;font-size:12px;font-family:inherit;outline:none"/>' +
-          '<button onclick="sendMsg()" style="background:rgba(145,40,30,.6);border:1px solid rgba(255,215,0,.3);border-radius:8px;color:#1a1a1a;padding:9px 12px;cursor:pointer;font-size:12px;font-weight:600">发送</button>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-
-    // Logout
-    '<div style="display:flex;justify-content:center;gap:12px;padding-bottom:20px">' +
-      '<button onclick="memberLogout()" style="background:rgba(255,255,255,.8);border:1px solid rgba(255,215,0,.2);border-radius:8px;color:rgba(30,30,30,.6);font-size:12px;padding:8px 16px;cursor:pointer">🚪 登出</button>' +
-      (sessionStorage.getItem('is_admin')==='1'?'<button onclick="openAdmin()" style="background:rgba(192,57,43,.5);border:1px solid rgba(255,215,0,.3);border-radius:8px;color:#1a1a1a;font-size:12px;padding:8px 16px;cursor:pointer">⚙️ 后台</button>':'') +
-    '</div>' +
-  '</div>';
-  
-  checkAdCooldown();
-  if(isPro) loadMessages();
-}
-
-function renderMemberPage(){
-  buildMemberPage();
-  return;
-  loadMemberData();
-  var el = document.getElementById('credit-display');
-  if(el) el.textContent = memberData.credits;
-  var el2 = document.getElementById('usage-display');
-  if(el2) el2.textContent = memberData.usageCount + ' 次';
-  var planEl = document.getElementById('member-plan-label');
-  var badgeEl = document.getElementById('member-badge');
-  var lockEl = document.getElementById('consult-lock');
-  var inputArea = document.getElementById('msg-input-area');
-
-  if(memberData.isPro){
-    if(planEl) planEl.textContent = '💎 尊享会员';
-    if(badgeEl) badgeEl.textContent = '💎';
-    if(lockEl) lockEl.style.display = 'none';
-    if(inputArea){inputArea.style.opacity='1';inputArea.style.pointerEvents='auto';}
-    loadMessages();
-  } else {
-    if(planEl) planEl.textContent = '免费会员';
-    if(badgeEl) badgeEl.textContent = '🌟';
-  }
-  checkAdCooldown();
-}
-
-// ── Watch Ad ──
-function watchAd(){
-  var now = Date.now();
-  var cooldown = 5 * 60 * 1000;
-  if(now - (memberData.lastAdTime||0) < cooldown){
-    var left = Math.ceil((cooldown - (now - memberData.lastAdTime)) / 60000);
-    showToast('请等待 '+left+' 分钟后再看广告','ti-clock');
-    return;
-  }
-
-  // Show ad modal
-  var modal = document.createElement('div');
-  modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px';
-  modal.innerHTML =
-    '<div style="width:100%;max-width:360px;background:#1a1a1a;border-radius:16px;overflow:hidden">' +
-    // Ad header
-    '<div style="background:#222;padding:10px 14px;display:flex;align-items:center;justify-content:space-between">' +
-      '<div style="font-size:11px;color:#666">广告</div>' +
-      '<div id="ad-skip-btn" style="font-size:11px;color:#888;padding:4px 8px;border:1px solid rgba(255,255,255,.15);border-radius:6px">5秒后可关闭</div>' +
-    '</div>' +
-    // Ad content
-    '<div style="background:linear-gradient(135deg,#1a0535,#0d1b4a);padding:2rem;text-align:center;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">' +
-      '<div style="font-size:48px;animation:pring 1s ease-in-out infinite">⭐</div>' +
-      '<div style="font-size:18px;font-weight:700;color:#1a1a1a;letter-spacing:.05em">TOMORROW</div>' +
-      '<div style="font-size:13px;color:#444">探索你的命运轨迹</div>' +
-      '<div style="font-size:12px;color:#666;margin-top:8px">生辰八字 · 塔罗占卜 · 星座生肖</div>' +
-    '</div>' +
-    // Progress bar
-    '<div style="background:#333;height:4px">' +
-      '<div id="ad-progress" style="background:linear-gradient(90deg,#ffd700,#ff6600);height:100%;width:0%;transition:width .1s linear"></div>' +
-    '</div>' +
-    '<div style="padding:12px;background:#111;text-align:center;font-size:12px;color:#666">观看完成后自动获得 +1 CREDIT</div>' +
-    '</div>';
-
-  document.body.appendChild(modal);
-
-  // Progress animation
-  var seconds = 5;
-  var elapsed = 0;
-  var interval = setInterval(function(){
-    elapsed += 100;
-    var pct = (elapsed / (seconds*1000)) * 100;
-    var prog = document.getElementById('ad-progress');
-    if(prog) prog.style.width = Math.min(pct,100) + '%';
-    var skipBtn = document.getElementById('ad-skip-btn');
-    var remaining = Math.ceil((seconds*1000 - elapsed)/1000);
-    if(remaining > 0 && skipBtn){
-      skipBtn.textContent = remaining + '秒后可关闭';
-    } else if(skipBtn){
-      skipBtn.textContent = '关闭';
-      skipBtn.style.color = '#ffd700';
-      skipBtn.style.borderColor = 'rgba(255,215,0,.5)';
-      skipBtn.style.cursor = 'pointer';
-      skipBtn.onclick = function(){
-        clearInterval(interval);
-        document.body.removeChild(modal);
-        // Give credit
-        memberData.credits += 1;
-        memberData.lastAdTime = Date.now();
-        saveMemberData();
-        buildMemberPage();
-        showToast('🎉 +1 CREDIT 已到账！','ti-coin');
-        checkAdCooldown();
-      };
-    }
-    if(elapsed >= seconds*1000){
-      clearInterval(interval);
-      // Auto close and give credit
-      setTimeout(function(){
-        if(document.body.contains(modal)) document.body.removeChild(modal);
-        memberData.credits += 1;
-        memberData.lastAdTime = Date.now();
-        saveMemberData();
-        buildMemberPage();
-        showToast('🎉 +1 CREDIT 已到账！','ti-coin');
-        checkAdCooldown();
-      }, 500);
-    }
-  }, 100);
-}
-
-function checkAdCooldown(){
-  var now = Date.now();
-  var cooldown = 5 * 60 * 1000;
-  var left = cooldown - (now - (memberData.lastAdTime||0));
-  var el = document.getElementById('ad-cooldown');
-  if(!el) return;
-  if(left > 0){
-    el.textContent = '冷却中：' + Math.ceil(left/60000) + ' 分钟后可再看';
-    el.style.color = 'rgba(255,140,0,.5)';
-  } else {
-    el.textContent = '每隔5分钟可看一则';
-    el.style.color = 'rgba(255,215,0,.3)';
-  }
-}
-
-// ── Subscribe ──
-function memberSubscribe(){
-  var modal = document.createElement('div');
-  modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:20px';
-  var waLink = 'https://wa.me/60123456789?text=' + encodeURIComponent('你好！我要订阅TOMORROW尊享会员，已转账RM30，用户名：' + (obProfile&&obProfile.name||''));
-  modal.innerHTML =
-    '<div style="background:#a93226;border:2px solid rgba(255,215,0,.4);border-radius:20px;padding:1.5rem;max-width:320px;width:100%;text-align:center">'+
-    '<div style="font-size:20px;font-weight:700;color:#1a1a1a;margin-bottom:4px">💎 订阅尊享会员</div>'+
-    '<div style="font-size:13px;color:#666;margin-bottom:16px">RM 30 / 月 · 无限次推算</div>'+
-    '<div style="background:rgba(255,255,255,.9);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:1.2rem;margin-bottom:12px;text-align:left">'+
-    '<div style="font-size:11px;color:rgba(30,30,30,.5);margin-bottom:6px;text-align:center">DuitNow 转账</div>'+
-    '<div style="font-size:22px;font-weight:700;color:#1a1a1a;text-align:center;margin-bottom:4px">013-XXXXXXX</div>'+
-    '<div style="font-size:11px;color:#666;text-align:center">转账 RM30 后 WhatsApp 截图给我们</div>'+
-    '</div>'+
-    '<a href="'+waLink+'" target="_blank" style="display:block;background:linear-gradient(135deg,#25d366,#128c7e);border-radius:12px;color:#333;font-size:14px;font-weight:600;padding:13px;text-decoration:none;margin-bottom:10px">📱 WhatsApp 发送截图</a>'+
-    '<div onclick="this.parentElement.parentElement.remove()" style="font-size:12px;color:rgba(30,30,30,.3);cursor:pointer;padding:6px">关闭</div>'+
-    '</div>';
-  document.body.appendChild(modal);
-}
-
-// ── Messages (Firebase) ──
-function loadMessages(){
-  if(typeof db === 'undefined' || !currentUserKey) return;
-  var list = document.getElementById('msg-list');
-  if(!list) return;
-
-  db.ref('messages/' + currentUserKey).orderByChild('time').limitToLast(30).on('value', function(snap){
-    var msgs = [];
-    snap.forEach(function(child){ msgs.push(child.val()); });
-    if(msgs.length === 0){
-      list.innerHTML = '<div style="text-align:center;font-size:12px;color:#999;padding:1rem 0">还没有留言，发你的第一个问题吧 ✨</div>';
-      return;
-    }
-    list.innerHTML = msgs.map(function(m){
-      var isUser = m.type === 'user';
-      return '<div style="display:flex;flex-direction:column;align-items:'+(isUser?'flex-end':'flex-start')+'">'+
-        '<div style="max-width:85%;background:'+(isUser?'rgba(192,57,43,.5)':'rgba(40,20,0,.6)')+';border:1px solid rgba(255,215,0,'+(isUser?'.3':'.2')+');border-radius:12px;padding:8px 12px">'+
-        '<div style="font-size:12px;color:rgba(255,255,255,.8);line-height:1.7">'+m.text+'</div>'+
-        '<div style="font-size:9px;color:rgba(30,30,30,.3);margin-top:3px;text-align:right">'+
-        new Date(m.time).toLocaleString('zh-MY')+(isUser?'':' · 顾问')+'</div>'+
-        '</div></div>';
-    }).join('');
-    list.scrollTop = list.scrollHeight;
-  });
-}
-
-function sendMsg(){
-  if(!memberData.isPro){showToast('请先订阅尊享会员','ti-lock');return;}
-  if(typeof db === 'undefined'){showToast('网络连接中...','ti-wifi');return;}
-  var input = document.getElementById('msg-input');
-  var text = (input&&input.value||'').trim();
-  if(!text) return;
-  db.ref('messages/' + currentUserKey).push({
-    type: 'user',
-    text: text,
-    time: Date.now(),
-    name: obProfile&&obProfile.name||'用户',
-    userKey: currentUserKey
-  }).then(function(){
-    input.value = '';
-    showToast('留言已发送 ✓','ti-check');
-    // Notify admin
-    db.ref('admin/pending/' + currentUserKey).set({
-      name: obProfile&&obProfile.name||'用户',
-      lastMsg: text,
-      time: Date.now(),
-      userKey: currentUserKey
-    });
-  });
-}
 
 // ── Admin ──
 var adminLoggedIn = false;
+
+function initFirebaseUser(){
+  if(!obProfile||!obProfile.name)return;
+  currentUserKey=getUserKey(obProfile);
+  obProfile.userKey=obProfile.userKey||currentUserKey;
+  if(typeof db==='undefined')return;
+  db.ref('users/'+currentUserKey+'/profile').set({
+    name:obProfile.name||'',
+    contact:obProfile.contact||obProfile.phone||'',
+    pwHash:obProfile.pwHash||'',
+    gender:obProfile.gender||'',
+    year:obProfile.year||'',
+    month:obProfile.month||'',
+    day:obProfile.day||'',
+    shichenIdx:obProfile.shichenIdx!==undefined?obProfile.shichenIdx:null,
+    concern:obProfile.concern||'',
+    relStatus:obProfile.relStatus||'',
+    tags:obProfile.tags||[],
+    zodiac:obProfile.zodiac||null,
+    sx:obProfile.sx||null,
+    gz:obProfile.gz||null,
+    userKey:currentUserKey,
+    lastSeen:Date.now()
+  });
+  loadMemberData();
+}
 
 function memberLogout(){
   if(!confirm('确定要登出吗？')) return;
   localStorage.removeItem('destiny_profile');
   localStorage.removeItem('tmr_member');
-  memberData={isPro:false,credits:0,usageCount:0,lastAdTime:0,lastLoginBonus:''};
+  memberData={credits:0, isVIP:false, vipExpiry:0, checkinStreak:0, lastCheckin:'', adsToday:0, lastAdDate:''};
   obProfile={};
   currentUserKey=null;
   // Hide ALL screens
@@ -3914,13 +3596,16 @@ function renderApprovedList(){
 function checkMemberStatus(){
   if(!obProfile||!obProfile.name||typeof db === 'undefined') return;
   currentUserKey = getUserKey(obProfile);
+  var isVIPNow = memberData.isVIP && memberData.vipExpiry > Date.now();
 
-  // Check Firebase for pro status
-  db.ref('users/'+currentUserKey+'/member/isPro').once('value').then(function(snap){
-    if(snap.val()===true && !memberData.isPro){
-      memberData.isPro = true;
-      saveMemberData();
-      showToast('✨ 尊享会员已激活！','ti-crown');
+  // Check Firebase for VIP status
+  db.ref('users/'+currentUserKey+'/member/isVIP').once('value').then(function(snap){
+    if(snap.val()===true && !isVIPNow){
+      memberData.isVIP = true;
+      memberData.vipExpiry = Date.now() + (30*24*60*60*1000);
+      saveMemberLocal();saveMemberFirebase();
+      renderMemberUI();
+      showToast('✨ VIP 会员已激活！','ti-crown');
     }
   });
 
@@ -3928,12 +3613,14 @@ function checkMemberStatus(){
   db.ref('approved').once('value').then(function(snap){
     snap.forEach(function(child){
       var a = child.val();
-      if((a.name===obProfile.name||(obProfile.contact&&a.name===obProfile.contact)) && !memberData.isPro){
-        memberData.isPro = true;
-        // Also update user record
-        db.ref('users/'+currentUserKey+'/member/isPro').set(true);
-        saveMemberData();
-        showToast('✨ 尊享会员已激活！','ti-crown');
+      var stillVIP = memberData.isVIP && memberData.vipExpiry > Date.now();
+      if((a.name===obProfile.name||(obProfile.contact&&a.name===obProfile.contact)) && !stillVIP){
+        memberData.isVIP = true;
+        memberData.vipExpiry = a.expiry || (Date.now() + (30*24*60*60*1000));
+        db.ref('users/'+currentUserKey+'/member').update({isVIP:true, vipExpiry:memberData.vipExpiry});
+        saveMemberLocal();saveMemberFirebase();
+        renderMemberUI();
+        showToast('✨ VIP 会员已激活！','ti-crown');
       }
     });
   });
@@ -4390,6 +4077,7 @@ function initBaziScGrid(gridId, mode){
 var baziSelSC = {z:null, sx:null};
 
 function runBaziPair(mode){
+  if(!checkVIPAccess('pair'))return;
   var yr=parseInt(document.getElementById('sx-bazi-year').value)||0;
   var mo=parseInt(document.getElementById('sx-bazi-month').value)||0;
   var dy=parseInt(document.getElementById('sx-bazi-day').value)||0;
@@ -4486,6 +4174,7 @@ function runShengxiao(){
 
 // ── Run SX pair ──
 function runSXPair(){
+  if(!checkVIPAccess('pair'))return;
   if(selSX===null&&obProfile&&obProfile.sx){
     var si=SX.findIndex(function(s){return s.name===obProfile.sx.name;});
     if(si>=0)selSX=si;
@@ -4825,6 +4514,7 @@ function runZodiac(){
 
 // ── Run pair ──
 function runZodiacPair(){
+  if(!checkVIPAccess('pair'))return;
   if(selZodiac===null&&obProfile&&obProfile.zodiac){
     var zi=ZODIACS.findIndex(function(z){return z.zh===obProfile.zodiac.zh;});
     if(zi>=0)selZodiac=zi;
@@ -5173,19 +4863,19 @@ function updateHomePreview(){
       <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:12px">👑 VIP 会员福利</div>
       <div style="display:flex;flex-direction:column;gap:8px">
         <div style="display:flex;align-items:center;gap:10px">
-          <div style="width:28px;height:28px;border-radius:8px;background:rgba(155,32,32,.1);display:flex;align-items:center;justify-content:center;font-size:14px">🔮</div>
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(155,32,32,.1);display:flex;align-items:center;justify-content:center;font-size:14px"><i class="ti ti-moon-stars" style="color:#9b2020"></i></div>
           <div><div style="font-size:13px;font-weight:600;color:#1a1a1a">命运分析</div><div style="font-size:11px;color:#888">30天完整运势 + 八字推算</div></div>
-          <div id="mem-fate-lock" style="margin-left:auto;font-size:18px">🔒</div>
+          <div id="mem-fate-lock" style="margin-left:auto;font-size:16px;color:#9b2020"><i class="ti ti-lock"></i></div>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
-          <div style="width:28px;height:28px;border-radius:8px;background:rgba(155,32,32,.1);display:flex;align-items:center;justify-content:center;font-size:14px">🎴</div>
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(155,32,32,.1);display:flex;align-items:center;justify-content:center;font-size:14px"><i class="ti ti-cards" style="color:#9b2020"></i></div>
           <div><div style="font-size:13px;font-weight:600;color:#1a1a1a">塔罗占卜</div><div style="font-size:11px;color:#888">三种牌阵深度解读</div></div>
-          <div id="mem-tarot-lock" style="margin-left:auto;font-size:18px">🔒</div>
+          <div id="mem-tarot-lock" style="margin-left:auto;font-size:16px;color:#9b2020"><i class="ti ti-lock"></i></div>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
-          <div style="width:28px;height:28px;border-radius:8px;background:rgba(155,32,32,.1);display:flex;align-items:center;justify-content:center;font-size:14px">⭐</div>
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(155,32,32,.1);display:flex;align-items:center;justify-content:center;font-size:14px"><i class="ti ti-heart" style="color:#9b2020"></i></div>
           <div><div style="font-size:13px;font-weight:600;color:#1a1a1a">星座/生肖配对</div><div style="font-size:11px;color:#888">无限次配对分析</div></div>
-          <div style="margin-left:auto;font-size:18px">✅</div>
+          <div id="mem-pair-lock" style="margin-left:auto;font-size:16px;color:#9b2020"><i class="ti ti-lock"></i></div>
         </div>
       </div>
       <div style="margin-top:12px;padding:10px;background:rgba(155,32,32,.06);border-radius:10px;text-align:center">
