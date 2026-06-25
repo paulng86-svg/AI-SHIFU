@@ -1973,6 +1973,8 @@ body{background:#f5f0e6!important}
 // ── AUTO LOGIN ──
 window.addEventListener('DOMContentLoaded', function(){
   try{
+    var isAdminMode = new URLSearchParams(window.location.search).get('admin') === '123789';
+    if(isAdminMode) return; // skip auto-login in admin mode
     var savedName=localStorage.getItem('destiny_saved_name');
     if(savedName&&savedName.length>0){
       // Auto search and show login
@@ -1988,18 +1990,17 @@ window.addEventListener('DOMContentLoaded', function(){
   var params = new URLSearchParams(window.location.search);
   if(params.get('admin') === '123789'){
     sessionStorage.setItem('is_admin', '1');
-    // Show admin panel directly after page loads
+    function forceAdminPanel(){
+      var ob=document.getElementById('ob-overlay');
+      if(ob){ob.classList.add('hidden');ob.style.display='none';}
+      var admin=document.getElementById('s-admin');
+      if(admin){admin.style.display='block';admin.classList.remove('hidden');}
+      document.querySelectorAll('.screen').forEach(function(s){s.classList.add('hidden');});
+    }
     window.addEventListener('DOMContentLoaded', function(){
-      setTimeout(function(){
-        // Hide ob-overlay
-        var ob=document.getElementById('ob-overlay');
-        if(ob)ob.classList.add('hidden');
-        // Show s-admin directly
-        var admin=document.getElementById('s-admin');
-        if(admin){admin.style.display='block';admin.classList.remove('hidden');}
-        // Hide all screens
-        document.querySelectorAll('.screen').forEach(function(s){s.classList.add('hidden');});
-      }, 300);
+      setTimeout(forceAdminPanel, 300);
+      setTimeout(forceAdminPanel, 900);
+      setTimeout(forceAdminPanel, 1500);
     });
   }
 })();
