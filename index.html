@@ -784,9 +784,7 @@ body{background:#f5f0e6!important}
 
 /* Shichen grid */
 .ob-sc-btn{
-  background:#fff!important;
-  border:1.5px solid rgba(180,140,60,.2)!important;
-  color:#1a1a1a!important;
+  color:#1a1a1a;
 }
 
 /* Member page */
@@ -2270,10 +2268,10 @@ function obSelectSC(el,idx){
   obSelSC=idx;obProfile.shichenIdx=idx;obProfile.shichen=OB_SHICHEN[idx];
   document.querySelectorAll('.ob-sc-btn').forEach(function(b){
     b.style.cssText='background:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 4px;text-align:center;cursor:pointer;transition:.2s';
-    if(b.firstChild)b.firstChild.style.color='rgba(255,215,0,.8)';
+    if(b.firstChild)b.firstChild.style.color='rgba(30,30,30,.8)';
   });
-  el.style.cssText='background:rgba(192,57,43,.5);border:1.5px solid rgba(255,215,0,.7);border-radius:10px;padding:7px 4px;text-align:center;cursor:pointer;transition:.2s;box-shadow:0 0 8px rgba(255,215,0,.3)';
-  if(el.firstChild)el.firstChild.style.color='#ffd700';
+  el.style.cssText='background:rgba(155,32,32,.12);border:1.5px solid #9b2020;border-radius:10px;padding:7px 4px;text-align:center;cursor:pointer;transition:.2s;box-shadow:0 0 8px rgba(155,32,32,.2)';
+  if(el.firstChild)el.firstChild.style.color='#9b2020';
 }
 
 function obSetRelStatus(v,el){
