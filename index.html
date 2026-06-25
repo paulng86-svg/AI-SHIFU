@@ -2808,7 +2808,7 @@ function doCheckin(){
   }
   
   // Add credits
-  var bonus=memberData.checkinStreak>0&&memberData.checkinStreak%7===0?50:10;
+  var bonus=memberData.checkinStreak>0&&memberData.checkinStreak%7===0?20:3;
   memberData.credits=(memberData.credits||0)+bonus;
   memberData.lastCheckin=today;
   
@@ -2845,18 +2845,18 @@ function watchAd(){
       document.body.removeChild(overlay);
       memberData.adsToday=adsToday+1;
       memberData.lastAdDate=today;
-      memberData.credits=(memberData.credits||0)+20;
+      memberData.credits=(memberData.credits||0)+8;
       saveMemberLocal();saveMemberFirebase();
       renderMemberUI();
-      showToast('广告完成！+20积分','ti-star');
+      showToast('广告完成！+8积分','ti-star');
     }
   },1000);
 }
 
 function redeemVIP(){
   if(!obProfile||!obProfile.name){showToast('请先登入','ti-user');return;}
-  if((memberData.credits||0)<100){showToast('积分不足，需要100积分','ti-coins');return;}
-  memberData.credits-=100;
+  if((memberData.credits||0)<300){showToast('积分不足，需要300积分','ti-coins');return;}
+  memberData.credits-=300;
   memberData.isVIP=true;
   memberData.vipExpiry=Date.now()+(30*24*60*60*1000);
   saveMemberLocal();saveMemberFirebase();
@@ -5153,7 +5153,7 @@ function updateHomePreview(){
         </div>
       </div>
       <div style="margin-top:12px;padding:10px;background:rgba(155,32,32,.06);border-radius:10px;text-align:center">
-        <div style="font-size:12px;color:#9b2020;font-weight:600">VIP 30天 = 100积分</div>
+        <div style="font-size:12px;color:#9b2020;font-weight:600">VIP 30天 = 300积分</div>
       </div>
     </div>
 
@@ -5167,7 +5167,7 @@ function updateHomePreview(){
             <div style="font-size:22px">📅</div>
             <div>
               <div style="font-size:13px;font-weight:600;color:#1a1a1a">每日签到</div>
-              <div style="font-size:11px;color:#888">+10积分/天，连续7天奖励50积分</div>
+              <div style="font-size:11px;color:#888">+3积分/天，连续7天奖励20积分</div>
             </div>
           </div>
           <button id="mem-checkin-btn" onclick="doCheckin()" style="background:linear-gradient(135deg,#9b2020,#c8940a);border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:600;padding:8px 14px;cursor:pointer;font-family:inherit">签到</button>
@@ -5178,7 +5178,7 @@ function updateHomePreview(){
             <div style="font-size:22px">📺</div>
             <div>
               <div style="font-size:13px;font-weight:600;color:#1a1a1a">观看广告</div>
-              <div style="font-size:11px;color:#888">+20积分/次，每天最多3次</div>
+              <div style="font-size:11px;color:#888">+8积分/次，每天最多3次</div>
             </div>
           </div>
           <button onclick="watchAd()" style="background:linear-gradient(135deg,#9b2020,#c8940a);border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:600;padding:8px 14px;cursor:pointer;font-family:inherit">观看</button>
@@ -5190,7 +5190,7 @@ function updateHomePreview(){
     <div style="background:#fff;border-radius:14px;padding:1rem 1.1rem;margin-bottom:14px;border:1px solid rgba(155,32,32,.1)">
       <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:12px">👑 兑换 VIP</div>
       <button id="mem-redeem-btn" onclick="redeemVIP()" style="width:100%;background:linear-gradient(135deg,#9b2020,#c8940a);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;padding:14px;cursor:pointer;font-family:inherit">
-        使用100积分兑换 VIP 30天
+        使用300积分兑换 VIP 30天
       </button>
       <div style="text-align:center;margin-top:10px;font-size:11px;color:#888">或联系管理员手动批准</div>
       <button onclick="requestVIP()" style="width:100%;margin-top:8px;background:#fff;border:1.5px solid rgba(155,32,32,.3);border-radius:10px;color:#9b2020;font-size:13px;font-weight:600;padding:12px;cursor:pointer;font-family:inherit">
