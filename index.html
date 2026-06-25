@@ -846,16 +846,25 @@ body{background:#f5f0e6!important}
   <div class="ob-inner">
 
     <!-- PAGE A: SPLASH -->
-    <div id="ob-splash" class="ob-splash">
-      <div class="ob-orb">
-        <div class="ob-orb-shine"></div>
-        <div class="ob-ring"></div>
-        <div class="ob-ring2"></div>
+    <div id="ob-splash" class="ob-splash" style="position:relative;overflow:hidden">
+      <svg width="100%" height="100%" style="position:absolute;inset:0;opacity:.14;pointer-events:none">
+        <defs><pattern id="ob-star-pattern" width="60" height="60" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="10" r="1.2" fill="#9b2020"/>
+          <circle cx="40" cy="25" r="0.8" fill="#c8940a"/>
+          <circle cx="25" cy="45" r="1" fill="#9b2020"/>
+          <circle cx="50" cy="50" r="0.6" fill="#c8940a"/>
+        </pattern></defs>
+        <rect width="100%" height="100%" fill="url(#ob-star-pattern)"/>
+      </svg>
+      <div style="position:relative;width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#9b2020,#c8940a);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 6px 18px rgba(155,32,32,.3);z-index:1">
+        <div style="position:absolute;inset:6px;border-radius:50%;border:1px solid rgba(255,255,255,.4)"></div>
+        <span style="font-size:34px;color:#fff;animation:spin-slow 10s linear infinite">☯</span>
       </div>
-      <div class="ob-title" style="font-family:Inter,sans-serif;letter-spacing:.2em;font-size:26px">TOMORROW</div>
-      <div class="ob-sub">生辰八字 · 塔罗占卜 · 星座生肖<br>每日签语 · 深度咨询</div>
-      <div class="ob-tagline">传承命理 · 解读你的轨迹</div>
-      <div class="ob-btn-wrap">
+      <div class="ob-title" style="font-family:Georgia,serif;letter-spacing:.22em;font-size:26px;color:#9b2020;z-index:1">TOMORROW</div>
+      <div style="font-size:11px;color:#a07840;letter-spacing:.25em;margin-top:2px;margin-bottom:14px;z-index:1">命 运 馆</div>
+      <div class="ob-sub" style="z-index:1">生辰八字 · 塔罗占卜 · 星座生肖<br>每日签语 · 深度咨询</div>
+      <div class="ob-tagline" style="z-index:1">传承命理 · 解读你的轨迹</div>
+      <div class="ob-btn-wrap" style="z-index:1">
         <button class="ob-btn-p" onclick="obShowForm()">
           <i class="ti ti-sparkles"></i>开始建立我的命盘
         </button>
