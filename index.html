@@ -646,7 +646,7 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:#1a1a
   --border: rgba(180,140,60,.2);
 }
 
-body{background:#f5f0e6!important}
+
 
 /* Screens */
 .screen{
@@ -811,6 +811,156 @@ body{background:#f5f0e6!important}
   background-size:auto,cover!important;
   background-position:center,center!important;
 }
+
+@keyframes nebula-drift{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-2%,1.5%,0) scale(1.06)}}
+@keyframes nebula-drift-2{0%,100%{transform:translate3d(0,0,0) scale(1.1)}50%{transform:translate3d(2%,-1%,0) scale(1.02)}}
+@keyframes star-twinkle-a{0%,100%{opacity:.25}50%{opacity:.95}}
+@keyframes star-twinkle-b{0%,100%{opacity:.15}50%{opacity:.7}}
+@keyframes particle-rise{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-120px) translateX(15px);opacity:0}}
+@keyframes gold-core-pulse{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:.95;transform:translate(-50%,-50%) scale(1.12)}}
+@keyframes noise-shift{0%,100%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-2%)}75%{transform:translate(-2%,-3%)}}
+
+html,body{background:#120B25!important}
+
+body{
+  position:relative;
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse 140% 60% at 50% 0%, #F7F0E3 0%, #F2E2C0 18%, #E3B96A 34%, transparent 60%),
+    radial-gradient(ellipse 120% 70% at 50% 100%, #120B25 0%, #1A1238 30%, #2A1D45 55%, transparent 78%),
+    linear-gradient(180deg, #F7F0E3 0%, #F0DDB0 12%, #E3B96A 26%, #C98F4E 38%, #8A5C5A 52%, #4A3360 68%, #221645 84%, #120B25 100%)
+    !important;
+  background-attachment:fixed;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(214,166,74,.65) 0%, rgba(214,166,74,.32) 16%, transparent 40%),
+    radial-gradient(circle at 28% 48%, rgba(255,221,150,.22) 0%, transparent 46%),
+    radial-gradient(circle at 74% 30%, rgba(255,235,190,.28) 0%, transparent 42%),
+    radial-gradient(circle at 62% 64%, rgba(120,70,160,.30) 0%, transparent 50%),
+    radial-gradient(circle at 18% 78%, rgba(70,40,120,.35) 0%, transparent 55%);
+  filter:blur(18px) saturate(135%);
+  animation:nebula-drift 22s ease-in-out infinite;
+  mix-blend-mode:screen;
+}
+
+body::after{
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(1.6px 1.6px at 10% 62%, #fff 0%, transparent 60%),
+    radial-gradient(1px 1px at 22% 75%, #ffe9c2 0%, transparent 60%),
+    radial-gradient(1.3px 1.3px at 36% 55%, #fff 0%, transparent 60%),
+    radial-gradient(1px 1px at 50% 84%, #d9c8ff 0%, transparent 60%),
+    radial-gradient(1.6px 1.6px at 64% 68%, #fff 0%, transparent 60%),
+    radial-gradient(1px 1px at 78% 88%, #ffe9c2 0%, transparent 60%),
+    radial-gradient(1.3px 1.3px at 88% 60%, #fff 0%, transparent 60%),
+    radial-gradient(1px 1px at 6% 92%, #fff 0%, transparent 60%),
+    radial-gradient(1.4px 1.4px at 44% 95%, #d9c8ff 0%, transparent 60%),
+    radial-gradient(1px 1px at 95% 78%, #fff 0%, transparent 60%),
+    radial-gradient(1.2px 1.2px at 16% 38%, #ffe9c2 0%, transparent 55%),
+    radial-gradient(1px 1px at 58% 42%, #fff 0%, transparent 55%),
+    radial-gradient(1.1px 1.1px at 82% 35%, #d9c8ff 0%, transparent 55%);
+  background-repeat:no-repeat;
+  opacity:.85;
+  animation:star-twinkle-a 4s ease-in-out infinite;
+}
+
+.cosmic-noise{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC45IiBudW1PY3RhdmVzPSIyIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNuKSIgb3BhY2l0eT0iMC41Ii8+PC9zdmc+');
+  background-size:180px 180px;
+  opacity:.05;
+  mix-blend-mode:overlay;
+  animation:noise-shift 8s steps(4) infinite;
+}
+
+.cosmic-particles{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+.cosmic-particles span{
+  position:absolute;
+  width:2px;height:2px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,221,150,.9), transparent);
+  animation:particle-rise linear infinite;
+}
+
+.screen::before,.ob::before{
+  content:'';
+  position:fixed;
+  top:30%;left:50%;
+  width:300px;height:300px;
+  z-index:0;pointer-events:none;
+  background:radial-gradient(circle, rgba(214,166,74,.55) 0%, rgba(214,166,74,.18) 55%, transparent 80%);
+  filter:blur(34px);
+  transform:translate(-50%,-50%) scale(1);
+  animation:gold-core-pulse 7s ease-in-out infinite;
+}
+
+.screen,.ob,#s-member,#s-admin{
+  position:relative;
+  z-index:1;
+  background:transparent!important;
+}
+.screen>.inner,.ob>*{position:relative;z-index:1}
+
+.gcard,.gcard-glow,.feat-card{
+  background:
+    linear-gradient(155deg, rgba(40,24,58,.55) 0%, rgba(18,11,37,.62) 100%)
+    !important;
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  border:1px solid rgba(214,166,74,.35)!important;
+  box-shadow:
+    0 10px 36px rgba(8,4,20,.45),
+    0 0 22px rgba(214,166,74,.10),
+    inset 0 1px 0 rgba(255,237,200,.10),
+    inset 0 0 18px rgba(70,40,110,.18)
+    !important;
+  position:relative;
+  overflow:hidden;
+}
+.gcard::before,.gcard-glow::before,.feat-card::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 0%, rgba(214,166,74,.16), transparent 60%);
+  pointer-events:none;
+}
+.gcard::after,.gcard-glow::after,.feat-card::after{
+  content:'';
+  position:absolute;
+  top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(120deg, transparent, rgba(255,237,200,.18), transparent);
+  transform:skewX(-20deg);
+  transition:left .7s ease;
+  pointer-events:none;
+}
+.gcard:hover::after,.feat-card:hover::after{left:130%}
+
+.screen,.gcard,.gcard-glow,.feat-card,.ob{color:#F3E9D8}
+.feat-title,.brand-name,.home-h1,.ob-stitle,.fl-label,.ob-label{color:#F7EDD8!important}
+.feat-desc,.brand-sub,.home-sub,.ob-ssub,.ob-hint{color:rgba(243,233,216,.6)!important}
+
+#app-bottom-nav{
+  background:rgba(10,6,22,.62)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(160%);
+  backdrop-filter:blur(22px) saturate(160%);
+  border-top:1px solid rgba(214,166,74,.22)!important;
+  box-shadow:0 -8px 30px rgba(8,4,20,.4);
+}
+#app-bottom-nav button{color:rgba(243,233,216,.45)!important}
+
+.ob-fi,.fl-input,.ob-ta{
+  background:rgba(255,255,255,.06)!important;
+  border:1px solid rgba(214,166,74,.28)!important;
+  color:#F3E9D8!important;
+}
+.ob-fi::placeholder,.fl-input::placeholder,.ob-ta::placeholder{color:rgba(243,233,216,.35)!important}
 </style>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -829,7 +979,7 @@ body{background:#f5f0e6!important}
     var db = firebase.database();
   </script>
 </head>
-<body style="background:#c0392b">
+<body style="background:#c0392b"><div class="cosmic-noise"></div><div class="cosmic-particles"><span style="left:5%;bottom:-10px;animation-duration:6s;animation-delay:0.0s;width:1px;height:1px"></span><span style="left:12%;bottom:-10px;animation-duration:7s;animation-delay:0.6s;width:2px;height:2px"></span><span style="left:19%;bottom:-10px;animation-duration:8s;animation-delay:1.2s;width:3px;height:3px"></span><span style="left:26%;bottom:-10px;animation-duration:9s;animation-delay:1.7999999999999998s;width:1px;height:1px"></span><span style="left:33%;bottom:-10px;animation-duration:10s;animation-delay:2.4s;width:2px;height:2px"></span><span style="left:40%;bottom:-10px;animation-duration:6s;animation-delay:3.0s;width:3px;height:3px"></span><span style="left:47%;bottom:-10px;animation-duration:7s;animation-delay:3.5999999999999996s;width:1px;height:1px"></span><span style="left:54%;bottom:-10px;animation-duration:8s;animation-delay:4.2s;width:2px;height:2px"></span><span style="left:61%;bottom:-10px;animation-duration:9s;animation-delay:4.8s;width:3px;height:3px"></span><span style="left:68%;bottom:-10px;animation-duration:10s;animation-delay:5.3999999999999995s;width:1px;height:1px"></span><span style="left:75%;bottom:-10px;animation-duration:6s;animation-delay:6.0s;width:2px;height:2px"></span><span style="left:82%;bottom:-10px;animation-duration:7s;animation-delay:6.6s;width:3px;height:3px"></span><span style="left:89%;bottom:-10px;animation-duration:8s;animation-delay:7.199999999999999s;width:1px;height:1px"></span><span style="left:96%;bottom:-10px;animation-duration:9s;animation-delay:7.8s;width:2px;height:2px"></span></div>
 <!-- CHINESE THEME: Gold top bar -->
 <div style="position:fixed;top:0;left:0;right:0;height:3px;z-index:9999;background:linear-gradient(90deg,#6B0000,#b8860b,#ffd700,#b8860b,#6B0000);pointer-events:none"></div>
 <div style="position:fixed;top:3px;left:0;right:0;height:1px;z-index:9999;background:linear-gradient(90deg,transparent,rgba(255,215,0,.3),transparent);pointer-events:none"></div>
