@@ -2925,7 +2925,7 @@ function sendConsultMsg(){
 }
 
 function checkVIPAccess(feature){
-  if(sessionStorage.getItem('is_admin')==='1')return true; // admin bypass
+  if(sessionStorage.getItem('is_admin')==='1' && adminLoggedIn===true)return true; // admin bypass (requires actual password login)
   var isVIP=memberData.isVIP&&memberData.vipExpiry>Date.now();
   if(!isVIP){
     showToast('此功能需要 VIP 会员','ti-crown');
