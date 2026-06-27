@@ -65,7 +65,6 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
   transition:opacity .4s;background:rgba(7,11,24,.93)}
 .screen.hidden{opacity:0;pointer-events:none;display:none}
 .zodiac-pair-mode #zodiac-result{display:none!important}
-.zodiac-pair-mode #zodiac-pair-result{display:block!important}
 .zodiac-pair-mode #z-profile-banner{display:none!important}
 .screen.exit{opacity:0;pointer-events:none}
 .inner{width:100%;max-width:400px}
@@ -1238,7 +1237,7 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
     </div>
 
     <div class="gcard gcard-glow" id="zodiac-input-card">
-      <div class="fl-label" id="z-select-label">选择对方的星座</div>
+      <div class="fl-label" id="z-select-label">选择你的星座</div>
       <div id="zodiac-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px"></div>
 
       <!-- pair mode: partner selection -->
@@ -4172,6 +4171,18 @@ function switchSXMode(m){
     if(pairSec)pairSec.style.display='none';
     var ownGrid=document.getElementById('sx-grid');if(ownGrid)ownGrid.style.display='grid';
     if(inputCard)inputCard.style.display='block';
+    // Already know the user's own sign from their profile — skip straight to the result instead of asking again
+    if(selSX!==null){
+      var ownLabelS=document.getElementById('fl-sx-own-label');if(ownLabelS)ownLabelS.style.display='none';
+      if(ownGrid)ownGrid.style.display='none';
+      if(sxData){
+        if(inputCard)inputCard.style.display='none';
+        var sr0=document.getElementById('sx-result');if(sr0)sr0.style.display='block';
+      } else {
+        if(inputCard)inputCard.style.display='none';
+        runShengxiao();
+      }
+    }
   } else if(m==='bazi'){
     var sb=document.getElementById('sx-mode-bazi');
     if(sb){sb.style.background='rgba(100,50,200,.3)';sb.style.border='1px solid rgba(180,130,255,.4)';sb.style.color='rgba(200,170,255,1)';}
@@ -4505,15 +4516,33 @@ function buildZGridB(){
   });
 }
 
+var zManualOverride=false;
 function switchZMode(m){
   zMode=m;
   var btn=document.getElementById('z-main-btn');
+  var label=document.getElementById('z-select-label');
   if(m==='solo'){
     var s=document.getElementById('z-mode-solo');
     if(s){s.style.background='rgba(201,164,85,.3)';s.style.border='1px solid rgba(201,164,85,.4)';s.style.color='rgba(201,164,85,1)';s.style.fontWeight='600';}
     var p=document.getElementById('z-mode-pair');
     if(p){p.style.background='';p.style.border='';p.style.color='rgba(255,255,255,.35)';p.style.fontWeight='500';}
     var szod=document.getElementById('s-zodiac');if(szod)szod.classList.remove('zodiac-pair-mode');
+    var pairSec0=document.getElementById('z-pair-section');if(pairSec0)pairSec0.style.display='none';
+    var ownGrid0=document.getElementById('zodiac-grid');if(ownGrid0)ownGrid0.style.display='grid';
+    // Already know the user's own sign from their profile — skip straight to the result instead of asking again
+    if(selZodiac!==null && !zManualOverride){
+      if(label)label.style.display='none';
+      if(zodiacData){
+        showZodiacView('solo-result');
+        renderZodiac(ZODIACS[selZodiac]);
+      } else {
+        showZodiacView('loading');
+        runZodiac();
+      }
+      return;
+    }
+    if(label){label.style.display='block';label.textContent='选择你的星座';}
+    highlightOwnZodiacGrid();
     showZodiacView('input');
   } else {
     var s2=document.getElementById('z-mode-solo');
@@ -4523,10 +4552,33 @@ function switchZMode(m){
     var szod2=document.getElementById('s-zodiac');if(szod2)szod2.classList.add('zodiac-pair-mode');
     // Hide own zodiac grid, show partner grid
     var ownGrid=document.getElementById('zodiac-grid');if(ownGrid)ownGrid.style.display='none';
+    if(label){label.style.display='block';label.textContent='选择对方的星座';}
     var pairSec=document.getElementById('z-pair-section');if(pairSec)pairSec.style.display='block';
     if(!document.getElementById('zodiac-grid-b').children.length)buildZGridB();
     showZodiacView('input');
   }
+}
+
+function highlightOwnZodiacGrid(){
+  var g=document.getElementById('zodiac-grid');
+  if(!g)return;
+  Array.prototype.forEach.call(g.children,function(el,i){
+    if(i===selZodiac){el.style.background='rgba(14,165,233,.15)';el.style.borderColor='rgba(14,165,233,.55)';}
+    else{el.style.background='rgba(255,255,255,.05)';el.style.borderColor='rgba(255,255,255,.1)';}
+  });
+}
+
+function zShowManual(){
+  zManualOverride=true;
+  var label=document.getElementById('z-select-label');
+  if(label){label.style.display='block';label.textContent='选择你的星座';}
+  var ownGrid=document.getElementById('zodiac-grid');if(ownGrid)ownGrid.style.display='grid';
+  var ic=document.getElementById('zodiac-input-card');if(ic)ic.style.display='block';
+  var res=document.getElementById('zodiac-result');if(res)res.style.display='none';
+  highlightOwnZodiacGrid();
+  var btn=document.getElementById('z-main-btn');
+  if(btn){btn.style.display='flex';btn.innerHTML='<i class="ti ti-stars"></i>查看星座运势';btn.onclick=function(){runZodiac();};}
+  showToast('选择你的星座','ti-stars');
 }
 
 // ── Run solo ──
