@@ -199,7 +199,14 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
   box-shadow:0 4px 20px rgba(201,164,85,.25)!important}
 .big-btn:hover{opacity:.92;transform:translateY(-1px)}
 .big-btn:active{transform:scale(.99)}
-.ob-enter-btn,.ob-btn-p{background:linear-gradient(135deg,var(--brass),var(--brass-bright))!important;
+.ob-enter-btn{width:100%;border:none;border-radius:12px;padding:16px;
+  font-family:'Noto Serif SC','Inter',sans-serif;font-size:16px;font-weight:700;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:10px;
+  background:linear-gradient(135deg,var(--brass),var(--brass-bright));color:var(--ink-900);
+  box-shadow:0 4px 24px rgba(201,164,85,.35);border:1px solid var(--brass-line2)}
+.ob-enter-btn:hover{opacity:.92;transform:translateY(-1px)}
+.ob-enter-btn i{font-size:18px}
+.ob-btn-p{background:linear-gradient(135deg,var(--brass),var(--brass-bright))!important;
   color:var(--ink-900)!important}
 .ob-btn-g{background:var(--ink-600)!important;border:1.5px solid var(--brass-line2)!important;color:var(--brass-bright)!important}
 
@@ -1982,6 +1989,22 @@ window.addEventListener('DOMContentLoaded', function(){
   try{
     var isAdminMode = new URLSearchParams(window.location.search).get('admin') === '123789';
     if(isAdminMode) return; // skip auto-login in admin mode
+
+    // 关键修复：只要本机已有保存的命盘资料，立刻原样恢复到 obProfile，
+    // 而不是只在右上角显示名字气泡却不真正还原星座/生肖/生日等数据。
+    // 这样已注册用户每次重新打开网站，所有功能都能直接沿用之前填写的资料，不用重填。
+    try{
+      var savedProfile=localStorage.getItem('destiny_profile');
+      if(savedProfile){
+        var pp=JSON.parse(savedProfile);
+        if(pp&&pp.name){
+          obProfile=pp;
+          currentUserKey=obProfile.userKey||getUserKey(obProfile);
+          obApplyProfileToApp(obProfile);
+        }
+      }
+    }catch(e){}
+
     var savedName=localStorage.getItem('destiny_saved_name');
     if(savedName&&savedName.length>0){
       // Returning user — show login overlay so they can sign back in
@@ -2274,6 +2297,13 @@ function obUpdateStep(){
   });
 }
 
+function obNameEcho(){
+  var nameEl=document.getElementById('ob-name');
+  var echo=document.getElementById('ob-name-echo');
+  if(!nameEl||!echo)return;
+  var v=nameEl.value.trim();
+  echo.textContent=v?'你好，'+v+'！':'';
+}
 function obSetGender(v,el){
   obGender=v;
   document.querySelectorAll('.ob-sopt').forEach(function(b){b.classList.remove('on');});
