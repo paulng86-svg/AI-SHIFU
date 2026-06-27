@@ -829,7 +829,7 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
     <div id="home-greeting" style="text-align:center;margin:8px 0 12px;font-size:18px;font-weight:700;color:#c9a455;letter-spacing:.05em"></div>
 
     <!-- Daily sign banner -->
-    <div onclick="if(ensureLoggedIn())goTo('s-fate','s-home')" style="border-radius:16px;background:linear-gradient(135deg,#c9a455,#e8cf94);padding:14px 16px;margin-bottom:14px;position:relative;overflow:hidden;cursor:pointer">
+    <div onclick="enterFateTab('s-home')" style="border-radius:16px;background:linear-gradient(135deg,#c9a455,#e8cf94);padding:14px 16px;margin-bottom:14px;position:relative;overflow:hidden;cursor:pointer">
       <div style="position:absolute;right:-10px;top:-10px;width:70px;height:70px;border-radius:50%;background:rgba(7,11,24,.06)"></div>
       <div style="position:absolute;top:10px;right:16px;font-size:13px;color:rgba(7,11,24,.45);animation:sparkle 2s ease-in-out infinite">✦</div>
       <div style="position:absolute;top:24px;right:32px;font-size:9px;color:rgba(7,11,24,.35);animation:sparkle 2s ease-in-out infinite .4s">✦</div>
@@ -854,7 +854,7 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
 
     <!-- Feature grid with outline icons -->
     <div class="feat-grid">
-      <div class="feat-card fc" onclick="if(ensureLoggedIn())goTo('s-fate','s-home')">
+      <div class="feat-card fc" onclick="enterFateTab('s-home')">
         <div class="fiw fiw-a" style="display:flex;align-items:center;justify-content:center;animation:pulse-glow 3s ease-in-out infinite"><i class="ti ti-scroll" style="font-size:20px;color:#c9a455"></i></div>
         <div class="feat-title">每日签语</div>
         <div class="feat-desc">每日能量<br>未来3天预测</div>
@@ -3002,6 +3002,27 @@ function enterSXTab(from){
   var n=document.getElementById('nav-shengxiao');if(n)n.classList.add('active');
   goTo('s-shengxiao',from);
   setTimeout(function(){autoRunSX();},450);
+}
+// 统一的每日签语入口：出生日期已在注册时保存，直接自动推算，不再要求重新填写
+function enterFateTab(from){
+  if(!ensureLoggedIn())return;
+  from=from||'s-home';
+  goTo('s-fate',from);
+  setTimeout(function(){
+    var fb=document.getElementById('f-bday');
+    if(fb&&!fb.value&&obProfile&&obProfile.year){
+      fb.value=obProfile.year+'-'+pad2(obProfile.month)+'-'+pad2(obProfile.day);
+    }
+    if(fb&&fb.value){
+      if(fateData){
+        // 已有今日结果缓存，直接显示，不重新请求
+        renderFate();
+        document.getElementById('fateResults').style.display='block';
+      } else {
+        loadFateSign();
+      }
+    }
+  },300);
 }
 
 function ensureLoggedIn(){
