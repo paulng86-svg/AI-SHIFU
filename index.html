@@ -1260,6 +1260,11 @@ html,body{background:#f5f0e6!important}
       </a>
     </div>
     <div class="home-note"><i class="ti ti-info-circle"></i>仅供参考 · 以好奇心体验 · 理性娱乐</div>
+    <div style="text-align:center;margin-top:8px;padding-bottom:8px">
+      <span onclick="goTo('s-privacy','s-home')" style="font-size:10px;color:rgba(30,30,30,.4);text-decoration:underline;cursor:pointer">隐私政策</span>
+      <span style="font-size:10px;color:rgba(30,30,30,.3);margin:0 6px">·</span>
+      <span onclick="goTo('s-terms','s-home')" style="font-size:10px;color:rgba(30,30,30,.4);text-decoration:underline;cursor:pointer">使用条款</span>
+    </div>
   </div>
 </div>
 
@@ -1951,6 +1956,118 @@ html,body{background:#f5f0e6!important}
   </div>
 </div>
 </div>
+
+<!-- ═══ PRIVACY POLICY ═══ -->
+<div class="screen hidden" id="s-privacy">
+  <div class="inner">
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-mark" style="background:linear-gradient(135deg,#9b2020,#c8940a)"><i class="ti ti-shield-lock"></i></div>
+        <div><div class="brand-name">隐私政策</div><div class="brand-sub">Privacy Policy</div></div>
+      </div>
+      <div onclick="navTo('home')" style="width:34px;height:34px;border-radius:10px;background:rgba(155,32,32,.08);border:1px solid rgba(155,32,32,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#9b2020;flex-shrink:0"><i class="ti ti-home" style="font-size:16px"></i></div>
+    </div>
+
+    <div class="gcard" style="line-height:1.85;font-size:13px;color:#333">
+      <div style="font-size:11px;color:#888;margin-bottom:14px">最后更新日期：2026年6月</div>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">1. 我们收集的信息</div>
+      <p>当你使用 TOMORROW 命运馆（以下简称"本服务"）时，我们会收集以下信息：</p>
+      <ul style="padding-left:18px;margin:8px 0">
+        <li>注册资料：姓名、出生日期、性别、出生时辰、感情状况</li>
+        <li>联系方式：WhatsApp 号码（用于客服联络与账号验证）</li>
+        <li>使用记录：你与命理功能（星座、生肖、塔罗、命运分析）的互动内容</li>
+        <li>LiveChat 聊天记录：你与客服/顾问之间的对话内容</li>
+        <li>会员与积分数据：签到记录、积分余额、VIP 状态</li>
+      </ul>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">2. 信息存储方式</div>
+      <p>你的资料通过 Google Firebase Realtime Database 加密传输并存储。我们采取合理的技术措施保护你的数据，但无法保证绝对的网络安全。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">3. 信息用途</div>
+      <ul style="padding-left:18px;margin:8px 0">
+        <li>提供个性化命理分析（星座、生肖、八字推算）</li>
+        <li>处理会员服务与客服咨询</li>
+        <li>改善产品功能与用户体验</li>
+        <li>必要时用于账号安全验证</li>
+      </ul>
+      <p>我们<strong>不会</strong>将你的个人资料出售给第三方广告商。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">4. 第三方服务</div>
+      <p>本服务使用以下第三方服务，它们可能各自收集数据：</p>
+      <ul style="padding-left:18px;margin:8px 0">
+        <li>Google Firebase（数据存储）</li>
+        <li>Vercel（网站托管）</li>
+        <li>未来可能接入 Google AdSense（广告服务，将另行更新本政策）</li>
+      </ul>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">5. Cookie 与本地存储</div>
+      <p>本服务使用浏览器 localStorage 记住你的登入状态与偏好设置，方便下次自动登入，不涉及第三方追踪 Cookie。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">6. 你的权利</div>
+      <p>你可以随时联络客服（透过 LiveChat 功能）要求查询、更正或删除你的个人资料。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">7. 未成年人</div>
+      <p>本服务内容仅供娱乐与自我探索参考，未满18岁的用户应在家长或监护人陪同下使用。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">8. 政策更新</div>
+      <p>我们可能不时更新本隐私政策。重大变更将透过网站公告通知用户。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">9. 联络我们</div>
+      <p>如有任何隐私相关问题，欢迎透过本App内的 LiveChat 联络我们的客服团队。</p>
+    </div>
+
+    <div class="sh-btn sh-sec" onclick="navTo('home')" style="margin-top:14px"><i class="ti ti-arrow-left"></i>返回首页</div>
+  </div>
+</div>
+
+<!-- ═══ TERMS OF USE ═══ -->
+<div class="screen hidden" id="s-terms">
+  <div class="inner">
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-mark" style="background:linear-gradient(135deg,#9b2020,#c8940a)"><i class="ti ti-file-text"></i></div>
+        <div><div class="brand-name">使用条款</div><div class="brand-sub">Terms of Use</div></div>
+      </div>
+      <div onclick="navTo('home')" style="width:34px;height:34px;border-radius:10px;background:rgba(155,32,32,.08);border:1px solid rgba(155,32,32,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#9b2020;flex-shrink:0"><i class="ti ti-home" style="font-size:16px"></i></div>
+    </div>
+
+    <div class="gcard" style="line-height:1.85;font-size:13px;color:#333">
+      <div style="font-size:11px;color:#888;margin-bottom:14px">最后更新日期：2026年6月</div>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">1. 服务性质</div>
+      <p>TOMORROW 命运馆提供的星座、生肖、塔罗、八字命运分析等内容，<strong>仅供娱乐与自我探索参考</strong>，不构成医疗、法律、财务或心理咨询专业意见。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">2. 内容生成方式</div>
+      <p>部分解读内容由 AI 生成，结果可能因系统状况而有所差异，请理性看待，不应作为人生重大决策的唯一依据。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">3. 账号责任</div>
+      <p>你有责任保管好自己的登入密码。如发现账号被盗用或异常使用，请立即透过 LiveChat 联络客服。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">4. 会员与积分</div>
+      <p>积分与 VIP 会员权益仅限于本服务内使用，不可兑换现金，不可转让给其他账号。我们保留调整积分规则与会员权益内容的权利。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">5. 禁止行为</div>
+      <ul style="padding-left:18px;margin:8px 0">
+        <li>不得利用本服务发布违法、骚扰或冒犯性内容</li>
+        <li>不得尝试入侵、破坏或干扰本服务的正常运作</li>
+        <li>不得冒用他人身份注册账号</li>
+      </ul>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">6. 服务变更</div>
+      <p>我们保留随时修改、暂停或终止部分或全部服务功能的权利，并会尽量提前通知用户。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">7. 免责声明</div>
+      <p>在法律允许的最大范围内，本服务不对因使用或无法使用本服务而导致的任何直接或间接损失承担责任。</p>
+
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:14px 0 8px">8. 条款更新</div>
+      <p>我们可能不时更新本使用条款，继续使用本服务即代表你同意最新版本的条款。</p>
+    </div>
+
+    <div class="sh-btn sh-sec" onclick="navTo('home')" style="margin-top:14px"><i class="ti ti-arrow-left"></i>返回首页</div>
+  </div>
+</div>
+
 
 <!-- ═══ MEMBERSHIP ═══ -->
 
@@ -2998,7 +3115,7 @@ function showToast(msg,icon){
   setTimeout(function(){t.classList.remove('show');},2800);
 }
 function goTo(to,from){
-  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
+  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-privacy','s-terms'];
   all.forEach(function(s){var el=document.getElementById(s);if(el)el.classList.add('hidden');});
 
   var t=document.getElementById(to);
@@ -3103,7 +3220,7 @@ function navTo(tab){
       var ob=document.getElementById('ob-overlay');
       if(ob){ob.classList.remove('hidden');ob.style.display='flex';}
       // Hide all screens
-      ['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'].forEach(function(s){
+      ['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-privacy','s-terms'].forEach(function(s){
         var el=document.getElementById(s);if(el)el.classList.add('hidden');
       });
       showToast('请先登入','ti-lock');
@@ -3118,13 +3235,13 @@ function navTo(tab){
   if(activeBtn){activeBtn.classList.add('active');activeBtn.style.color='#ffd700';}
 
   var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao',member:'s-member'};
-  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-member'];
+  var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-member','s-privacy','s-terms'];
   var cur=null;all.forEach(function(s){var el=document.getElementById(s);if(el&&!el.classList.contains('hidden'))cur=s;});
 
   if(tab==='member'){
     try{
       var obEl=document.getElementById('ob-overlay');if(obEl)obEl.classList.add('hidden');
-      var allScreens=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'];
+      var allScreens=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-privacy','s-terms'];
       allScreens.forEach(function(s){var el=document.getElementById(s);if(el)el.classList.add('hidden');});
       var memberEl=document.getElementById('s-member');
       if(memberEl){
@@ -3483,7 +3600,7 @@ function memberLogout(){
   obProfile={};
   currentUserKey=null;
   // Hide ALL screens
-  ['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao'].forEach(function(s){
+  ['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-privacy','s-terms'].forEach(function(s){
     var el=document.getElementById(s);if(el)el.classList.add('hidden');
   });
   document.getElementById('s-member').style.display='none';
