@@ -10,6 +10,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>命运馆 · 命理推算</title>
 <meta name="description" content="TOMORROW · 命盘推算 · 塔罗占卜 · 每日签语 · 深度咨询">
+
+<!-- ══════════════════════════════════════════════════════
+     GOOGLE ADSENSE — 申请通过后，把下面这行的 ca-pub-XXXXXXXXXXXXXXXX
+     换成你的真实 Publisher ID（在 AdSense 后台 > 账号 > 设置 里找到）
+     ══════════════════════════════════════════════════════ -->
+<!--
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+-->
+<!-- ══════════════════════════════════════════════════════ -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
@@ -1216,6 +1225,23 @@ html,body{background:#f5f0e6!important}
       </div>
     </div>
 
+    <!-- ══════════════════════════════════════════════════
+         AD SLOT #1 — 首页广告位（功能卡片下方，会员横幅上方）
+         申请通过后，删除下面的占位 div，取消注释 <ins> 广告代码，
+         并把 data-ad-slot 换成你在 AdSense 后台建立的广告单元 ID
+         ══════════════════════════════════════════════════ -->
+    <div id="ad-slot-home" style="margin-bottom:14px">
+      <!--
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      -->
+    </div>
+
     <!-- VIP banner -->
     <div onclick="if(ensureLoggedIn())openMember()" style="background:linear-gradient(135deg,#9b2020,#c8940a);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:14px;position:relative;overflow:hidden">
       <div style="position:absolute;top:6px;right:60px;font-size:10px;color:rgba(255,255,255,.5);animation:sparkle 2.2s ease-in-out infinite .3s">✦</div>
@@ -1484,6 +1510,22 @@ html,body{background:#f5f0e6!important}
       </div>
       <div class="next-days-title"><i class="ti ti-calendar-stats"></i>Tomorrow · NextDay · 未来提醒系统</div>
       <div id="f-next-days"></div>
+
+      <!-- ══════════════════════════════════════
+           AD SLOT #2 — 每日签语结果页广告位
+           ══════════════════════════════════════ -->
+      <div id="ad-slot-fate" style="margin:14px 0">
+        <!--
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+      </div>
+
       <div class="sign-share">
         <div class="ss-btn ss-main" onclick="shareSign()"><i class="ti ti-share"></i>分享今日签语</div>
         <div class="ss-btn ss-sec" onclick="navTo('home')"><i class="ti ti-home"></i>返回首页</div>
@@ -1659,6 +1701,22 @@ html,body{background:#f5f0e6!important}
           <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(255,215,0,.2);display:flex;align-items:center;justify-content:center"><i class="ti ti-stars" style="font-size:14px;color:rgba(30,30,30,.4)"></i></div>
         </div>
       </div>
+
+      <!-- ══════════════════════════════════════
+           AD SLOT #3 — 星座运势结果页广告位
+           ══════════════════════════════════════ -->
+      <div id="ad-slot-zodiac" style="margin-bottom:14px">
+        <!--
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+      </div>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div class="sh-btn sh-main" style="background:linear-gradient(135deg,#c0392b,#cc3300);box-shadow:0 4px 18px rgba(192,57,43,.4);grid-column:span 2" onclick="shareZodiac()"><i class="ti ti-share"></i>分享星座运势</div>
         <div class="sh-btn sh-sec" style="grid-column:span 2" onclick="copyZodiac()"><i class="ti ti-copy"></i>复制</div>
