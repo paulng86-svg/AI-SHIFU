@@ -1152,6 +1152,7 @@ html,body{background:#f5f0e6!important}
         <div class="t-clock" id="h-clock">—</div>
       </div>
     </div>
+    <div id="home-account-bar" style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:6px"></div>
     <div class="home-eyebrow">传承命理 · 多维度命运解读</div>
     <div id="home-greeting" style="text-align:center;margin:8px 0 12px;font-size:18px;font-weight:700;color:#9b2020;letter-spacing:.05em"></div>
 
@@ -2160,6 +2161,7 @@ window.addEventListener('DOMContentLoaded', function(){
     }
     // New/anonymous visitors: home page stays visible (public browsing for SEO/AdSense review),
     // login overlay stays hidden until they tap a feature that requires an account.
+    setTimeout(function(){updateAccountBar();updateHomeGreeting();}, 200);
   }catch(e){}
 });
 
@@ -2735,7 +2737,7 @@ function doEnterApp(){
   document.getElementById('ob-overlay').classList.add('hidden');
   document.getElementById('s-home').classList.remove('hidden');
   showToast('欢迎回来，'+obProfile.name+'！','ti-sparkles');
-  setTimeout(updateHomeGreeting,500);
+  setTimeout(updateHomeGreeting,500);setTimeout(updateAccountBar,500);
   setTimeout(updateHomePreview,500);
   setTimeout(function(){
     if(obProfile&&obProfile.name)initFirebaseUser();
@@ -2768,7 +2770,7 @@ function obEnterApp(){
   document.getElementById('ob-overlay').classList.add('hidden');
   document.getElementById('s-home').classList.remove('hidden');
   showToast('欢迎来到命运馆，'+obProfile.name+'！','ti-sparkles');
-  setTimeout(updateHomeGreeting,500);
+  setTimeout(updateHomeGreeting,500);setTimeout(updateAccountBar,500);
   setTimeout(updateHomePreview,500);
   setTimeout(function(){initFirebaseUser();},1000);
 }
@@ -3111,6 +3113,28 @@ function updateHomeGreeting(){
   el.textContent=g+'，'+name+'！';
 }
 
+function updateAccountBar(){
+  var bar=document.getElementById('home-account-bar');
+  if(!bar)return;
+  var hasProfile = obProfile && obProfile.name;
+  if(!hasProfile){
+    try{ var saved=localStorage.getItem('destiny_profile'); if(saved){ var p=JSON.parse(saved); hasProfile=p&&p.name; } }catch(e){}
+  }
+  if(hasProfile){
+    var name = (obProfile&&obProfile.name) || (function(){try{return JSON.parse(localStorage.getItem('destiny_profile')).name;}catch(e){return'';}})();
+    bar.innerHTML =
+      '<div style="display:flex;align-items:center;gap:6px;background:rgba(155,32,32,.06);border:1px solid rgba(155,32,32,.15);border-radius:20px;padding:5px 6px 5px 12px">'+
+        '<span style="font-size:12px;color:#9b2020;font-weight:600"><i class="ti ti-user-circle" style="margin-right:3px"></i>'+name+'</span>'+
+        '<span onclick="memberLogout()" style="display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:rgba(155,32,32,.1);cursor:pointer;color:#9b2020"><i class="ti ti-logout" style="font-size:13px"></i></span>'+
+      '</div>';
+  } else {
+    bar.innerHTML =
+      '<div onclick="ensureLoggedIn()" style="display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,#9b2020,#c8940a);border-radius:20px;padding:6px 14px;cursor:pointer;box-shadow:0 2px 8px rgba(155,32,32,.25)">'+
+        '<i class="ti ti-login" style="color:#fff;font-size:13px"></i><span style="color:#fff;font-size:12px;font-weight:600">登入 / 注册</span>'+
+      '</div>';
+  }
+}
+
 function pad2(n){return n<10?'0'+n:''+n}
 function setText(id,v){var e=document.getElementById(id);if(e)e.textContent=v}
 function showToast(msg,icon){
@@ -3287,7 +3311,7 @@ function navTo(tab){
     if(tab==='zodiac'){setTimeout(autoRunZodiac,450);}
     if(tab==='shengxiao'){setTimeout(autoRunSX,450);}
     if(tab==='fate'){setTimeout(function(){var fb=document.getElementById('f-bday');if(fb&&fb.value&&!fateData){loadFateSign();}},300);}
-    if(tab==='home'){updateHomeGreeting();updateHomePreview();}
+    if(tab==='home'){updateHomeGreeting();updateHomePreview();updateAccountBar();}
   } else if(!cur&&map[tab]){
     // No current screen visible - just show the target
     var t=document.getElementById(map[tab]);
@@ -3618,20 +3642,25 @@ function initFirebaseUser(){
 
 function memberLogout(){
   if(!confirm('确定要登出吗？')) return;
+  try{localStorage.removeItem('destiny_saved_name');}catch(e){}
   localStorage.removeItem('destiny_profile');
   localStorage.removeItem('tmr_member');
   memberData={credits:0, isVIP:false, vipExpiry:0, checkinStreak:0, lastCheckin:'', adsToday:0, lastAdDate:''};
   obProfile={};
   currentUserKey=null;
-  // Hide ALL screens
-  ['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-privacy','s-terms'].forEach(function(s){
+  // Hide ALL screens except home (public)
+  ['s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-privacy','s-terms'].forEach(function(s){
     var el=document.getElementById(s);if(el)el.classList.add('hidden');
   });
   document.getElementById('s-member').style.display='none';
-  // Show login splash screen
+  // Keep ob-overlay hidden, return to public home
   var ob=document.getElementById('ob-overlay');
-  if(ob){ob.classList.remove('hidden');ob.style.display='flex';}
-  // Reset ob to splash page
+  if(ob){ob.classList.add('hidden');ob.style.display='none';}
+  var home=document.getElementById('s-home');
+  if(home)home.classList.remove('hidden');
+  updateHomeGreeting();updateHomePreview();updateAccountBar();
+  showToast('已登出','ti-logout');
+  // Reset ob to splash page (in case user logs in again later)
   var splash=document.getElementById('ob-splash');
   var login=document.getElementById('ob-login');
   var form=document.getElementById('ob-form');
