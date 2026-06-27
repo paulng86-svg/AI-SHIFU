@@ -1168,8 +1168,7 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
     <div class="gcard gcard-glow">
       <div class="fl-label">出生日期（固定记住）</div>
       <div class="fl-bday-row">
-        <input type="date" class="fl-input" id="f-bday" style="color-scheme:dark"/>
-        <button onclick="loadFateSign()" style="background:linear-gradient(135deg,#8a6a35,#c9a455,#e8cf94);border:none;border-radius:10px;color:#eef1f8;font-size:14px;font-weight:700;padding:10px 20px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px"><i class="ti ti-wand"></i>生成今日签语</button>
+        <input type="date" class="fl-input" id="f-bday" style="color-scheme:dark" onchange="loadFateSign()"/>
       </div>
       <div class="saved-pill" id="f-savedPill"><i class="ti ti-check"></i><span>生日已记住</span></div>
     </div>
