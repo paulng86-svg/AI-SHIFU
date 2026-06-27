@@ -881,7 +881,7 @@ html,body{background:#f5f0e6!important}
 <!-- ══════════════════════════════════════
      ONBOARDING OVERLAY
 ══════════════════════════════════════ -->
-<div class="ob" id="ob-overlay">
+<div class="ob hidden" id="ob-overlay">
   <div class="ob-inner">
 
     <!-- PAGE A: SPLASH -->
@@ -1139,7 +1139,7 @@ html,body{background:#f5f0e6!important}
 
 
 <!-- ═══ HOME ═══ -->
-<div class="screen hidden" id="s-home">
+<div class="screen" id="s-home">
   <div class="inner">
     <div class="top-bar">
       <div class="brand">
@@ -1156,7 +1156,7 @@ html,body{background:#f5f0e6!important}
     <div id="home-greeting" style="text-align:center;margin:8px 0 12px;font-size:18px;font-weight:700;color:#9b2020;letter-spacing:.05em"></div>
 
     <!-- Daily sign banner -->
-    <div onclick="goTo('s-fate','s-home')" style="border-radius:16px;background:linear-gradient(135deg,#9b2020,#c8940a);padding:14px 16px;margin-bottom:14px;position:relative;overflow:hidden;cursor:pointer">
+    <div onclick="if(ensureLoggedIn())goTo('s-fate','s-home')" style="border-radius:16px;background:linear-gradient(135deg,#9b2020,#c8940a);padding:14px 16px;margin-bottom:14px;position:relative;overflow:hidden;cursor:pointer">
       <div style="position:absolute;right:-10px;top:-10px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.08)"></div>
       <div style="position:absolute;top:10px;right:16px;font-size:13px;color:rgba(255,255,255,.6);animation:sparkle 2s ease-in-out infinite">✦</div>
       <div style="position:absolute;top:24px;right:32px;font-size:9px;color:rgba(255,255,255,.5);animation:sparkle 2s ease-in-out infinite .4s">✦</div>
@@ -1181,7 +1181,7 @@ html,body{background:#f5f0e6!important}
 
     <!-- Feature grid with outline icons -->
     <div class="feat-grid">
-      <div class="feat-card fc" onclick="goTo('s-fate','s-home')">
+      <div class="feat-card fc" onclick="if(ensureLoggedIn())goTo('s-fate','s-home')">
         <div class="fiw fiw-a" style="display:flex;align-items:center;justify-content:center;animation:pulse-glow 3s ease-in-out infinite"><i class="ti ti-scroll" style="font-size:20px;color:#9b2020"></i></div>
         <div class="feat-title">每日签语</div>
         <div class="feat-desc">每日能量<br>未来3天预测</div>
@@ -1193,7 +1193,7 @@ html,body{background:#f5f0e6!important}
         <div class="feat-desc">30天运势<br>生辰八字推算</div>
         <div class="feat-arrow" style="position:absolute;bottom:10px;right:12px;color:rgba(30,30,30,.5);font-size:14px">→</div>
       </div>
-      <div class="feat-card tc" onclick="if(checkVIPAccess('tarot'))goTo('s-tarot','s-home')">
+      <div class="feat-card tc" onclick="if(ensureLoggedIn()&&checkVIPAccess('tarot'))goTo('s-tarot','s-home')">
         <div class="fiw fiw-t" style="display:flex;align-items:center;justify-content:center;animation:pulse-glow 3s ease-in-out infinite 1s"><i class="ti ti-cards" style="font-size:20px;color:#9b2020"></i></div>
         <div class="feat-title">塔罗占卜</div>
         <div class="feat-desc">三种牌阵<br>深度解读</div>
@@ -1216,7 +1216,7 @@ html,body{background:#f5f0e6!important}
     </div>
 
     <!-- VIP banner -->
-    <div onclick="openMember()" style="background:linear-gradient(135deg,#9b2020,#c8940a);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:14px;position:relative;overflow:hidden">
+    <div onclick="if(ensureLoggedIn())openMember()" style="background:linear-gradient(135deg,#9b2020,#c8940a);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:14px;position:relative;overflow:hidden">
       <div style="position:absolute;top:6px;right:60px;font-size:10px;color:rgba(255,255,255,.5);animation:sparkle 2.2s ease-in-out infinite .3s">✦</div>
       <div style="display:flex;align-items:center;gap:8px">
         <i class="ti ti-crown" style="color:#fff;font-size:16px"></i>
@@ -2149,11 +2149,17 @@ window.addEventListener('DOMContentLoaded', function(){
     if(isAdminMode) return; // skip auto-login in admin mode
     var savedName=localStorage.getItem('destiny_saved_name');
     if(savedName&&savedName.length>0){
-      // Auto search and show login
+      // Returning user — show login overlay so they can sign back in
       setTimeout(function(){
         obShowLogin();
-      }, 800);
+        var ob=document.getElementById('ob-overlay');
+        if(ob){ob.classList.remove('hidden');ob.style.display='flex';}
+        var home=document.getElementById('s-home');
+        if(home)home.classList.add('hidden');
+      }, 600);
     }
+    // New/anonymous visitors: home page stays visible (public browsing for SEO/AdSense review),
+    // login overlay stays hidden until they tap a feature that requires an account.
   }catch(e){}
 });
 
@@ -3123,6 +3129,7 @@ function goTo(to,from){
 }
 // 统一的星座/生肖入口函数
 function enterZodiacTab(from){
+  if(!ensureLoggedIn())return;
   from=from||'s-home';
   document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');b.style.color='rgba(255,215,0,.35)';});
   var n=document.getElementById('nav-zodiac');if(n)n.classList.add('active');
@@ -3130,6 +3137,7 @@ function enterZodiacTab(from){
   setTimeout(function(){autoRunZodiac();},450);
 }
 function enterSXTab(from){
+  if(!ensureLoggedIn())return;
   from=from||'s-home';
   document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');b.style.color='rgba(255,215,0,.35)';});
   var n=document.getElementById('nav-shengxiao');if(n)n.classList.add('active');
@@ -3137,8 +3145,23 @@ function enterSXTab(from){
   setTimeout(function(){autoRunSX();},450);
 }
 
+function ensureLoggedIn(){
+  var hasProfile = obProfile && obProfile.name;
+  if(!hasProfile){
+    try{ var saved=localStorage.getItem('destiny_profile'); if(saved){ var p=JSON.parse(saved); hasProfile=p&&p.name; } }catch(e){}
+  }
+  if(!hasProfile){
+    var ob=document.getElementById('ob-overlay');
+    if(ob){ob.classList.remove('hidden');ob.style.display='flex';}
+    showToast('请先登入','ti-lock');
+    return false;
+  }
+  return true;
+}
+
 // 自动运行逻辑
 function autoStartDestiny(){
+  if(!ensureLoggedIn())return;
   if(!checkVIPAccess('destiny'))return;
   // If we have profile data, skip input and go straight to analysis
   if(obProfile&&obProfile.year&&obProfile.month&&obProfile.day){
@@ -3209,8 +3232,9 @@ function autoRunSX(){
 }
 
 function navTo(tab){
-  // Check login - if no profile, show ob-overlay
-  if(tab !== 'member'){
+  // Public tabs: home, privacy, terms — no login required (for AdSense review / public browsing)
+  var publicTabs = ['home', 'privacy', 'terms', 'member'];
+  if(publicTabs.indexOf(tab) === -1){
     var hasProfile = obProfile && obProfile.name;
     if(!hasProfile){
       try{ var saved=localStorage.getItem('destiny_profile'); if(saved){ var p=JSON.parse(saved); hasProfile=p&&p.name; } }catch(e){}
@@ -3234,7 +3258,7 @@ function navTo(tab){
   var activeBtn=document.getElementById('nav-'+tab);
   if(activeBtn){activeBtn.classList.add('active');activeBtn.style.color='#ffd700';}
 
-  var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao',member:'s-member'};
+  var map={home:'s-home',destiny:'s-input',tarot:'s-tarot',fate:'s-fate',zodiac:'s-zodiac',shengxiao:'s-shengxiao',member:'s-member',privacy:'s-privacy',terms:'s-terms'};
   var all=['s-home','s-input','s-loading','s-result','s-tarot','s-fate','s-zodiac','s-shengxiao','s-member','s-privacy','s-terms'];
   var cur=null;all.forEach(function(s){var el=document.getElementById(s);if(el&&!el.classList.contains('hidden'))cur=s;});
 
