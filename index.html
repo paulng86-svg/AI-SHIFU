@@ -2746,6 +2746,7 @@ var memberData = {credits:0, isVIP:false, vipExpiry:0, checkinStreak:0, lastChec
 
 function openMember(){
   loadMemberData();
+  checkMemberStatus();
   document.getElementById('s-member').style.display='block';
 }
 
@@ -4680,15 +4681,19 @@ function loadVIPRequests(){
             vipExpiry:Date.now()+(30*24*60*60*1000),
             vipGrantedBy:'admin',
             vipGrantedAt:Date.now()
+          }).then(function(){
+            // Mark request as approved
+            db.ref('admin/vip_requests/'+key+'/status').set('approved');
+            // Also save in approved list
+            db.ref('approved/'+name.replace(/[^a-zA-Z0-9一-鿿]/g,'_')).set({
+              name:name,approvedAt:Date.now(),
+              expiry:Date.now()+(30*24*60*60*1000)
+            });
+            showToast('✓ 已批准 '+name+' 为VIP会员 30天','ti-crown');
+          }).catch(function(err){
+            showToast('❌ 批准失败：'+(err&&err.message?err.message:'写入数据库出错'),'ti-alert-triangle');
+            console.error('VIP grant failed for userKey='+userKey, err);
           });
-          // Mark request as approved
-          db.ref('admin/vip_requests/'+key+'/status').set('approved');
-          // Also save in approved list
-          db.ref('approved/'+name.replace(/[^a-zA-Z0-9一-鿿]/g,'_')).set({
-            name:name,approvedAt:Date.now(),
-            expiry:Date.now()+(30*24*60*60*1000)
-          });
-          showToast('✓ 已批准 '+name+' 为VIP会员 30天','ti-crown');
         };
       })(req.userKey||child.key, req.name, child.key);
       list.appendChild(div);
@@ -4732,12 +4737,16 @@ function loadAllUsers(){
             isVIP:true,
             vipExpiry:Date.now()+(30*24*60*60*1000),
             vipGrantedBy:'admin',vipGrantedAt:Date.now()
+          }).then(function(){
+            db.ref('approved/'+name.replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g,'_')).set({
+              name:name,approvedAt:Date.now(),expiry:Date.now()+(30*24*60*60*1000)
+            });
+            showToast('✓ 已批准 '+name+' VIP 30天','ti-crown');
+            loadAllUsers();
+          }).catch(function(err){
+            showToast('❌ 批准失败：'+(err&&err.message?err.message:'写入数据库出错'),'ti-alert-triangle');
+            console.error('VIP grant failed for userKey='+key, err);
           });
-          db.ref('approved/'+name.replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g,'_')).set({
-            name:name,approvedAt:Date.now(),expiry:Date.now()+(30*24*60*60*1000)
-          });
-          showToast('✓ 已批准 '+name+' VIP 30天','ti-crown');
-          loadAllUsers();
         };})(child.key, p.name||child.key);
       }
       list.appendChild(div);
