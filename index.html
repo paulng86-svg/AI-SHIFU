@@ -1951,21 +1951,8 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
 
       <!-- Shake tube visual -->
       <div id="qian-tube-wrap" style="display:flex;justify-content:center;margin-bottom:28px">
-        <div id="qian-tube" style="width:120px;height:160px;position:relative;cursor:pointer" onclick="startQianShake()">
-          <svg width="120" height="160" viewBox="0 0 120 160" style="display:block">
-            <!-- tube body -->
-            <rect x="20" y="40" width="80" height="110" rx="10" fill="#121a35" stroke="#e8cf94" stroke-width="2"/>
-            <rect x="20" y="40" width="80" height="14" rx="7" fill="#c9a455" stroke="#e8cf94" stroke-width="1.5"/>
-            <!-- sticks peeking out -->
-            <g id="qian-sticks">
-              <rect x="38" y="14" width="4" height="40" fill="#c9a455"/>
-              <rect x="48" y="10" width="4" height="44" fill="#c9a455"/>
-              <rect x="58" y="16" width="4" height="38" fill="#c9a455"/>
-              <rect x="68" y="8" width="4" height="46" fill="#c9a455"/>
-              <rect x="78" y="14" width="4" height="40" fill="#c9a455"/>
-            </g>
-            <text x="60" y="105" text-anchor="middle" font-size="22" fill="#e8cf94" font-family="serif">籤</text>
-          </svg>
+        <div id="qian-tube" style="width:140px;cursor:pointer" onclick="startQianShake()">
+          <img src="images/qian-tube.svg" alt="灵签筒" style="width:100%;display:block;filter:drop-shadow(0 10px 22px rgba(80,40,140,.4))"/>
         </div>
       </div>
 
@@ -1979,7 +1966,9 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
 
     <!-- Shaking animation state -->
     <div id="qian-shaking" style="display:none;text-align:center;padding:2.5rem 0">
-      <div id="qian-tube-shake" style="display:inline-block;font-size:64px;animation:qian-shake-anim .25s ease-in-out infinite">🎋</div>
+      <div id="qian-tube-shake" style="display:inline-block;width:140px;animation:qian-shake-anim .25s ease-in-out infinite">
+        <img src="images/qian-tube.svg" alt="" style="width:100%;display:block;filter:drop-shadow(0 10px 22px rgba(80,40,140,.4))"/>
+      </div>
       <div style="font-size:14px;color:#c9a455;font-weight:600;margin-top:18px">摇签中…诚心默念心中所求</div>
       <div style="font-size:11px;color:#5d6788;margin-top:6px" id="qian-shake-count"></div>
     </div>
