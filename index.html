@@ -3075,18 +3075,9 @@ function ensureProfileLoaded(){
         obProfile=pp;
         currentUserKey=obProfile.userKey||getUserKey(obProfile);
         obApplyProfileToApp(obProfile);
-        return;
       }
     }
-    // 诊断模式：兜底也失败了，弹出具体缺失信息方便排查（截图发给开发者即可）
-    var diag='诊断：obProfile.name='+(obProfile&&obProfile.name||'无')+
-      ' year='+(obProfile&&obProfile.year||'无')+
-      ' | localStorage='+(saved?'有数据但缺year字段':'完全没有');
-    console.warn(diag);
-    showToast(diag,'ti-bug');
-  }catch(e){
-    showToast('诊断：恢复资料时报错 '+e.message,'ti-bug');
-  }
+  }catch(e){}
 }
 function enterZodiacTab(from){
   if(!ensureLoggedIn())return;
@@ -3314,6 +3305,29 @@ function startAnalysis(){
   if(!bday){showToast('请先填写生日','ti-calendar');return;}
   var sc=selectedShichen!==null?SHICHEN_DATA[selectedShichen]:null;
   userData={bday:bday,gender:gender,worry:document.getElementById('a-worry').value||'',shichen:sc,relStatus:(function(){try{var p=JSON.parse(localStorage.getItem('destiny_profile')||'{}');return p.relStatus||'未填写';}catch(e){return '未填写';}})()};
+  // 资料补全修复：如果账号原本缺生日（比如老账号当年没存上），这次填了就永久补存回去，
+  // 避免每次都要重填。同时补算星座/生肖，让其他功能也能跟着自动生效。
+  try{
+    var bp=bday.split('-');
+    if(bp.length===3){
+      var byr=parseInt(bp[0]),bmo=parseInt(bp[1]),bdy=parseInt(bp[2]);
+      if(byr&&bmo&&bdy){
+        obProfile.year=byr;obProfile.month=bmo;obProfile.day=bdy;
+        obProfile.gender=gender;
+        if(selectedShichen!==null)obProfile.shichenIdx=selectedShichen;
+        if(typeof ZODIACS!=='undefined'){var zIdx=obGetZodiac(bmo,bdy);obProfile.zodiac=ZODIACS[zIdx];}
+        if(typeof getSX==='function'){obProfile.sx=getSX(byr);}
+        if(!obProfile.userKey&&typeof getUserKey==='function')obProfile.userKey=getUserKey(obProfile);
+        localStorage.setItem('destiny_profile',JSON.stringify(obProfile));
+        if(typeof db!=='undefined'&&obProfile.userKey){
+          db.ref('users/'+obProfile.userKey+'/profile').update({
+            year:byr,month:bmo,day:bdy,gender:gender,
+            zodiac:obProfile.zodiac||null,sx:obProfile.sx||null
+          });
+        }
+      }
+    }
+  }catch(e){}
   goTo('s-loading','s-input');setTimeout(function(){runLoading();callDestinyAI();},300);
 }
 function runLoading(){
