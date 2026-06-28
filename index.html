@@ -909,40 +909,35 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
       <div class="hc-card full" onclick="enterFateTab('s-home')">
         <div class="hc-card-bg" style="background-image:url('images/home-daily.jpg')"></div>
         <div class="hc-card-shade"></div>
-        <div class="hc-card-icon" style="background:linear-gradient(135deg,#9b2020,#e8a23a)"><i class="ti ti-calendar-stats" style="color:#fff"></i></div>
-        <div class="hc-card-title">每日签语</div>
+                <div class="hc-card-title">每日签语</div>
         <div class="hc-card-desc">每日能量 · 未来3天预测</div>
         <div class="hc-card-arrow">→</div>
       </div>
       <div class="hc-card" onclick="autoStartDestiny()">
         <div class="hc-card-bg" style="background-image:url('images/home-destiny.jpg')"></div>
         <div class="hc-card-shade"></div>
-        <div class="hc-card-icon" style="background:linear-gradient(135deg,#6b3f9e,#b06fd6)"><i class="ti ti-moon-stars" style="color:#fff"></i></div>
-        <div class="hc-card-title">命运分析</div>
+                <div class="hc-card-title">命运分析</div>
         <div class="hc-card-desc">30天运势<br>生辰八字推算</div>
         <div class="hc-card-arrow">→</div>
       </div>
       <div class="hc-card" onclick="if(ensureLoggedIn()&&checkVIPAccess('tarot'))goTo('s-tarot','s-home')">
         <div class="hc-card-bg" style="background-image:url('images/home-tarot.jpg')"></div>
         <div class="hc-card-shade"></div>
-        <div class="hc-card-icon" style="background:linear-gradient(135deg,#9b2020,#c0392b)"><i class="ti ti-cards" style="color:#fff"></i></div>
-        <div class="hc-card-title">塔罗占卜</div>
+                <div class="hc-card-title">塔罗占卜</div>
         <div class="hc-card-desc">三种牌阵<br>深度解读</div>
         <div class="hc-card-arrow">→</div>
       </div>
       <div class="hc-card" onclick="enterZodiacTab('s-home')">
         <div class="hc-card-bg" style="background-image:url('images/home-zodiac-sheet.png');background-position:center 30%"></div>
         <div class="hc-card-shade"></div>
-        <div class="hc-card-icon" style="background:linear-gradient(135deg,#6f93cc,#9b6fd6)"><i class="ti ti-stars" style="color:#fff"></i></div>
-        <div class="hc-card-title">星座运势</div>
+                <div class="hc-card-title">星座运势</div>
         <div class="hc-card-desc">今日/本周/本月<br>性格能力解读</div>
         <div class="hc-card-arrow">→</div>
       </div>
       <div class="hc-card" onclick="enterSXTab('s-home')">
         <div class="hc-card-bg" style="background-image:url('images/home-shengxiao-sheet.jpg');background-position:center 30%"></div>
         <div class="hc-card-shade"></div>
-        <div class="hc-card-icon" style="background:linear-gradient(135deg,#c9a455,#e8a23a)"><div style="color:#fff;font-size:15px;font-weight:700">肖</div></div>
-        <div class="hc-card-title">生肖运势</div>
+                <div class="hc-card-title">生肖运势</div>
         <div class="hc-card-desc">相合相冲<br>事业感情分析</div>
         <div class="hc-card-arrow">→</div>
       </div>
@@ -951,7 +946,6 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
     <!-- 求签 banner -->
     <div onclick="if(ensureLoggedIn()){loadMemberData();goTo('s-qian-intro','s-home');setTimeout(updateQianCostDisplay,300);}" style="background:linear-gradient(135deg,#121a35,#1a2444);border-radius:16px;padding:14px 16px;margin-bottom:14px;position:relative;overflow:hidden;cursor:pointer;display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,.08)">
       <div style="position:absolute;right:-10px;top:-10px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.06)"></div>
-      <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🎋</div>
       <div style="flex:1">
         <div style="font-size:14px;font-weight:700;color:#fff">灵签馆 · 求签问卜</div>
         <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px">诚心摇签，百签解惑 · 15积分/次（VIP仅5积分）</div>
