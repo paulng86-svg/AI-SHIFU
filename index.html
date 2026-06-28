@@ -605,31 +605,60 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
   box-shadow:0 6px 22px var(--violet-glow);transition:transform .2s}
 .fh-btn:active{transform:scale(.98)}
 
-/* —— 每日灵签 翻牌互动 —— */
-.flip-section{border-radius:22px;padding:18px;margin-bottom:16px;
+/* —— 每日灵签 (重设计版) —— */
+.flip-section{border-radius:22px;padding:18px 16px;margin-bottom:16px;
   background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   box-shadow:0 8px 26px rgba(40,20,70,.3),inset 0 1px 0 var(--glass-hl)}
-.flip-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.flip-title{font-size:15px;font-weight:700;color:#fff;display:flex;align-items:center;gap:7px}
-.flip-streak{font-size:10px;color:var(--violet-bright);background:rgba(168,122,255,.15);
-  border:1px solid rgba(168,122,255,.3);border-radius:100px;padding:3px 10px;display:flex;align-items:center;gap:4px}
-.flip-stage{display:flex;justify-content:center;perspective:1000px;margin-bottom:10px}
-.flip-card-inner{position:relative;width:130px;height:170px;cursor:pointer;transition:transform .7s cubic-bezier(.4,.2,.2,1);
-  transform-style:preserve-3d}
-.flip-card-inner.flipped{transform:rotateY(180deg)}
-.flip-face{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-  border:1.5px solid var(--glass-border)}
-.flip-front{background:linear-gradient(160deg,#3c2356,#1c1030);box-shadow:0 8px 24px rgba(80,40,140,.4)}
-.flip-front-pattern{font-size:34px;animation:floatGlow 3s ease-in-out infinite}
-.flip-front-label{font-size:11px;color:rgba(240,230,255,.6);letter-spacing:.1em}
-.flip-back{background:linear-gradient(160deg,#4a2a6b,#241638);transform:rotateY(180deg);padding:14px;text-align:center}
-.flip-back-text{font-size:12px;color:#fff;line-height:1.6;font-weight:600}
-.flip-back-score{margin-top:8px;font-size:10px;color:var(--violet-bright)}
-.flip-hint{text-align:center;font-size:11px;color:rgba(240,230,255,.45);margin-top:4px}
-.flip-result-line{font-size:12px;color:rgba(240,230,255,.85);text-align:center;line-height:1.7;margin-top:4px;display:none}
-.flip-result-line.show{display:block}
-.flip-more-link{display:block;text-align:center;font-size:11px;color:var(--violet-bright);margin-top:10px;cursor:pointer}
+.flip-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.flip-head-l{display:flex;align-items:center;gap:8px}
+.flip-head-icon{width:30px;height:30px;border-radius:50%;background:rgba(168,122,255,.18);
+  border:1px solid rgba(168,122,255,.35);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.flip-title{font-size:15px;font-weight:700;color:#fff}
+.flip-subtitle{font-size:10px;color:rgba(240,230,255,.5);margin-top:1px}
+.flip-record-link{font-size:11px;color:rgba(240,230,255,.55);display:flex;align-items:center;gap:3px;cursor:pointer;flex-shrink:0}
+
+.flip-stage{display:flex;justify-content:center;margin-bottom:12px}
+.flip-card-art{position:relative;width:148px;cursor:pointer;transition:transform .2s}
+.flip-card-art:active{transform:scale(.97)}
+.flip-card-art img{width:100%;display:block;filter:drop-shadow(0 10px 24px rgba(80,40,140,.5))}
+.flip-card-art.drawn{cursor:default}
+.flip-card-art.drawn:active{transform:none}
+
+.flip-draw-btn{display:block;margin:0 auto 6px;border:1px solid rgba(232,207,255,.4);border-radius:100px;
+  padding:12px 30px;background:linear-gradient(135deg,#8a5cd6,#a87aff);color:#fff;font-size:14px;font-weight:700;
+  font-family:'Noto Serif SC','Inter',sans-serif;cursor:pointer;box-shadow:0 6px 22px var(--violet-glow);
+  display:flex;align-items:center;gap:8px;justify-content:center}
+.flip-draw-btn:active{transform:scale(.97)}
+.flip-draw-btn.hidden-btn{display:none}
+.flip-reset-note{text-align:center;font-size:10px;color:rgba(240,230,255,.4);margin-bottom:14px}
+
+.flip-result{display:none;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid var(--glass-border);
+  padding:16px;margin-bottom:14px;position:relative;overflow:hidden}
+.flip-result.show{display:block;animation:resultFadeIn .5s ease}
+@keyframes resultFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.flip-r-label{text-align:center;font-size:11px;color:var(--violet-bright);letter-spacing:.1em;margin-bottom:8px}
+.flip-r-quote{text-align:center;font-size:16px;font-weight:700;color:#f3e3bc;line-height:1.7;font-family:var(--serif);margin-bottom:12px}
+.flip-r-div{height:1px;background:linear-gradient(90deg,transparent,var(--glass-border),transparent);margin:10px 0}
+.flip-r-stars{text-align:center;font-size:18px;letter-spacing:3px;margin-bottom:2px}
+.flip-r-advice-label{font-size:11px;color:var(--violet-bright);margin-bottom:6px;display:flex;align-items:center;gap:5px;justify-content:center}
+.flip-r-advice-text{font-size:12px;color:rgba(255,255,255,.85);line-height:1.7;text-align:center}
+.flip-r-cat{position:absolute;bottom:-6px;right:-6px;width:64px;opacity:.92;pointer-events:none}
+.flip-more-link{display:block;text-align:center;font-size:11px;color:var(--violet-bright);margin-top:2px;cursor:pointer}
+
+.flip-checkin{border-top:1px solid var(--glass-border);padding-top:16px;margin-top:4px}
+.flip-checkin-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.flip-checkin-title{font-size:13px;font-weight:700;color:#fff}
+.flip-checkin-rule{font-size:10px;color:rgba(240,230,255,.45);display:flex;align-items:center;gap:3px;cursor:pointer}
+.flip-checkin-chain{display:flex;align-items:center;justify-content:space-between}
+.flip-cn-node{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.flip-cn-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;background:rgba(255,255,255,.06);border:1px solid var(--glass-border);color:rgba(240,230,255,.35)}
+.flip-cn-circle.done{background:linear-gradient(135deg,#8a5cd6,#a87aff);border-color:transparent;color:#fff}
+.flip-cn-circle.today{background:linear-gradient(135deg,#8a5cd6,#a87aff);border-color:#f3e3bc;color:#fff;
+  box-shadow:0 0 14px var(--violet-glow);animation:pulse-glow 2s ease-in-out infinite}
+.flip-cn-circle.reward{background:transparent;border:none;font-size:20px}
+.flip-cn-label{font-size:9px;color:rgba(240,230,255,.45)}
+.flip-cn-line{flex:0 0 auto;width:8px;height:1px;background:var(--glass-border);margin-top:-15px}
 
 /* —— 热门探索 —— */
 .explore-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
@@ -1040,26 +1069,47 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
       </div>
     </div>
 
-    <!-- 每日灵签 翻牌互动 -->
+    <!-- 每日灵签 (重设计版) -->
     <div class="flip-section">
       <div class="flip-head">
-        <div class="flip-title"><i class="ti ti-cards" style="color:var(--violet-bright)"></i>每日灵签</div>
-        <div class="flip-streak"><i class="ti ti-flame"></i><span id="flip-streak-count">0</span> 天连续签到</div>
-      </div>
-      <div class="flip-stage">
-        <div class="flip-card-inner" id="flip-card" onclick="doDailyFlip()">
-          <div class="flip-face flip-front">
-            <div class="flip-front-pattern">🔮</div>
-            <div class="flip-front-label">点击翻牌</div>
-          </div>
-          <div class="flip-face flip-back">
-            <div class="flip-back-text" id="flip-back-text">…</div>
-            <div class="flip-back-score" id="flip-back-score">幸运指数 ★★★★☆</div>
+        <div class="flip-head-l">
+          <div class="flip-head-icon">🔮</div>
+          <div>
+            <div class="flip-title">每日灵签</div>
+            <div class="flip-subtitle">抽一签，看看宇宙给你的指引</div>
           </div>
         </div>
+        <div class="flip-record-link" onclick="if(ensureLoggedIn()){loadMemberData();goTo('s-qian-intro','s-home');setTimeout(updateQianCostDisplay,300);}">灵签记录 <i class="ti ti-chevron-right"></i></div>
       </div>
-      <div class="flip-hint" id="flip-hint">每天可以翻一次，连续签到能量更强</div>
+
+      <div class="flip-stage">
+        <div class="flip-card-art" id="flip-card-art" onclick="doDailyFlip()">
+          <img src="images/qian-card-front.svg" alt="今日灵签"/>
+        </div>
+      </div>
+      <button class="flip-draw-btn" id="flip-draw-btn" onclick="doDailyFlip()"><i class="ti ti-sparkles"></i>点击抽签</button>
+      <div class="flip-reset-note" id="flip-reset-note">每日0点重置</div>
+
+      <div class="flip-result" id="flip-result">
+        <div class="flip-r-label">✦ 今日签文 ✦</div>
+        <div class="flip-r-quote" id="flip-r-quote">…</div>
+        <div class="flip-r-div"></div>
+        <div class="flip-r-advice-label">幸运指数</div>
+        <div class="flip-r-stars" id="flip-r-stars">★★★★☆</div>
+        <div class="flip-r-div"></div>
+        <div class="flip-r-advice-label">✦ 幸运建议 ✦</div>
+        <div class="flip-r-advice-text" id="flip-r-advice-text">…</div>
+        <img class="flip-r-cat" src="images/qian-wizard-cat.svg" alt=""/>
+      </div>
       <div class="flip-more-link" onclick="if(ensureLoggedIn()){loadMemberData();goTo('s-qian-intro','s-home');setTimeout(updateQianCostDisplay,300);}">查看完整解签 →</div>
+
+      <div class="flip-checkin">
+        <div class="flip-checkin-head">
+          <div class="flip-checkin-title">连续签到，解锁更多好运</div>
+          <div class="flip-checkin-rule" onclick="showToast('连续签到7天可获得额外积分奖励','ti-gift')">签到规则 <i class="ti ti-help-circle"></i></div>
+        </div>
+        <div class="flip-checkin-chain" id="flip-checkin-chain"></div>
+      </div>
     </div>
 
     <!-- 热门探索 -->
@@ -5136,73 +5186,99 @@ function sxBadge(s, size){
 var FH_COLORS=['紫罗兰','薰衣草紫','星辉金','深海蓝','珊瑚粉','雾烬灰','月光白','暮夜紫'];
 var FH_KEYWORD_PAIRS=[['机会','贵人'],['转变','灵感'],['沉淀','澄明'],['突破','行动'],['和解','放下'],['专注','成果'],['连接','真心'],['勇气','开始']];
 var DAILY_FLIP_POOL=[
-  {text:'今天适合主动开口，你想说的那句话，说出来比留在心里更有用。',score:5,tag:'宜表达'},
-  {text:'有些事不需要现在就有答案，让它再发酵一下，答案会自己浮出来。',score:3,tag:'宜静待'},
-  {text:'一个看似不起眼的小决定，今天可能会带来意外的连锁反应。',score:4,tag:'宜留意'},
-  {text:'你最近的努力，正在悄悄为你铺一条还看不见的路。',score:4,tag:'宜坚持'},
-  {text:'今天遇到的阻力，可能是在帮你避开一个更大的麻烦。',score:3,tag:'宜耐心'},
-  {text:'有个许久没联系的人，可能正适合在今天被想起。',score:4,tag:'宜联系'},
-  {text:'今天不是冲刺的日子，是整理的日子，把手头乱的事先理清楚。',score:3,tag:'宜整理'},
-  {text:'你今天的直觉比平时更准，相信第一反应。',score:5,tag:'宜信直觉'},
-  {text:'一个你犹豫很久的决定，今天会出现一个让你下定决心的信号。',score:5,tag:'宜决断'},
-  {text:'今天适合对自己温柔一点，不是所有事都要靠硬撑解决。',score:3,tag:'宜放松'},
-  {text:'钱财方面今天宜稳守，先别急着出手大的决定。',score:3,tag:'宜守财'},
-  {text:'感情上今天容易因为一句话产生误会，话说清楚一点比较好。',score:3,tag:'宜沟通'}
+  {text:'云开见月明，近期会有新的机会出现。',score:4,tag:'宜把握',advice:'保持积极心态，勇敢把握身边出现的机会，会有意想不到的收获哦！'},
+  {text:'今天适合主动开口，你想说的那句话，说出来比留在心里更有用。',score:5,tag:'宜表达',advice:'找一个你信任的人，把心里那句话说出来，说了才有可能往前走。'},
+  {text:'有些事不需要现在就有答案，让它再发酵一下，答案会自己浮出来。',score:3,tag:'宜静待',advice:'不要急着替结果下结论，给事情多一点时间，答案会比你想的更清楚。'},
+  {text:'一个看似不起眼的小决定，今天可能会带来意外的连锁反应。',score:4,tag:'宜留意',advice:'多留意身边的细节，一个小小的选择，可能会牵动接下来一连串的好事。'},
+  {text:'你最近的努力，正在悄悄为你铺一条还看不见的路。',score:4,tag:'宜坚持',advice:'就算暂时看不到成果，也请继续走下去，那条路正在你看不见的地方延伸。'},
+  {text:'今天遇到的阻力，可能是在帮你避开一个更大的麻烦。',score:3,tag:'宜耐心',advice:'遇到卡住的地方先别急，那个"不顺"也许正在替你挡掉一个更糟的选择。'},
+  {text:'有个许久没联系的人，可能正适合在今天被想起。',score:4,tag:'宜联系',advice:'发一条消息给那个突然想到的人，可能会带来一个温暖的意外。'},
+  {text:'今天不是冲刺的日子，是整理的日子，把手头乱的事先理清楚。',score:3,tag:'宜整理',advice:'先把杂乱的事情排好顺序，理清楚了，接下来的路会好走很多。'},
+  {text:'你今天的直觉比平时更准，相信第一反应。',score:5,tag:'宜信直觉',advice:'不要想太多分析，今天的第一直觉，往往比反复思考后的结论更靠近真相。'},
+  {text:'一个你犹豫很久的决定，今天会出现一个让你下定决心的信号。',score:5,tag:'宜决断',advice:'留意今天出现的小信号，那可能就是让你终于做出决定的关键提示。'},
+  {text:'今天适合对自己温柔一点，不是所有事都要靠硬撑解决。',score:3,tag:'宜放松',advice:'给自己一点喘息的空间，硬撑不是唯一的办法，休息也是一种前进。'},
+  {text:'钱财方面今天宜稳守，先别急着出手大的决定。',score:3,tag:'宜守财',advice:'大额的决定先缓一缓，今天更适合稳住现有的，而不是冒险出手。'},
+  {text:'感情上今天容易因为一句话产生误会，话说清楚一点比较好。',score:3,tag:'宜沟通',advice:'把心里想的尽量说清楚一点，少一点猜测，关系会少很多不必要的摩擦。'}
 ];
 function getTodayFlipResult(){
   var dayIdx=Math.floor(Date.now()/86400000);
   return DAILY_FLIP_POOL[dayIdx%DAILY_FLIP_POOL.length];
 }
-function updateFlipStreakDisplay(){
+function getFlipStreak(){
   var n=0;
   try{n=parseInt(localStorage.getItem('flip_streak')||'0');}catch(e){}
-  var el=document.getElementById('flip-streak-count');
-  if(el)el.textContent=n;
+  return n;
+}
+function renderCheckinChain(streak){
+  var wrap=document.getElementById('flip-checkin-chain');
+  if(!wrap)return;
+  var posInCycle=((streak-1)%7+7)%7+1; // 1..7, position of most recent check-in within current cycle
+  if(streak<=0)posInCycle=0;
+  var html='';
+  for(var d=1;d<=7;d++){
+    var isDone=d<=posInCycle;
+    var isToday=(d===posInCycle&&streak>0);
+    html+='<div class="flip-cn-node">'+
+      '<div class="flip-cn-circle'+(isDone?' done':'')+(isToday?' today':'')+'">'+
+      (isDone?'<i class="ti ti-check"></i>':'')+'</div>'+
+      '<div class="flip-cn-label">'+d+'天</div></div>';
+    if(d<7)html+='<div class="flip-cn-line"></div>';
+  }
+  wrap.innerHTML=html;
 }
 function initDailyFlip(){
   var todayKey=new Date().toDateString();
   var lastFlip='';
   try{lastFlip=localStorage.getItem('flip_last_date')||'';}catch(e){}
-  updateFlipStreakDisplay();
+  var streak=getFlipStreak();
+  renderCheckinChain(streak);
   if(lastFlip===todayKey){
-    // 今天已经翻过，直接显示结果（保持翻开状态）
-    var r=getTodayFlipResult();
-    var card=document.getElementById('flip-card');
-    var txt=document.getElementById('flip-back-text');
-    var score=document.getElementById('flip-back-score');
-    var hint=document.getElementById('flip-hint');
-    if(card)card.classList.add('flipped');
-    if(txt)txt.textContent=r.text;
-    if(score)score.textContent='幸运指数 '+'★'.repeat(r.score)+'☆'.repeat(5-r.score)+' · '+r.tag;
-    if(hint)hint.textContent='今天已经签过了，明天再来';
+    showFlipResult(getTodayFlipResult());
   }
 }
+function showFlipResult(r){
+  var artWrap=document.getElementById('flip-card-art');
+  var btn=document.getElementById('flip-draw-btn');
+  var note=document.getElementById('flip-reset-note');
+  var result=document.getElementById('flip-result');
+  if(artWrap)artWrap.classList.add('drawn');
+  if(btn)btn.classList.add('hidden-btn');
+  if(note)note.textContent='今日已签 · 明日0点可再抽';
+  if(result)result.classList.add('show');
+  var q=document.getElementById('flip-r-quote');
+  var stars=document.getElementById('flip-r-stars');
+  var advice=document.getElementById('flip-r-advice-text');
+  if(q)q.textContent=r.text;
+  if(stars)stars.innerHTML='<span style="color:#f3cf7e">'+'★'.repeat(r.score)+'</span><span style="color:rgba(255,255,255,.25)">'+'★'.repeat(5-r.score)+'</span>';
+  if(advice)advice.textContent=r.advice||'';
+}
 function doDailyFlip(){
-  var card=document.getElementById('flip-card');
-  if(!card||card.classList.contains('flipped'))return;
   var todayKey=new Date().toDateString();
   var yesterdayKey=new Date(Date.now()-86400000).toDateString();
   var lastFlip='';
   try{lastFlip=localStorage.getItem('flip_last_date')||'';}catch(e){}
-  if(lastFlip===todayKey)return; // already flipped
-  var streak=0;
-  try{streak=parseInt(localStorage.getItem('flip_streak')||'0');}catch(e){}
+  if(lastFlip===todayKey)return; // already drawn today
+  var streak=getFlipStreak();
   streak=(lastFlip===yesterdayKey)?streak+1:1;
   try{
     localStorage.setItem('flip_last_date',todayKey);
     localStorage.setItem('flip_streak',String(streak));
   }catch(e){}
   var r=getTodayFlipResult();
-  card.classList.add('flipped');
-  setTimeout(function(){
-    var txt=document.getElementById('flip-back-text');
-    var score=document.getElementById('flip-back-score');
-    var hint=document.getElementById('flip-hint');
-    if(txt)txt.textContent=r.text;
-    if(score)score.textContent='幸运指数 '+'★'.repeat(r.score)+'☆'.repeat(5-r.score)+' · '+r.tag;
-    if(hint)hint.textContent='今天已经签过了，明天再来';
-  },350);
-  updateFlipStreakDisplay();
+  showFlipResult(r);
+  renderCheckinChain(streak);
+  // 连续签到满7天，发放小奖励积分
+  if(streak%7===0){
+    try{
+      memberData=memberData||{};
+      memberData.credits=(memberData.credits||0)+10;
+      saveMemberLocal();
+      if(typeof db!=='undefined'&&obProfile&&obProfile.userKey){
+        db.ref('users/'+obProfile.userKey+'/member').update({credits:memberData.credits});
+      }
+    }catch(e){}
+    setTimeout(function(){showToast('连续签到7天！获得 10 积分 🎁','ti-gift');},500);
+  }
 }
 function spawnFortuneParticles(){
   var wrap=document.getElementById('fh-particles');
