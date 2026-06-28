@@ -931,7 +931,7 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
         <div class="hc-card-arrow">→</div>
       </div>
       <div class="hc-card" onclick="enterZodiacTab('s-home')">
-        <div class="hc-card-bg" style="background-image:url('images/home-zodiac.jpg')"></div>
+        <div class="hc-card-bg" style="background-image:url('images/home-zodiac-sheet.jpg');background-position:center 30%"></div>
         <div class="hc-card-shade"></div>
         <div class="hc-card-icon" style="background:linear-gradient(135deg,#6f93cc,#9b6fd6)"><i class="ti ti-stars" style="color:#fff"></i></div>
         <div class="hc-card-title">星座运势</div>
@@ -939,9 +939,9 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
         <div class="hc-card-arrow">→</div>
       </div>
       <div class="hc-card" onclick="enterSXTab('s-home')">
-        <div class="hc-card-bg" style="background-image:url('images/home-shengxiao.jpg')"></div>
+        <div class="hc-card-bg" style="background-image:url('images/home-shengxiao-sheet.jpg');background-position:center 30%"></div>
         <div class="hc-card-shade"></div>
-        <div class="hc-card-icon" style="background:linear-gradient(135deg,#c9a455,#e8a23a)"><div id="home-sx-badge" style="color:#fff;font-size:15px;font-weight:700">肖</div></div>
+        <div class="hc-card-icon" style="background:linear-gradient(135deg,#c9a455,#e8a23a)"><div style="color:#fff;font-size:15px;font-weight:700">肖</div></div>
         <div class="hc-card-title">生肖运势</div>
         <div class="hc-card-desc">相合相冲<br>事业感情分析</div>
         <div class="hc-card-arrow">→</div>
@@ -4178,6 +4178,7 @@ var SX=[
   {name:'狗',emoji:'🐶',years:'1970/82/94/2006/18/30',elem:'土',best:'虎、马',clash:'龙',dir:'西北',color:'rgba(180,140,100,1)',cls:'rgba(180,140,100,.1)',bdr:'rgba(180,140,100,.3)'},
   {name:'猪',emoji:'🐷',years:'1971/83/95/2007/19/31',elem:'水',best:'兔、羊',clash:'蛇',dir:'北方',color:'rgba(249,168,212,1)',cls:'rgba(249,168,212,.1)',bdr:'rgba(249,168,212,.3)'}
 ];
+var SX_IMG_MAP={'鼠':'rat','牛':'ox','虎':'tiger','兔':'rabbit','龙':'dragon','蛇':'snake','马':'horse','羊':'goat','猴':'monkey','鸡':'rooster','狗':'dog','猪':'pig'};
 var selSX=null, sxData=null, selSXB=null, sxMode='solo', sxPairData=null;
 
 // ── Build SX grid B (partner selection) ──
