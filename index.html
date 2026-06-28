@@ -3075,9 +3075,18 @@ function ensureProfileLoaded(){
         obProfile=pp;
         currentUserKey=obProfile.userKey||getUserKey(obProfile);
         obApplyProfileToApp(obProfile);
+        return;
       }
     }
-  }catch(e){}
+    // 诊断模式：兜底也失败了，弹出具体缺失信息方便排查（截图发给开发者即可）
+    var diag='诊断：obProfile.name='+(obProfile&&obProfile.name||'无')+
+      ' year='+(obProfile&&obProfile.year||'无')+
+      ' | localStorage='+(saved?'有数据但缺year字段':'完全没有');
+    console.warn(diag);
+    showToast(diag,'ti-bug');
+  }catch(e){
+    showToast('诊断：恢复资料时报错 '+e.message,'ti-bug');
+  }
 }
 function enterZodiacTab(from){
   if(!ensureLoggedIn())return;
