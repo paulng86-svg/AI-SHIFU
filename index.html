@@ -1133,10 +1133,10 @@ html,body{height:100%;font-family:'Noto Serif SC','Inter',sans-serif;color:var(-
       </div>
       <div class="flip-more-link" onclick="if(ensureLoggedIn()){loadMemberData();goTo('s-qian-intro','s-home');setTimeout(updateQianCostDisplay,300);}">查看完整解签 →</div>
 
-      <div class="flip-checkin">
+      <div class="flip-checkin" onclick="onCheckinChainClick()">
         <div class="flip-checkin-head">
           <div class="flip-checkin-title">连续签到，解锁更多好运</div>
-          <div class="flip-checkin-rule" onclick="showToast('连续签到7天可获得额外积分奖励','ti-gift')">签到规则 <i class="ti ti-help-circle"></i></div>
+          <div class="flip-checkin-rule" onclick="event.stopPropagation();showToast('连续签到7天可获得额外积分奖励','ti-gift')">签到规则 <i class="ti ti-help-circle"></i></div>
         </div>
         <div class="flip-checkin-chain" id="flip-checkin-chain"></div>
       </div>
@@ -5261,6 +5261,18 @@ function showFlipResult(r){
   if(q)q.textContent=r.text;
   if(stars)stars.innerHTML='<span style="color:#f3cf7e">'+'★'.repeat(r.score)+'</span><span style="color:rgba(255,255,255,.25)">'+'★'.repeat(5-r.score)+'</span>';
   if(advice)advice.textContent=r.advice||'';
+}
+function onCheckinChainClick(){
+  var todayKey=new Date().toDateString();
+  var lastFlip='';
+  try{lastFlip=localStorage.getItem('flip_last_date')||'';}catch(e){}
+  if(lastFlip===todayKey){
+    var streak=getFlipStreak();
+    showToast('今天已经签到啦，连续 '+streak+' 天，明天0点后可以再抽','ti-check');
+  } else {
+    showToast('还没抽过今天的签，帮你抽一个 ✦','ti-sparkles');
+    doDailyFlip();
+  }
 }
 function doDailyFlip(){
   var todayKey=new Date().toDateString();
