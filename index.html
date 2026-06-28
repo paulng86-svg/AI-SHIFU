@@ -3063,8 +3063,25 @@ function goTo(to,from){
   if(t){t.classList.remove('hidden');t.scrollTop=0;}
 }
 // 统一的星座/生肖入口函数
+// 防御性修复：如果内存里的 obProfile 资料不完整（比如手机上 Safari 偶发恢复较慢），
+// 主动再读一次本地存储补全，而不是直接判定"没填过资料"就弹出表单
+function ensureProfileLoaded(){
+  if(obProfile&&obProfile.year&&obProfile.month&&obProfile.day)return;
+  try{
+    var saved=localStorage.getItem('destiny_profile');
+    if(saved){
+      var pp=JSON.parse(saved);
+      if(pp&&pp.name&&pp.year){
+        obProfile=pp;
+        currentUserKey=obProfile.userKey||getUserKey(obProfile);
+        obApplyProfileToApp(obProfile);
+      }
+    }
+  }catch(e){}
+}
 function enterZodiacTab(from){
   if(!ensureLoggedIn())return;
+  ensureProfileLoaded();
   from=from||'s-home';
   document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');b.style.color='rgba(201,164,85,.35)';});
   var n=document.getElementById('nav-zodiac');if(n)n.classList.add('active');
@@ -3073,6 +3090,7 @@ function enterZodiacTab(from){
 }
 function enterSXTab(from){
   if(!ensureLoggedIn())return;
+  ensureProfileLoaded();
   from=from||'s-home';
   document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');b.style.color='rgba(201,164,85,.35)';});
   var n=document.getElementById('nav-shengxiao');if(n)n.classList.add('active');
@@ -3082,6 +3100,7 @@ function enterSXTab(from){
 // 统一的每日签语入口：出生日期已在注册时保存，直接自动推算，不再要求重新填写
 function enterFateTab(from){
   if(!ensureLoggedIn())return;
+  ensureProfileLoaded();
   from=from||'s-home';
   goTo('s-fate',from);
   setTimeout(function(){
@@ -3119,6 +3138,7 @@ function ensureLoggedIn(){
 function autoStartDestiny(){
   if(!ensureLoggedIn())return;
   if(!checkVIPAccess('destiny'))return;
+  ensureProfileLoaded();
   // If we have profile data, skip input and go straight to analysis
   if(obProfile&&obProfile.year&&obProfile.month&&obProfile.day){
     // Fill in the data
